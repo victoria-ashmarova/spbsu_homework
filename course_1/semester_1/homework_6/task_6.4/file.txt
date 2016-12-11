@@ -1,0 +1,11 @@
+this line is not empty
+
+prev line if empty because it contains only '\n'
+		
+prev line is empty because in contains only '\t'
+      
+prev line is empty because in contains only ' '	
+next line is emptty because in contains only ' ' and '\t'
+  	 		  	
+there are 4 empty lines in file. 
+And seven lines are not empty.
