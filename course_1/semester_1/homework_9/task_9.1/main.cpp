@@ -35,7 +35,7 @@ void deleteTable(int **table, int size)
 {
     for (int i = 0; i < size; i++)
     {
-        delete table[i];
+        delete []table[i];
         table[i] = nullptr;
     }
     delete []table;
