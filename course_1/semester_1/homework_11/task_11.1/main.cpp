@@ -1,214 +1,79 @@
 #include <iostream>
-#include "states.h"
 
 using namespace std;
 
-char getState()
+enum States {start, firstSigh, intPart, point, fraction, exp, sighExp, digitExp, complete, error};
+
+char getSymbol()
 {
-    char state = '\0';
-    scanf("%c", &state);
-    return (state >= '0' && state <= '9' ? '1' : state);
+    char symbol = '\0';
+    scanf("%c", &symbol);
+    return symbol;
 }
 
-void startState()
+bool isDigit(char symbol)
 {
-    char nextState = getState();
-    switch (nextState)
-    {
-        case '+':
-            stateOne();
-        break;
-
-        case '-':
-            stateTwo();
-        break;
-
-        case '1':
-            stateThree();
-        break;
-
-        default:
-            stateEleven();
-        break;
-    }
+    return symbol >= '0' && symbol <= '9';
 }
 
-void stateOne()
+bool isSigh(char symbol)
 {
-    char nextState = getState();
-    switch (nextState)
-    {
-        case '1':
-            stateThree();
-        break;
-
-        default:
-            stateEleven();
-        break;
-    }
+    return symbol == '+'  || symbol == '-';
 }
 
-void stateTwo()
+States transition(char symbol, States currentState)
 {
-    char nextState = getState();
-    switch (nextState)
-    {
-        case '1':
-            stateThree();
-        break;
+    if (currentState == start && isSigh(symbol))
+        return firstSigh;
 
-        default:
-            stateEleven();
-        break;
-    }
+    if ((currentState >= start && currentState <= intPart) && isDigit(symbol))
+        return intPart;
+
+    if (currentState == intPart && symbol == '.')
+        return point;
+
+    if ((currentState == point || currentState == fraction) && isDigit(symbol))
+        return fraction;
+
+    if (currentState == fraction && symbol == 'E')
+        return exp;
+
+    if (currentState == exp && isSigh(symbol))
+        return sighExp;
+
+    if ((currentState == exp || currentState == sighExp || currentState == digitExp) && isDigit(symbol))
+        return digitExp;
+
+    if ((currentState == intPart || currentState == fraction || currentState == digitExp) && symbol == '\n')
+        return complete;
+
+    return error;
 }
 
-void stateThree()
+void completeState()
 {
-    char nextState = getState();
-    switch (nextState)
-    {
-        case '1':
-            stateThree();
-        break;
-
-        case '.':
-            stateFour();
-        break;
-
-        case '\n':
-            stateTen();
-        break;
-
-        default:
-            stateEleven();
-        break;
-    }
+    cout << "This line is digit." << endl;
 }
 
-void stateFour()
+void errorState()
 {
-    char nextState = getState();
-    switch (nextState)
-    {
-        case '1':
-            stateFive();
-        break;
-
-        default:
-            stateEleven();
-        break;
-    }
-}
-
-void stateFive()
-{
-    char nextState = getState();
-    switch (nextState)
-    {
-        case '1':
-            stateFive();
-        break;
-
-        case 'E':
-            stateSix();
-        break;
-
-        case '\n':
-            stateTen();
-        break;
-
-        default:
-            stateEleven();
-        break;
-    }
-}
-
-void stateSix()
-{
-    char nextState = getState();
-    switch (nextState)
-    {
-        case '+':
-            stateSeven();
-        break;
-
-        case '-':
-            stateEight();
-        break;
-
-        case '1':
-            stateNine();
-        break;
-
-        default:
-            stateEleven();
-        break;
-    }
-}
-
-void stateSeven()
-{
-    char nextState = getState();
-    switch (nextState)
-    {
-        case '1':
-            stateNine();
-        break;
-
-        default:
-            stateEleven();
-        break;
-    }
-}
-
-void stateEight()
-{
-    char nextState = getState();
-    switch (nextState)
-    {
-        case '1':
-            stateNine();
-        break;
-
-        default:
-            stateEleven();
-        break;
-    }
-}
-
-void stateNine()
-{
-    char nextState = getState();
-    switch (nextState)
-    {
-        case '1':
-            stateNine();
-        break;
-
-        case '\n':
-            stateTen();
-        break;
-
-        default:
-            stateEleven();
-        break;
-    }
-}
-
-void stateTen()
-{
-    cout << "Symbols are number." << endl;
-}
-
-void stateEleven()
-{
-    cout << "Symbols are not number." << endl;
+    cout << "This line is not digit." << endl;
 }
 
 int main()
 {
-    cout << "Enter symbols." << endl;
-    startState();
+    cout << "This program checks if line of symbols is digit." << endl;
+    States currentState = start;
+    char currentSymbol = '\0';
+    while (currentState != error && currentState != complete)
+    {
+        currentSymbol = getSymbol();
+        currentState = transition(currentSymbol, currentState);
+    }
+
+    if (currentState == complete)
+        completeState();
+    if (currentState == error)
+        errorState();
     return 0;
 }
