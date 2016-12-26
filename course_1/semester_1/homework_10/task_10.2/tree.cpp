@@ -124,17 +124,52 @@ void addNewNode(Node *parent, char toAdd)
     }
 }
 
-bool isSpace(char line[], int index)
+char getCurrent(char *line, int &index)
 {
-    if (index == 0)
-        return false;
-    bool spaceSymbol = (line[index] == ' ' && line[index + 1] == ' '  && (line[index - 1] == '(' || line[index - 1] == ' '));
-    return line[index] == ' ' && !spaceSymbol;
+    if (line[index] == ' ')
+        return '\0';
+
+    if (line[index] != '\'')
+        return line[index];
+
+    if (line[index + 1] == '\'')
+    {
+        index++;
+        return ' ';
+    }
+
+    if (line[index + 1] == '(')
+    {
+        index = index + 2;
+        return '(';
+    }
+
+    if (line[index + 1] == ')')
+    {
+        index = index + 2;
+        return ')';
+    }
+
+    if (line[index + 1] == ' ')
+    {
+        return '\'';
+    }
+
+    char element = line[index + 2];
+    index = index + 3;
+
+    if (element == 't')
+        return '\t';
+
+    if (element == 'n')
+        return '\n';
+
+    return '\0';
 }
 
 void fullTree(ifstream &file, Tree *tree)
 {
-    int const sizeLine = 512;
+    int const sizeLine = 1024;
     char lineTree[sizeLine] = {'\0'};
     file.getline(lineTree, sizeLine);
     int i = 0;
@@ -150,15 +185,17 @@ void fullTree(ifstream &file, Tree *tree)
         }
         else
         {
-            if (lineTree[i] == '(')
+            char lineElement = lineTree[i];
+            char current = getCurrent(lineTree, i);
+            if (lineElement == '(')
             {
                 addNewNode(place, '\0');
             }
             else
             {
-                if (!isSpace(lineTree, i) && lineTree[i] != ')')
+                if (current != '\0' && lineElement != ')')
                 {
-                    addNewNode(place, lineTree[i]);
+                    addNewNode(place, current);
                 }
             }
         }
@@ -195,32 +232,27 @@ void deleteTree(Tree *tree)
 
 void decode(Tree *tree, ifstream &in, ofstream &out)
 {
-    int const sizeLine = 512;
-    char lineCode[sizeLine] = {'\0'};
-    in.getline(lineCode, sizeLine);
-    int i = 0;
+    char current = '\0';
+    while (!in.eof())
     {
-        while (i < sizeLine && lineCode[i] != '\0')
+        Node *temp = tree->root;
+        while (!nodeIsLitera(temp) && temp != nullptr && !in.eof())
         {
-            Node *temp = tree->root;
-            while (!nodeIsLitera(temp) && i < sizeLine && lineCode[i] != '\0')
+            in >> current;
+            switch (current)
             {
-                switch (lineCode[i])
-                {
-                    case '0':
-                        temp = temp->left;
-                    break;
+                case '0':
+                    temp = temp->left;
+                break;
 
-                    case '1':
-                        temp = temp->right;
-                    break;
-                }
-                i++;
+                case '1':
+                    temp = temp->right;
+                break;
             }
-            if (temp != nullptr)
-            {
-                out << temp->symbol;
-            }
+        }
+        if (temp != nullptr)
+        {
+            out << temp->symbol;
         }
     }
 }
