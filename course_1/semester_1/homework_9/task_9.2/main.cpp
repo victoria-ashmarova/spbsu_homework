@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "list.h"
+#include "matrix.h"
 
 using namespace std;
 
@@ -74,6 +75,7 @@ int main()
     int finishY = getNumber(file);
     int sizeX = getNumber(file);
     int sizeY = getNumber(file);
+
     if (isIncorrect(startX, sizeX) || isIncorrect(finishX, sizeX) || isIncorrect(startY, sizeY) || isIncorrect(finishY, sizeY))
     {
         cout << "Incorrect data. There are not this points on map." << endl;

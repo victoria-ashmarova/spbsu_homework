@@ -1,13 +1,8 @@
 #include <iostream>
 #include "list.h"
+#include "matrix.h"
 
 using namespace std;
-
-struct Point
-{
-    int x;
-    int y;
-};
 
 struct Vertex
 {
@@ -173,46 +168,19 @@ bool vertexIsInList(List *list, int x, int y)
     return getVertex(list, x, y) != nullptr;
 }
 
-bool isNotFree(char **table, Point size, int x, int y)
+int getDistance(Vertex *vertex)
 {
-    return (x < 0 || x > size.x - 1) || (y < 0 || y > size.y - 1) || table[x][y] == '1';
+    return vertex->distance;
 }
 
-bool pointsAreEqual(int firstX, int firstY, int secondX, int secondY)
+int getX(Vertex *vertex)
 {
-    return firstX == secondX && firstY == secondY;
+    return vertex->x;
 }
 
-int evristic(int x, int y, int finishX, int finishY)
+int getY(Vertex *vertex)
 {
-    int deltaX = (x > finishX ? x - finishX : finishX - x);
-    int deltaY = (y > finishY ? y - finishY : finishY - y);
-    return deltaX + deltaY;
-}
-
-void checkVertex(char **table, Point size, int x, int y, Point finish, List *close, List *open, Vertex *parent)
-{
-    if (vertexIsInList(close, x, y) || isNotFree(table, size, x, y))
-        return;
-
-    int distance = parent->distance + 1;
-    int evr = evristic(x, y, finish.x, finish.y);
-
-    if (!vertexIsInList(open, x, y))
-    {
-        addVertex(open, x, y, distance, evr, parent);
-        return;
-    }
-}
-
-void checkNeigbours(char **table, Point size, Point finish, Vertex *currentVertex, List *close, List *open)
-{
-    int parentX = currentVertex->x;
-    int parentY = currentVertex->y;
-    checkVertex(table, size, parentX - 1, parentY , finish, close, open, currentVertex);
-    checkVertex(table, size, parentX + 1, parentY , finish, close, open, currentVertex);
-    checkVertex(table, size, parentX, parentY - 1, finish, close, open, currentVertex);
-    checkVertex(table, size, parentX, parentY + 1, finish, close, open, currentVertex);
+    return vertex->y;
 }
 
 bool vertexIsWay(List *ways, int x, int y)
@@ -229,89 +197,30 @@ bool vertexIsWay(List *ways, int x, int y)
     return temp != nullptr;
 }
 
-void printVertex(int x, int y, char **table, List *open, List *close, List *ways)
+Vertex *getFirst(List *list)
 {
-    if (vertexIsWay(ways, x, y))
-        cout << '*';
-    else
-    {
-        if (vertexIsInList(open, x, y))
-            cout << 'O';
-        if (vertexIsInList(close, x, y))
-            cout << 'C';
-        if(!vertexIsInList(open, x, y) && !vertexIsInList(close, x, y))
-            cout << table[x][y];
-    }
+    return list->first;
 }
 
-void printWay(char **table, Point size, List *open, List *close, Point start, Point finish)
+int getEvr(Vertex *vertex)
 {
-    List *ways = new List;
+    return vertex->evr;
+}
+
+Vertex *getParent(Vertex *vertex)
+{
+    return vertex->parent;
+}
+
+void makeWay(List *ways, Vertex *begin)
+{
     ways->size = 1;
-    ways->first = getVertex(close, finish.x, finish.y);
+    ways->first = begin;
+}
 
-    cout << "S - start point." << endl;
-    cout << "F - finish point" << endl;
-    cout << "* - points of way." << endl;
-    cout << "O - points of open list." << endl;
-    cout << "C - points of close list." << endl;
-
-    for (int i = 0; i < size.x; i++)
-    {
-        for (int j = 0; j < size.y; j++)
-        {
-            if (pointsAreEqual(i, j, start.x, start.y))
-                cout << 'S';
-            if (pointsAreEqual(i, j, finish.x, finish.y))
-                cout << 'F';
-            if (!pointsAreEqual(i, j, start.x, start.y) && !pointsAreEqual(i, j, finish.x, finish.y))
-                printVertex(i, j, table, open, close, ways);
-        }
-        cout << endl;
-    }
+void clearWay(List *ways)
+{
     ways->first = nullptr;
     delete ways;
     ways = nullptr;
-}
-
-void searchWay(char **table, int sizeX, int sizeY, int startX, int startY, int finishX, int finishY)
-{
-    List *open = createList();
-    List *close = createList();
-
-    Point size = {sizeX, sizeY};
-    Point start = {startX, startY};
-    Point finish = {finishX, finishY};
-
-    int evr = evristic(startX, startY, finishX, finishY);
-    addVertex(open, startX, startY, 0, evr, nullptr);
-    Vertex *currentVertex = open->first;
-    Point current {-1, -1};
-    if (currentVertex != nullptr)
-    {
-        current.x = currentVertex->x;
-        current.y = currentVertex->y;
-    }
-    while (sizeList(open) > 0 && !pointsAreEqual(current.x, current.y, finish.x, finish.y))
-    {
-        checkNeigbours(table, size, finish, currentVertex, close, open);
-        addVertex(close, current.x, current.y, currentVertex->distance, currentVertex->evr, currentVertex->parent);
-        replaceParent(currentVertex, close, open);
-        removeVertex(open, current.x, current.y);
-        currentVertex = open->first;
-        if (currentVertex != nullptr)
-        {
-            current.x = currentVertex->x;
-            current.y = currentVertex->y;
-        }
-    }
-    if (currentVertex != nullptr)
-    {
-        addVertex(close, current.x, current.y, currentVertex->distance, currentVertex->evr, currentVertex->parent);
-        replaceParent(currentVertex, close, open);
-        removeVertex(open, current.x, current.y);
-    }
-    printWay(table, size, open, close, start, finish);
-    clearAndDeleteList(open);
-    clearAndDeleteList(close);
 }
