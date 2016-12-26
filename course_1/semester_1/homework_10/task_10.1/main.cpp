@@ -30,6 +30,8 @@ int main()
             addElementToBuffer(buffer, current[i], sizeBuffer(buffer) + 1);
             i++;
         }
+        addElementToQueue(toTreatment, '\n', nullptr, nullptr);
+        addElementToBuffer(buffer, '\n', sizeBuffer(buffer) + 1);
     }
     in.close();
     while (sizeQueue(toTreatment) > 1)

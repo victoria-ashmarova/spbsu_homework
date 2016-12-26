@@ -31,6 +31,7 @@ void clearAndDeleteList(List *list)
         Element *toDelete = list->first;
         list->first = list->first->next;
         list->size--;
+        toDelete->next = nullptr;
         delete toDelete;
         toDelete = nullptr;
     }
@@ -82,7 +83,33 @@ void printListToFile(List *list, ofstream &file)
     Element *temp = list->first;
     while (temp != nullptr)
     {
-        file << temp->symbol;
+        char symbol = temp->symbol;
+        switch (symbol)
+        {
+            case '\n':
+                file << "'\\n'";
+            break;
+
+            case ' ':
+                file  << "'' ";
+            break;
+
+            case '\t':
+                file << "'\\t'";
+            break;
+
+            case '(':
+                file << "'(' ";
+            break;
+
+            case ')':
+                file << "')' ";
+            break;
+
+            default:
+                file << temp->symbol;
+            break;
+        }
         temp = temp->next;
     }
 }

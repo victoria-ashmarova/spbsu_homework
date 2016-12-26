@@ -302,7 +302,26 @@ void orderWithVariables(Node *node)
     orderWithVariables(node->right);
     if (node->left == nullptr && node->right == nullptr)
     {
-        cout << node->litera << " - " << node->variable << endl;
+        char symbol = node->litera;
+        switch (symbol)
+        {
+            case '\n':
+                cout << "'\\n'";
+            break;
+
+            case ' ':
+                cout << "' '";
+            break;
+
+            case '\t':
+                cout << "'\\t'";
+            break;
+
+            default:
+                cout << symbol;
+            break;
+        }
+        cout << " - " << node->variable << endl;
     }
 }
 
@@ -313,7 +332,33 @@ void preorder(Node *node, ofstream &outFile)
 
     if (node->left == nullptr)
     {
-        outFile << node->litera << " ";
+        char symbol = node->litera;
+        switch (symbol)
+        {
+            case '\n':
+                outFile << "'\\n' ";
+            break;
+
+            case ' ':
+                outFile << "'' ";
+            break;
+
+            case '\t':
+                outFile << "'\\t' ";
+            break;
+
+            case '(':
+                outFile << "'(' ";
+            break;
+
+            case ')':
+                outFile << "')' ";
+            break;
+
+            default:
+                outFile << symbol << " ";
+            break;
+        }
     }
     if (node->left != nullptr)
         outFile << "(";
