@@ -339,12 +339,6 @@ void clearNode(Node *node)
     if (node == nullptr)
         return;
 
-    if (node->right == nullptr && node->left == nullptr)
-    {
-        delete node;
-        node = nullptr;
-        return;
-    }
     if (node->right != nullptr)
     {
         clearNode(node->right);
@@ -355,6 +349,9 @@ void clearNode(Node *node)
         clearNode(node->left);
         node->left = nullptr;
     }
+
+    delete node;
+    node = nullptr;
 }
 
 void clearAndDeleteElement(ElementOfQueue *element)
