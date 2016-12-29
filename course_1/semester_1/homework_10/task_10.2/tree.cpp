@@ -203,29 +203,32 @@ void fullTree(ifstream &file, Tree *tree)
     }
 }
 
-void clearNode(Node *node)
+void clearNode(Node *&node)
 {
     if (node == nullptr)
         return;
 
-    if (node->left == nullptr && node->right == nullptr)
+    if (node->right != nullptr)
     {
-        delete node;
-        node = nullptr;
-        return;
+        clearNode(node->right);
+        node->right = nullptr;
     }
 
     if (node->left != nullptr)
-        clearNode(node->left);
+    {
+       clearNode(node->left);
+       node->left = nullptr;
+    }
 
-    if (node->right != nullptr)
-        clearNode(node->right);
+    delete node;
+    node = nullptr;
 }
 
 
 void deleteTree(Tree *tree)
 {
     clearNode(tree->root);
+    tree->root = nullptr;
     delete tree;
     tree = nullptr;
 }
