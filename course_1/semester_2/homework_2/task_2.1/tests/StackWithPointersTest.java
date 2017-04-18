@@ -39,8 +39,19 @@ public class StackWithPointersTest {
         try {
             stack.push(1);
             Object a = stack.pop();
+            assertEquals(1, a);
         } catch (EmptyStackException e) {
             e.toString();
         }
+    }
+
+    @Test
+    public void getPeekNotEmptyStack(){
+        StackWithPointers stack = new StackWithPointers();
+        stack.push(1);
+        try {
+            Object a = stack.peek();
+            assertEquals(1, a);
+        } catch (EmptyStackException e) {};
     }
 }

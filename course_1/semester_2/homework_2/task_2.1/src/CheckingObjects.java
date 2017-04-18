@@ -18,4 +18,24 @@ public class CheckingObjects {
             return false;
         }
     }
+
+    /**
+     * checks if object is ('*') or ('/')
+     * @param operation is character(or not) value to check
+     * @return  true if operation is ('*') or ('/')
+     * @exception ClassCastException
+     */
+    public boolean isFirstOperation(Object operation) throws  ClassCastException{
+        return (char)operation == '*' || (char)operation == '/';
+    }
+
+    /**
+     * checks if object is ('+') or ('-')
+     * @param operation is character(or not) value to check
+     * @return  true if operation is ('+') or ('-')
+     * @exception ClassCastException
+     */
+    public boolean isSecondOperation(Object operation) throws  ClassCastException{
+        return (char)operation == '+' || (char)operation == '-';
+    }
 }

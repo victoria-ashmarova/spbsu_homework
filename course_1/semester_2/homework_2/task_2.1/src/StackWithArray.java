@@ -39,4 +39,11 @@ public class StackWithArray implements Stack{
     public int getSize() {
         return sizeStack;
     }
+
+    public Object peek() throws  EmptyStackException{
+        if (sizeStack == 0){
+            throw new EmptyStackException();
+        }
+        return stack[sizeStack];
+    }
 }

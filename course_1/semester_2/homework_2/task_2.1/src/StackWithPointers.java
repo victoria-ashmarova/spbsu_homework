@@ -1,6 +1,6 @@
 public class StackWithPointers implements Stack{
-    Element top = null;
-    private int size = 0;
+    protected Element top = null;
+    protected int size = 0;
 
     @Override
     public void push(Object value) {
@@ -34,5 +34,11 @@ public class StackWithPointers implements Stack{
             this.value = value;
             this.next = next;
         }
+    }
+
+    public Object peek() throws EmptyStackException{
+        if (size < 1)
+            throw new EmptyStackException();
+        return top.value;
     }
 }

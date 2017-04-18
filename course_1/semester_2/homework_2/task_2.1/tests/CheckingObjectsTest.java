@@ -24,4 +24,79 @@ public class CheckingObjectsTest {
         assertFalse(checking.isNumber(toCheckLitera));
     }
 
+    /**
+     * checks true define of operation composition
+     */
+    @Test
+    public void checkFirstOperationCompositionTest(){
+        CheckingObjects checking = new CheckingObjects();
+        assertTrue(checking.isFirstOperation('*'));
+    }
+
+    /**
+     * checks true define of operation quotient
+     */
+    @Test
+    public void checkFirstOperationQuotientTest(){
+        CheckingObjects checking = new CheckingObjects();
+        assertTrue(checking.isFirstOperation('/'));
+    }
+
+    /**
+     * checks that random element is not define as the first operation
+     */
+    @Test
+    public void checkNotFirstOperationTest(){
+        CheckingObjects checking = new CheckingObjects();
+        assertFalse(checking.isFirstOperation('+'));
+    }
+
+    /**
+     * checks work with incorrect data
+     */
+    @Test
+    public void checkNotCorrectFirstOperationTest(){
+        CheckingObjects checking = new CheckingObjects();
+        try {
+            assertFalse(checking.isFirstOperation(1));
+        } catch (ClassCastException e){}
+    }
+
+    /**
+     * checks true define of operation sum
+     */
+    @Test
+    public void checkSecondOperationAmountTest(){
+        CheckingObjects checking = new CheckingObjects();
+        assertTrue(checking.isSecondOperation('+'));
+    }
+
+    /**
+     * checks true define of operation difference
+     */
+    @Test
+    public void checkSecondOperationDifferenceTest(){
+        CheckingObjects checking = new CheckingObjects();
+        assertTrue(checking.isSecondOperation('-'));
+    }
+
+    /**
+     * checks that random element is not define as the second operation
+     */
+    @Test
+    public void checkNotSecondOperationTest(){
+        CheckingObjects checking = new CheckingObjects();
+        assertFalse(checking.isSecondOperation('*'));
+    }
+
+    /**
+     * checks work with incorrect data
+     */
+    @Test
+    public void checkNotCorrectSecondOperationTest(){
+        CheckingObjects checking = new CheckingObjects();
+        try {
+            assertFalse(checking.isSecondOperation(1));
+        } catch (ClassCastException e){}
+    }
 }

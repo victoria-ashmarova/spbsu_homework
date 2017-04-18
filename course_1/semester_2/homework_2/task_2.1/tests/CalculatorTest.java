@@ -3,6 +3,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class CalculatorTest {
+    /**
+     * checks if sum of two elements is correct
+     * @throws EmptyStackException
+     */
     @Test
     public void calculatorSumTest() throws EmptyStackException {
         Calculator calculator = new Calculator();
@@ -13,6 +17,10 @@ public class CalculatorTest {
         assertEquals(13, calculator.getValueOfOperation(stack, operation));
     }
 
+    /**
+     * check if difference of two elements is correct
+     * @throws EmptyStackException
+     */
     @Test
     public void calculatorDifferenceTest() throws EmptyStackException {
         Calculator calculator = new Calculator();
@@ -23,6 +31,10 @@ public class CalculatorTest {
         assertEquals(7, calculator.getValueOfOperation(stack, operation));
     }
 
+    /**
+     * check if composition of two elements is correct
+     * @throws EmptyStackException
+     */
     @Test
     public void calculatorCompositionTest() throws EmptyStackException {
         Calculator calculator = new Calculator();
@@ -33,6 +45,10 @@ public class CalculatorTest {
         assertEquals(30, calculator.getValueOfOperation(stack, operation));
     }
 
+    /**
+     * checks if quotient of two elements is correct
+     * @throws EmptyStackException
+     */
     @Test
     public void calculatorQuotientTest() throws EmptyStackException {
         Calculator calculator = new Calculator();
@@ -43,6 +59,10 @@ public class CalculatorTest {
         assertEquals(10, calculator.getValueOfOperation(stack, operation));
     }
 
+    /**
+     * checks calculator's able to work right
+     * @throws EmptyStackException
+     */
     @Test
     public void calculatorTest() throws EmptyStackException {
         Calculator calculator = new Calculator();
