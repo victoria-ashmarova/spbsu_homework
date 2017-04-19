@@ -3,16 +3,30 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class StackWithArrayTest {
+    /**
+     * Checks if size of new stack is 0
+     */
     @Test
-    public void getInformationAfterStackCreationTest(){
+    public void getInformationAfterStackCreationSizeStackTest(){
         StackWithArray stack = new StackWithArray();
         assertEquals(0, stack.getSize());
-        assertNotEquals(0, stack.sizeArray);
-        assertEquals(10, stack.sizeArray);
     }
 
+    /**
+     * Checks if size of array with stack is not 0
+     */
     @Test
-    public void getFromEmptyStack() throws EmptyStackException{
+    public void getInformationAfterStackCreationSizeArrayTest(){
+        StackWithArray stack = new StackWithArray();
+        assertNotEquals(0, stack.sizeArray);
+    }
+
+    /**
+     * Try to get value from empty stack
+     * @throws EmptyStackException
+     */
+    @Test
+    public void getFromEmptyStackTest() throws EmptyStackException{
         StackWithArray stack = new StackWithArray();
         try {
             Object objectFromEmptyStack = stack.pop();
@@ -21,15 +35,31 @@ public class StackWithArrayTest {
         }
     }
 
+    /**
+     * Checks that the size of stack is 1 after addition 1 element
+     * @throws EmptyStackException
+     */
     @Test
-    public void pushAndPopOneElement() throws EmptyStackException{
+    public void pushAndPopOneElementGetSizeTest() throws EmptyStackException{
         StackWithArray stack = new StackWithArray();
         stack.push(2);
         assertEquals(1, stack.getSize());
-        assertEquals(2, stack.pop());
-        assertEquals(0, stack.getSize());
     }
 
+    /**
+     * Checks equals of pushed and poped elements
+     * @throws EmptyStackException
+     */
+    @Test
+    public void pushAndPopOneElementGetElementTest() throws EmptyStackException{
+        StackWithArray stack = new StackWithArray();
+        stack.push(2);
+        assertEquals(2, stack.pop());
+    }
+
+    /**
+     * Checks making more size of array with stack
+     */
     @Test
     public void checkBehaviourOfFullArray(){
         StackWithArray stack = new StackWithArray();

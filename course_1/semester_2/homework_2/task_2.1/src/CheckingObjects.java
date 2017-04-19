@@ -1,3 +1,7 @@
+/**
+ * Class contains methods, which check if an object number,
+ * operations of first type(composition ('*') and quotient('/')) or operations of the second type(sum('+') and difference('-'))
+ */
 public class CheckingObjects {
     /** checks if object in array is operation*/
     public boolean isOperation(Object current){
@@ -20,9 +24,9 @@ public class CheckingObjects {
     }
 
     /**
-     * checks if object is ('*') or ('/')
+     * checks if object is composition('*') or quotient('/')
      * @param operation is character(or not) value to check
-     * @return  true if operation is ('*') or ('/')
+     * @return  true if operation is composition('*') or quotient('/')
      * @exception ClassCastException
      */
     public boolean isFirstOperation(Object operation) throws  ClassCastException{
@@ -30,9 +34,9 @@ public class CheckingObjects {
     }
 
     /**
-     * checks if object is ('+') or ('-')
+     * checks if object is sum('+') or difference('-')
      * @param operation is character(or not) value to check
-     * @return  true if operation is ('+') or ('-')
+     * @return  true if operation is sum('+') or difference('-')
      * @exception ClassCastException
      */
     public boolean isSecondOperation(Object operation) throws  ClassCastException{

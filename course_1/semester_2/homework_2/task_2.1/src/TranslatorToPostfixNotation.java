@@ -1,3 +1,7 @@
+/**
+ * Class contains methods, which translate an expression in infix notation to an expression in postfix notation
+ * Expressions are kept in arrays of Objects
+ */
 public class TranslatorToPostfixNotation {
     /**
      * Class for counting index of array with expression in postfix form

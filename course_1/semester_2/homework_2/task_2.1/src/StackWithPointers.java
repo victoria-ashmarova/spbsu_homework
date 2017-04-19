@@ -26,6 +26,9 @@ public class StackWithPointers implements Stack{
         return size;
     }
 
+    /**
+     * Class contains some value and pointer to next element
+     */
     class Element{
         Object value;
         Element next;
@@ -34,11 +37,5 @@ public class StackWithPointers implements Stack{
             this.value = value;
             this.next = next;
         }
-    }
-
-    public Object peek() throws EmptyStackException{
-        if (size < 1)
-            throw new EmptyStackException();
-        return top.value;
     }
 }

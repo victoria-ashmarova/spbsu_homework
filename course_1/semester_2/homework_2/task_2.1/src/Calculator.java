@@ -1,7 +1,10 @@
+/**
+ * Class contains methods to get a value of an expression in postfix form
+ */
 public class Calculator {
     /**
      * Gets from stack to top values and return result of operation to do
-     * if operation is not correct returns 0;
+     * if operation is not correct returns 0
      * @param stack to get values for operation
      * @param currentValue is operation to do
      * @return value of operation
