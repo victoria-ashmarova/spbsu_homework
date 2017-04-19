@@ -1,3 +1,6 @@
+/**
+ * Contains method, which sorts array with bubble sort
+ */
 public class BubbleSorter extends AbstractSorter{
     @Override
     public void sort(int[] array) {

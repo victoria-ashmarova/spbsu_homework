@@ -3,6 +3,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class InsertionSorterTest {
+    /**
+     * tests search of correct place to element
+     */
     @Test
     public void searchPlaceTest(){
         InsertionSorter iSorter = new InsertionSorter();
@@ -11,6 +14,9 @@ public class InsertionSorterTest {
         assertEquals(0, place);
     }
 
+    /**
+     * tests insertion sort
+     */
     @Test
     public void InsertionSortTest(){
         int toSort[] = {7, 6, 4, 5, 3, 2, 1};

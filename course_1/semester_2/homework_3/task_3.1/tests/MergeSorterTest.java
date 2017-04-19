@@ -3,6 +3,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class MergeSorterTest {
+    /**
+     * tests sort of array with two elements
+     */
     @Test
     public void sortTwoElementsTest(){
         int array[] = {3, 2};
@@ -12,6 +15,9 @@ public class MergeSorterTest {
         assertArrayEquals(expected, expected);
     }
 
+    /**
+     * tests sort of array with number of elements, which is equal to some power of 2 (4 = 2^2)
+     */
     @Test
     public void sortFourElementsTest(){
         int array[] = {1, 2, 0, 3};
@@ -21,6 +27,9 @@ public class MergeSorterTest {
         assertArrayEquals(expected, array);
     }
 
+    /**
+     * tests sort of 3 elements
+     */
     @Test
     public void sortThreeElementsTest(){
         int array[] = {3, 1, 2};
@@ -30,6 +39,9 @@ public class MergeSorterTest {
         assertArrayEquals(expected, array);
     }
 
+    /**
+     * tests sort of big random array
+     */
     @Test
     public void mergeSortTest(){
         int array[] = {9, 8, 7, 6, 5, 4, 3};

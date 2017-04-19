@@ -3,6 +3,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class QSorterTest {
+    /**
+     * tests quick sort of array with odd number of elements
+     */
     @Test
     public void qSortTest(){
         int toSort[] = {4, 3, 5, 2, 1};
@@ -12,6 +15,9 @@ public class QSorterTest {
         assertArrayEquals(expected, toSort);
     }
 
+    /**
+     * tests correct result of swap
+     */
     @Test
     public void swapTest(){
         QSorter qSorter = new QSorter();
@@ -21,6 +27,9 @@ public class QSorterTest {
         assertArrayEquals(expected, array);
     }
 
+    /**
+     * tests correct search of pivot
+     */
     @Test
     public void searchPivotTest(){
         QSorter qSorter = new QSorter();
@@ -29,6 +38,9 @@ public class QSorterTest {
         assertEquals(3, pivot);
     }
 
+    /**
+     * tests quick sort of array with even number of elements
+     */
     @Test
     public void qSortSortedArrayTest(){
         int toSort[] = {2, 4, 5, 7};

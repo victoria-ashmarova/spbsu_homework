@@ -1,3 +1,6 @@
+/**
+ * Contains methods, which implement merge sort
+ */
 public class MergeSorter extends AbstractSorter{
     @Override
     public void sort(int[] array) {
@@ -8,10 +11,24 @@ public class MergeSorter extends AbstractSorter{
         }
     }
 
+    /**
+     * Searches place to separate part array on two smaller parts
+     * @param begin index of begin part of array
+     * @param end index of end part of array
+     * @return
+     */
     private int newCentre(int begin, int end){
         return end -  (end - begin) / 2;
     }
 
+    /**
+     * Ceparate array of two parts with sorted elements and merge it
+     * @param array array to sort
+     * @param buffer place to get merged parts of array
+     * @param beginIndex index of begin the first part of array
+     * @param centreIndex index of begin the second part of array
+     * @param endIndex index of end the second part of array
+     */
     protected void merge(int array[], int buffer[], int beginIndex, int centreIndex, int endIndex){
         if (beginIndex == endIndex){
             buffer[beginIndex] = array[beginIndex];

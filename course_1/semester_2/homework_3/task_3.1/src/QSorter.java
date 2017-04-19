@@ -1,9 +1,19 @@
+/**
+ * Contains method, which implements quick sort
+ */
 public class QSorter extends AbstractSorter{
     @Override
     public void sort(int[] array) {
         qSort(array, 0, array.length - 1);
     }
 
+    /**
+     * Replaces elements with small value in begin of array, and elements with big value in the end of array
+     * and then sorts these twi parts of array
+     * @param array to sort
+     * @param begin begin index of part to sort
+     * @param end end index of part to sort
+     */
     private void qSort(int[] array, int begin, int end){
         int pivot = searchPivot(array, begin, end);
         int i = begin;
@@ -29,6 +39,13 @@ public class QSorter extends AbstractSorter{
         }
     }
 
+    /**
+     * Searches pivot of quicksort
+     * @param array to sort
+     * @param begin begin index of part of array
+     * @param end end index of part of array
+     * @return
+     */
     protected int searchPivot(int[] array, int begin, int end) {
         int toReturn = 0;
         for (int i = begin; i <= end; i++){
@@ -36,10 +53,4 @@ public class QSorter extends AbstractSorter{
         }
         return toReturn / ((end - begin) + 1);
     }
-
-    /*protected void swap(int[] array, int indexFirst, int indexSecond){
-        int temp = array[indexFirst];
-        array[indexFirst] = array[indexSecond];
-        array[indexSecond] = temp;
-    }*/
 }
