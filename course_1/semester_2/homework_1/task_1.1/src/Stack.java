@@ -1,9 +1,9 @@
 import java.util.Scanner;
 
 public class Stack {
-    int size = 0;
-    Element top = null;
-    enum Action {END, PUSH, POP, GET_INFORMATION_ABOUT_SIZE};
+    private int size = 0;
+    private Element top = null;
+    private enum Action {END, PUSH, POP, GET_INFORMATION_ABOUT_SIZE};
 
     private class Element{
         int value;
