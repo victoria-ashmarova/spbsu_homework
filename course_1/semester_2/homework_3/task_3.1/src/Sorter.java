@@ -1,6 +1,6 @@
 public interface Sorter {
     /**
-     * Method, which get array
+     * Method, which get array from console
      * @return
      */
     int[] getArray();
@@ -10,4 +10,10 @@ public interface Sorter {
      * @param array
      */
     void sort(int[] array);
+
+    /**
+     * Method, which prints sortes array to console
+     * @param array to print
+     */
+    void print(int[] array);
 }

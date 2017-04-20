@@ -1,8 +1,20 @@
+import java.util.Scanner;
+
 abstract public class AbstractSorter implements Sorter {
     @Override
     public int[] getArray(){
-        //TO DO
-        return null;
+        Scanner scan = new Scanner(System.in);
+        int size = 0;
+        while (size <= 0){
+            System.out.print("Enter the size of array - positive integer value\n");
+            size = scan.nextInt();
+        }
+        int array[] = new int[size];
+        for (int i = 0; i < size; i++) {
+            System.out.print("Enter the element number " + (i + 1) + " : ");
+            array[i] = scan.nextInt();
+        }
+            return array;
     }
 
     @Override
@@ -18,5 +30,13 @@ abstract public class AbstractSorter implements Sorter {
         int temp = array[indexFirst];
         array[indexFirst] = array[indexSecond];
         array[indexSecond] = temp;
+    }
+
+    @Override
+    public void print(int[] array){
+        System.out.print("Sorted array:\n");
+        for (int i = 0; i < array.length; i++){
+            System.out.print((i + 1) + ") " + array[i] + "; ");
+        }
     }
 }
