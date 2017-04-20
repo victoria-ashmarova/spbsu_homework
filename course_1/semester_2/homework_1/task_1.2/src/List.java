@@ -1,8 +1,8 @@
 import java.util.Scanner;
 
 public class List {
-    int size = 0;
-    Element first = null;
+    private int size = 0;
+    private Element first = null;
 
     private class Element{
         int value;
@@ -13,7 +13,7 @@ public class List {
         }
     }
 
-    enum Action{END, ADD, REMOVE, SEARCH, PRINT};
+    private enum Action{END, ADD, REMOVE, SEARCH, PRINT};
 
     private static void enterActions(){
         System.out.println("Choose an action:");
