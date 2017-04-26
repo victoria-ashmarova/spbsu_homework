@@ -9,10 +9,12 @@ public class Main {
         Object expression[] = reader.toArray(line);
         TranslatorToPostfixNotation translator = new TranslatorToPostfixNotation();
         expression = translator.translateToPostfixNotation(expression);
-        Calculator calcucalor = new Calculator();
+        Calculator calcucator = new Calculator();
         try{
-            int toReturn = calcucalor.findValueOfExpressionInPostfixForm(expression);
+            int toReturn = calcucator.findValueOfExpressionInPostfixForm(expression);
             System.out.print("Result: " + toReturn);
-        } catch (EmptyStackException e) {};
+        } catch (EmptyStackException e) {
+            System.out.print("Cannot find value of expression.\n");
+        };
     }
 }
