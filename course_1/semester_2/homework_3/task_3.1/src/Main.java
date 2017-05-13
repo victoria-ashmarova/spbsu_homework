@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -40,47 +41,56 @@ public class Main {
         System.out.print("Enter 2 to use Merge sort.\n");
         System.out.print("Enter 3 to use Quick sort.\n");
         System.out.print("Enter 4 to use Insertion sort.\n");
-        System.out.print("Enter other number to exit\n");
+        System.out.print("Enter anything else to exit\n");
     }
 
-    public static void main(String args[]){
+    public static void main(String args[]) {
         printActions();
         Scanner scan = new Scanner(System.in);
-        int toAction = scan.nextInt();
-        Sorts whichSort = whichSort(toAction);
-        switch (whichSort){
-            case BUBBLE:{
-                BubbleSorter bSorter = new BubbleSorter();
-                int array[] = bSorter.getArray();
-                bSorter.sort(array);
-                bSorter.print(array);
-                break;
+        Sorts whichSort = null;
+        try {
+            int toAction = scan.nextInt();
+            whichSort = whichSort(toAction);
+        } catch (InputMismatchException e){
+            whichSort = Sorts.GO_OUT;
+        }
+        try {
+            switch (whichSort) {
+                case BUBBLE: {
+                    BubbleSorter bSorter = new BubbleSorter();
+                    int array[] = bSorter.getArray();
+                    bSorter.sort(array);
+                    bSorter.print(array);
+                    break;
+                }
+                case MERGE: {
+                    MergeSorter mSorter = new MergeSorter();
+                    int array[] = mSorter.getArray();
+                    mSorter.sort(array);
+                    mSorter.print(array);
+                    break;
+                }
+                case QUICK: {
+                    QSorter qSorter = new QSorter();
+                    int array[] = qSorter.getArray();
+                    qSorter.sort(array);
+                    qSorter.print(array);
+                    break;
+                }
+                case INSERTION: {
+                    InsertionSorter insertSorter = new InsertionSorter();
+                    int array[] = insertSorter.getArray();
+                    insertSorter.sort(array);
+                    insertSorter.print(array);
+                    break;
+                }
+                default: {
+                    System.out.print("You didn't chose type of sort");
+                    break;
+                }
             }
-            case MERGE:{
-                MergeSorter mSorter = new MergeSorter();
-                int array[] = mSorter.getArray();
-                mSorter.sort(array);
-                mSorter.print(array);
-                break;
-            }
-            case QUICK:{
-                QSorter qSorter = new QSorter();
-                int array[] = qSorter.getArray();
-                qSorter.sort(array);
-                qSorter.print(array);
-                break;
-            }
-            case INSERTION:{
-                InsertionSorter insertSorter = new InsertionSorter();
-                int array[] = insertSorter.getArray();
-                insertSorter.sort(array);
-                insertSorter.print(array);
-                break;
-            }
-            default: {
-                System.out.print("You didn't chose type of sort");
-                break;
-            }
+        } catch (NoArrayException e){
+            System.out.print("Couldn't sort array");
         }
     }
 }

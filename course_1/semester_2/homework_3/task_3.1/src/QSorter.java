@@ -3,7 +3,10 @@
  */
 public class QSorter extends AbstractSorter{
     @Override
-    public void sort(int[] array) {
+    public void sort(int[] array) throws NoArrayException {
+        if (array == null){
+            throw new NoArrayException();
+        }
         qSort(array, 0, array.length - 1);
     }
 

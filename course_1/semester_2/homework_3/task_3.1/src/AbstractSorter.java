@@ -1,24 +1,49 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 abstract public class AbstractSorter implements Sorter {
-    @Override
-    public int[] getArray(){
-        Scanner scan = new Scanner(System.in);
+    /**
+     * gets array size from scanner
+     * @param scan is resourse with array is is got
+     * @return array size
+     * @throws NegativeArraySizeException
+     */
+    private int getArraySize(Scanner scan) throws NegativeArraySizeException{
         int size = 0;
-        while (size <= 0){
+        try {
             System.out.print("Enter the size of array - positive integer value\n");
             size = scan.nextInt();
+            if (size <= 0){
+                throw new IncorrectArraySizeException();
+            }
+            return size;
+        } catch (InputMismatchException e){
+            throw new IncorrectArraySizeException();
         }
-        int array[] = new int[size];
-        for (int i = 0; i < size; i++) {
-            System.out.print("Enter the element number " + (i + 1) + " : ");
-            array[i] = scan.nextInt();
-        }
-            return array;
     }
 
     @Override
-    abstract public void sort(int[] array);
+    public int[] getArray() throws NoArrayException{
+        try {
+            Scanner scan = new Scanner(System.in);
+            int size = getArraySize(scan);
+            int array[] = new int[size];
+            System.out.print("Enter elements of array - integer values.\n");
+            for (int i = 0; i < size; i++) {
+                array[i] = scan.nextInt();
+            }
+            return array;
+        } catch (IncorrectArraySizeException e){
+            System.out.print("Incorrect value of array size.\n");
+            throw new NoArrayException();
+        } catch (InputMismatchException e){
+            System.out.print("Incorrect array elements.\n");
+            throw new NoArrayException();
+        }
+    }
+
+    @Override
+    abstract public void sort(int[] array) throws NoArrayException;
 
     /**
      * Changes places of two elements
@@ -33,9 +58,12 @@ abstract public class AbstractSorter implements Sorter {
     }
 
     @Override
-    public void print(int[] array){
+    public void print(int[] array) throws NoArrayException {
+        if (array == null){
+            throw new NoArrayException();
+        }
         System.out.print("Sorted array:\n");
-        for (int i = 0; i < array.length; i++){
+        for (int i = 0; i < array.length; i++) {
             System.out.print((i + 1) + ") " + array[i] + "; ");
         }
     }

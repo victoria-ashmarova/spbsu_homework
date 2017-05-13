@@ -7,11 +7,15 @@ public class QSorterTest {
      * tests quick sort of array with odd number of elements
      */
     @Test
-    public void qSortTest(){
+    public void qSortTest() {
         int toSort[] = {4, 3, 5, 2, 1};
         int expected[] = {1, 2, 3, 4, 5};
         QSorter qSorter = new QSorter();
-        qSorter.sort(toSort);
+        try {
+            qSorter.sort(toSort);
+        } catch (NoArrayException e) {
+            e.printStackTrace();
+        }
         assertArrayEquals(expected, toSort);
     }
 
@@ -42,11 +46,15 @@ public class QSorterTest {
      * tests quick sort of array with even number of elements
      */
     @Test
-    public void qSortSortedArrayTest(){
+    public void qSortSortedArrayTest() {
         int toSort[] = {2, 4, 5, 7};
         int expected[] = {2, 4, 5, 7};
         QSorter qSorter = new QSorter();
-        qSorter.sort(toSort);
+        try {
+            qSorter.sort(toSort);
+        } catch (NoArrayException e) {
+            e.printStackTrace();
+        }
         assertArrayEquals(expected, toSort);
     }
 }

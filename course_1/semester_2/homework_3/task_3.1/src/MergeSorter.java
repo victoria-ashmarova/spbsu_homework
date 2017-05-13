@@ -3,7 +3,10 @@
  */
 public class MergeSorter extends AbstractSorter{
     @Override
-    public void sort(int[] array) {
+    public void sort(int[] array) throws NoArrayException {
+        if (array == null){
+            throw new NoArrayException();
+        }
         int buffer[] = new int[array.length];
         merge(array, buffer, 0, newCentre(0, array.length  - 1) ,array.length - 1);
         for (int i = 0; i < array.length; i++){

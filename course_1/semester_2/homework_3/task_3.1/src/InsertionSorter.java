@@ -3,7 +3,10 @@
  */
 public class InsertionSorter extends AbstractSorter{
     @Override
-    public void sort(int[] array) {
+    public void sort(int[] array) throws NoArrayException {
+        if (array == null){
+            throw new NoArrayException();
+        }
         for (int i = 1; i < array.length; i++){
             int newPlace = searchPlace(array, i);
             move(array, newPlace, i);
