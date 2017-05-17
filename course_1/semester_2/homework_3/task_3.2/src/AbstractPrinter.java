@@ -1,31 +1,40 @@
 import java.io.IOException;
 
 abstract public class AbstractPrinter implements Printer{
-    @Override
-    public int getPivot(Object[][] array) {
-        return array.length / 2;
+    /**
+     * searches index of table's centre
+     * @param table is table to search centre
+     * @return index of the table's centre
+     */
+    protected int getPivot(Object[][] table) {
+        return table.length / 2;
     }
 
+    /**
+     * describes the way to print data to console or file
+     * @param toWrite is object to print
+     * @throws IOException
+     */
     abstract protected void write(Object toWrite) throws IOException;
 
     @Override
-    public void printClockWise(Object[][] array) {
+    public void printClockWise(Object[][] table) {
         try {
-            int pivot = getPivot(array);
-            write(array[pivot][pivot]);
+            int pivot = getPivot(table);
+            write(table[pivot][pivot]);
             int i = 1;
             while (i <= pivot) {
                 for (int j = pivot - i + 1; j <= pivot + i; j++) {
-                    write(array[pivot + i][j]);
+                    write(table[pivot + i][j]);
                 }
                 for (int j = pivot + i - 1; j >= pivot - i; j--) {
-                    write(array[j][pivot + i]);
+                    write(table[j][pivot + i]);
                 }
                 for (int j = pivot + i - 1; j >= pivot - i; j--) {
-                    write(array[pivot - i][j]);
+                    write(table[pivot - i][j]);
                 }
                 for (int j = pivot - i + 1; j <= pivot + i; j++) {
-                    write(array[j][pivot - i]);
+                    write(table[j][pivot - i]);
                 }
                 i++;
             }
@@ -35,23 +44,23 @@ abstract public class AbstractPrinter implements Printer{
     }
 
     @Override
-    public void printCounterClockWise(Object array[][]) {
+    public void printCounterClockWise(Object table[][]) {
         try {
-            int pivot = getPivot(array);
-            write(array[pivot][pivot]);
+            int pivot = getPivot(table);
+            write(table[pivot][pivot]);
             int i = 1;
             while (i <= pivot){
                 for (int j = pivot - i + 1; j <= pivot + i; j++){
-                    write(array[j][pivot - i]);
+                    write(table[j][pivot - i]);
                 }
                 for (int j = pivot - i + 1; j <= pivot + i; j++){
-                    write(array[pivot + i][j]);
+                    write(table[pivot + i][j]);
                 }
                 for (int j = pivot + i - 1; j >= pivot - i; j--){
-                    write(array[j][pivot + i]);
+                    write(table[j][pivot + i]);
                 }
                 for (int j = pivot + i - 1; j >= pivot - i; j--){
-                    write(array[pivot - i][j]);
+                    write(table[pivot - i][j]);
                 }
                 i++;
             }

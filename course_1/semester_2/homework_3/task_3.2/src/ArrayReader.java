@@ -3,8 +3,15 @@ import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Class, with contain methods to get table
+ */
 public class ArrayReader {
-
+    /**
+     * gets file(information source) with table
+     * @return information source with table
+     * @throws FileNotFoundException
+     */
     public Scanner getFile() throws FileNotFoundException {
         System.out.println("Enter the name of file with array:");
         Scanner scanConsole = new Scanner(System.in);
@@ -13,7 +20,12 @@ public class ArrayReader {
         return scan;
     }
 
-    public Object[][] makeArray(Scanner scan) throws NoTableException{
+    /**
+     * @param scan is information source to get table's size
+     * @return empty table
+     * @throws NoTableException when size of table is incorrect
+     */
+    public Object[][] makeTable(Scanner scan) throws NoTableException{
         try{
             int size = getSize(scan);
             Object array[][] = new Object[size][];
@@ -26,15 +38,26 @@ public class ArrayReader {
         }
     }
 
-    public void fullArray(Object array[][], Scanner scan) {
-        int size = array.length;
+    /**
+     * records data to table from source of information
+     * @param table is place to keeping data
+     * @param scan is source of information to get values for table
+     */
+    public void fullArray(Object table[][], Scanner scan) {
+        int size = table.length;
         for (int i = 0; i < size; i++){
             for (int j = 0; j < size; j++){
-                array[i][j] = scan.next();
+                table[i][j] = scan.next();
             }
         }
     }
 
+    /**
+     * gets first value from information sourse - size of table
+     * @param scan is source of information to get size
+     * @return size of future table
+     * @throws IncorrectSizeException throws, when size is negative or even
+     */
     private int getSize(Scanner scan) throws IncorrectSizeException{
         try {
             int size = scan.nextInt();

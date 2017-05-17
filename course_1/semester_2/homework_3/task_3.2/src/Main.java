@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;
@@ -6,9 +5,21 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {
+    /**
+     * variants where table can be printed
+     */
     private enum placeToPrint{CONSOLE, FILE}
+
+    /**
+     * variants of direction of printing table
+     */
     private enum howToPrint{CLOCK_WISE, COUNTER_CLOCK_WISE}
 
+    /**
+     * Gets selection of way of printing table
+     * @param consoleScanner to get information of selection
+     * @return variant of direction of printing table
+     */
     private static howToPrint howToPrint(Scanner consoleScanner){
         try {
             System.out.print("Enter 0 to print the table counter clock wise. Enter else number to print the table clock wise: ");
@@ -19,6 +30,11 @@ public class Main {
         }
     }
 
+    /**
+     * Gets selection of place of printing table
+     * @param consoleScanner to get information of selection
+     * @return variant of place of printing table
+     */
     private static placeToPrint placeToPrint(Scanner consoleScanner){
         try {
             System.out.print("Enter 0 to print the table to console. Enter else number to print the table to file: ");
@@ -29,17 +45,26 @@ public class Main {
         }
     }
 
+    /**
+     * gets file name from console
+     * @param consoleScan to get file name
+     * @return
+     */
     public static String getFileName(Scanner consoleScan){
         System.out.print("Enter the name of file with array: ");
         return consoleScan.next();
     }
 
-    public static void main(String args[]) throws FileNotFoundException {
+    /**
+     * gives ability to work with methods of table's record and printing
+     * @param args
+     */
+    public static void main(String args[]) {
         try {
             ArrayReader reader = new ArrayReader();
             Scanner scan = reader.getFile();
             Scanner consoleScanner = new Scanner(System.in);
-            Object table[][] = reader.makeArray(scan);
+            Object table[][] = reader.makeTable(scan);
             reader.fullArray(table, scan);
             scan.close();
             placeToPrint place = placeToPrint(consoleScanner);

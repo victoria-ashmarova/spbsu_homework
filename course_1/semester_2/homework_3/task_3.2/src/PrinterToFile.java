@@ -3,6 +3,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class PrinterToFile  extends AbstractPrinter implements Printer {
+    /**
+     * to write to file
+     */
     FileWriter printer = null;
 
     PrinterToFile(String fileName) throws IOException {
@@ -14,6 +17,9 @@ public class PrinterToFile  extends AbstractPrinter implements Printer {
         printer.write(toWrite + " ");
     }
 
+    /**
+     * closes file
+     */
     public void closePrinter(){
         try {
             printer.close();
