@@ -1,3 +1,6 @@
+/**
+ * Class, which describes operation of difference
+ */
 public class Difference extends Action {
     Difference(){
         this.action = "-";

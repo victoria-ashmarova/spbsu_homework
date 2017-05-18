@@ -1,3 +1,6 @@
+/**
+ * Class, which describes operation of quotient
+ */
 public class Quotient extends Action {
     Quotient(){
         this.action = "/";

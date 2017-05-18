@@ -1,3 +1,6 @@
+/**
+ * Class, which containts methods and parameters of node with integer value
+ */
 public class Value extends AbstractNode {
     Value(int value){
         this.value = value;
@@ -27,6 +30,6 @@ public class Value extends AbstractNode {
 
     @Override
     public void print() {
-        System.out.print(value + " ");
+        System.out.print(" " + value + " ");
     }
 }

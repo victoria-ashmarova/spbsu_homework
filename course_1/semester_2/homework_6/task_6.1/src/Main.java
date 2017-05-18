@@ -1,6 +1,9 @@
+/**
+ * Class gives ability to upload tree from file and get value of it
+ */
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -12,12 +15,13 @@ public class Main {
             Scanner scanner = new Scanner(new File(fileName));
             TreeMaker treeMaker = new TreeMaker(scanner);
             treeMaker.makeTree();
+            System.out.print("Tree: ");
             treeMaker.print();
-            System.out.print(" " + treeMaker.getValue());
-        } catch (lackOfValuesException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+            System.out.print("\nValue of tree: " + treeMaker.getValue());
+        } catch (FileNotFoundException e) {
+            System.out.print("Couldn't open the file.");
+        } catch (IncorrectTreeException e) {
+            System.out.print("Couldn't work with tree.");
         }
     }
 }
