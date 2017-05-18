@@ -13,7 +13,28 @@ public class List {
         }
     }
 
-    private enum Action{END, ADD, REMOVE, SEARCH, PRINT};
+    private enum Action{
+        END, ADD, REMOVE, SEARCH, PRINT;
+        public static Action getAction(int number){
+            switch (number){
+                case 1:{
+                    return Action.ADD;
+                }
+                case 2:{
+                    return Action.REMOVE;
+                }
+                case 3:{
+                    return Action.SEARCH;
+                }
+                case 4:{
+                    return Action.PRINT;
+                }
+                default:{
+                    return Action.END;
+                }
+            }
+        }
+    }
 
     private static void enterActions(){
         System.out.println("Choose an action:");
@@ -22,26 +43,6 @@ public class List {
         System.out.println("3 - to search value in list");
         System.out.println("4 -  to print list");
         System.out.println("else - to end work.");
-    }
-
-    private static Action getAction(int number){
-        switch (number){
-            case 1:{
-                return Action.ADD;
-            }
-            case 2:{
-                return Action.REMOVE;
-            }
-            case 3:{
-                return Action.SEARCH;
-            }
-            case 4:{
-                return Action.PRINT;
-            }
-            default:{
-                return Action.END;
-            }
-        }
     }
 
     private void addFirst(int value){
@@ -134,8 +135,8 @@ public class List {
         Scanner scan = new Scanner(System.in);
         List list = new List();
         int action = scan.nextInt();
-        while (getAction(action) != Action.END){
-            switch (getAction(action)){
+        while (Action.getAction(action) != Action.END){
+            switch (Action.getAction(action)){
                 case ADD:{
                     System.out.println("Enter the value to add.");
                     int toAdd = scan.nextInt();
