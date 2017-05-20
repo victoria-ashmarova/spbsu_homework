@@ -1,5 +1,9 @@
-public class SingleLinkedList extends List{
-    ElementOfSingleLinkedList first;
+/**
+ * Class contains functional of single linked list.
+ * @param <SomeType> is type of list element
+ */
+public class SingleLinkedList<SomeType> extends List<SomeType>{
+    private ElementOfSingleLinkedList first;
 
     /**
      * Class contains pointer to next element of list
@@ -13,11 +17,14 @@ public class SingleLinkedList extends List{
     }
 
     @Override
-    public void add(int place, Object value) throws PlaceException {
-        if (place < 1 || place > size + 1){
-            throw new PlaceException();
+    public void add(int index, SomeType value) throws IncorrectIndexException{
+        if (index < 1){
+            throw new IncorrectIndexException("Index is less then 1.");
         }
-        if (place == 1){
+        if (index > size + 1){
+            throw new IncorrectIndexException("Index is more then size of list.");
+        }
+        if (index == 1){
             if (size < 1){
                 first = new ElementOfSingleLinkedList(value, null);
             } else {
@@ -28,7 +35,7 @@ public class SingleLinkedList extends List{
         }
         int i = 1;
         ElementOfSingleLinkedList temp = first;
-        while (i < (place - 1) && temp.next != null){
+        while (i < (index - 1) && temp.next != null){
             i++;
             temp = temp.next;
         }
@@ -37,18 +44,21 @@ public class SingleLinkedList extends List{
     }
 
     @Override
-    public void removeFromPlace(int place) throws PlaceException{
-        if (place < 1 || place > size){
-            throw new PlaceException();
+    public void removeWithIndex(int index) throws IncorrectIndexException{
+        if (index < 1){
+            throw new IncorrectIndexException("Index is less then 1.");
         }
-        if (place == 1){
+        if (index > size + 1){
+            throw new IncorrectIndexException("Index is more then size of list.");
+        }
+        if (index == 1){
             first = first.next;
             size--;
             return;
         }
         int i = 1;
         ElementOfSingleLinkedList temp = first;
-        while (i < place && temp.next.next != null){
+        while (i < index && temp.next.next != null){
             i++;
             temp = temp.next;
         }
@@ -57,45 +67,51 @@ public class SingleLinkedList extends List{
     }
 
     @Override
-    public int searchPlace(Object value) throws NoValueException {
+    public int searchIndex(SomeType value) throws AvailableValueException {
         if (size < 1){
-            throw new NoValueException();
+            throw new AvailableValueException("List is empty.");
         }
         int i = 1;
         ElementOfSingleLinkedList temp = first;
-        while (temp != null && temp.value != value){
+        while (temp != null && temp.getValue() != value){
             i++;
             temp = temp.next;
         }
         if (temp == null){
-            throw new NoValueException();
+            throw new AvailableValueException("There is no this value in list");
         }
         return i;
     }
 
     @Override
-    public Object getFromPlace(int place) throws PlaceException {
-        if (place < 1 || place > size){
-            throw new PlaceException();
+    public SomeType getWithIndex(int index) throws IncorrectIndexException, AvailableValueException{
+        if (size < 1){
+            throw new AvailableValueException("List is empty.");
         }
-        Object toReturn = null;
-        if (place == 1){
-            toReturn = first.value;
+        if (index < 1){
+            throw new IncorrectIndexException("Index is less then 1.");
+        }
+        if (index > size + 1){
+            throw new IncorrectIndexException("Index is more then size of list.");
+        }
+        SomeType toReturn = null;
+        if (index == 1){
+            toReturn = (SomeType) first.getValue();
         } else {
             int i = 1;
             ElementOfSingleLinkedList temp = first;
-            while (i < place && temp.next != null){
+            while (i < index && temp.next != null){
                 i++;
                 temp = temp.next;
             }
-            toReturn = temp.value;
+            toReturn = (SomeType) temp.getValue();
         }
         return toReturn;
     }
 
     @Override
-    public void removeFromValue(Object value) throws NoValueException, PlaceException {
-        int place = searchPlace(value);
-        removeFromPlace(place);
+    public void removeFromValue(SomeType value) throws AvailableValueException, IncorrectIndexException{
+        int place = searchIndex(value);
+        removeWithIndex(place);
     }
 }

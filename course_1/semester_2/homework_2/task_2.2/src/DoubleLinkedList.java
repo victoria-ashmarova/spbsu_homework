@@ -1,5 +1,9 @@
-public class DoubleLinkedList extends List {
-    ElementOfDoubleLinkedList first;
+/**
+ * Class contains functional of double linked list.
+ * @param <SomeType> is type of list element
+ */
+public class DoubleLinkedList<SomeType> extends List <SomeType>{
+    private ElementOfDoubleLinkedList first;
 
     /**
      * Class contains pointers to last and to next elements
@@ -7,7 +11,7 @@ public class DoubleLinkedList extends List {
     protected class ElementOfDoubleLinkedList extends List.Element{
         ElementOfDoubleLinkedList next;
         ElementOfDoubleLinkedList prev;
-        ElementOfDoubleLinkedList(Object value, ElementOfDoubleLinkedList next, ElementOfDoubleLinkedList prev){
+        ElementOfDoubleLinkedList(SomeType value, ElementOfDoubleLinkedList next, ElementOfDoubleLinkedList prev){
             this.value = value;
             this.next = next;
             this.prev = prev;
@@ -15,11 +19,14 @@ public class DoubleLinkedList extends List {
     }
 
     @Override
-    public void add(int place, Object value) throws PlaceException{
-        if (place < 1 || place > size + 1){
-            throw new PlaceException();
+    public void add(int index, SomeType value) throws IncorrectIndexException{
+        if (index < 1){
+            throw new IncorrectIndexException("Index is less then 1.");
         }
-        if (place == 1){
+        if (index > size + 1){
+            throw new IncorrectIndexException("Index is more then size of list.");
+        }
+        if (index == 1){
             if (size < 1){
                 first = new ElementOfDoubleLinkedList(value, null, null);
             } else {
@@ -31,7 +38,7 @@ public class DoubleLinkedList extends List {
         }
         int i = 1;
         ElementOfDoubleLinkedList temp = first;
-        while (i < (place - 1) && temp.next != null){
+        while (i < (index - 1) && temp.next != null){
             i++;
             temp = temp.next;
         }
@@ -41,11 +48,14 @@ public class DoubleLinkedList extends List {
     }
 
     @Override
-    public void removeFromPlace(int place) throws PlaceException {
-        if (place < 1 || place > size){
-            throw new PlaceException();
+    public void removeWithIndex(int index) throws IncorrectIndexException {
+        if (index < 1){
+            throw new IncorrectIndexException("Index is less then 1.");
         }
-        if (place == 1){
+        if (index > size + 1){
+            throw new IncorrectIndexException("Index is more then size of list.");
+        }
+        if (index == 1){
             if (size == 1){
                 first = null;
             } else {
@@ -57,7 +67,7 @@ public class DoubleLinkedList extends List {
         }
         int i = 1;
         ElementOfDoubleLinkedList temp = first;
-        while (i < place - 1 && temp.next.next != null){
+        while (i < index - 1 && temp.next.next != null){
             i++;
             temp = temp.next;
         }
@@ -71,45 +81,51 @@ public class DoubleLinkedList extends List {
     }
 
     @Override
-    public int searchPlace(Object value) throws NoValueException {
+    public int searchIndex(SomeType value) throws AvailableValueException {
         if (size < 1){
-            throw new NoValueException();
+            throw new AvailableValueException("List is empty.");
         }
         int i = 1;
         ElementOfDoubleLinkedList temp = first;
-        while (temp != null && temp.value != value){
+        while (temp != null && temp.getValue() != value){
             i++;
             temp = temp.next;
         }
         if (temp == null){
-            throw new NoValueException();
+            throw new AvailableValueException("There is no element with this value in list.");
         }
         return i;
     }
 
     @Override
-    public Object getFromPlace(int place) throws PlaceException {
-        if (place < 1 || place > size){
-            throw new PlaceException();
+    public SomeType getWithIndex(int index) throws IncorrectIndexException, AvailableValueException {
+        if (size < 1){
+            throw new AvailableValueException("List is empty");
         }
-        Object toReturn = null;
-        if (place == 1){
-            toReturn = first.value;
+        if (index < 1){
+            throw new IncorrectIndexException("Index is less then 1.");
+        }
+        if (index > size + 1){
+            throw new IncorrectIndexException("Index is more then size of list.");
+        }
+        SomeType toReturn = null;
+        if (index == 1){
+            toReturn = (SomeType) first.getValue();
         } else {
             int i = 1;
             ElementOfDoubleLinkedList temp = first;
-            while (i < place && temp.next != null){
+            while (i < index && temp.next != null){
                 i++;
                 temp = temp.next;
             }
-            toReturn = temp.value;
+            toReturn = (SomeType) temp.getValue();
         }
         return toReturn;
     }
 
     @Override
-    public void removeFromValue(Object value) throws NoValueException, PlaceException {
-        int place = searchPlace(value);
-        removeFromPlace(place);
+    public void removeFromValue(SomeType value) throws AvailableValueException, IncorrectIndexException {
+        int place = searchIndex(value);
+        removeWithIndex(place);
     }
 }

@@ -1,42 +1,47 @@
-public interface ListInterface {
+/**
+ * Interface contains functional of list.
+ * @param <SomeType> is type of list element
+ */
+public interface ListInterface <SomeType>{
     /**
-     * Add element to place in list
-     * @param place future index of added element
+     * Add element to index in list.
+     * @param index future index of added element
      * @param value added element
-     * @throws PlaceException
+     * @throws IncorrectIndexException when index to refer is incorrect
      */
-    void add(int place, Object value) throws PlaceException;
+    void add(int index, SomeType value) throws IncorrectIndexException;
 
     /**
-     * Gets the first number of place of the element in list
+     * Gets the first number of place of the element in list.
      * @param value is element to search
      * @return index of place with element
-     * @throws NoValueException
+     * @throws AvailableValueException when there is no ability to get this value
      */
-    int searchPlace(Object value) throws NoValueException;
+    int searchIndex(SomeType value) throws AvailableValueException;
 
     /**
-     * Gets value from number of place
-     * @param place is number of place to get element
-     * @return element from this place
-     * @throws PlaceException
+     * Gets value from number of index.
+     * @param index is number of index to get element
+     * @return element from this index
+     * @throws IncorrectIndexException when index to refer is incorrect
+     * @throws AvailableValueException when there is no ability to get this value
      */
-    Object getFromPlace(int place) throws PlaceException;
+    SomeType getWithIndex(int index) throws IncorrectIndexException, AvailableValueException;
 
     /**
-     * Deletes value from it's first location
+     * Deletes value from it's first location.
      * @param value is element to delete
-     * @throws NoValueException
-     * @throws PlaceException
+     * @throws AvailableValueException when there is no ability to get this value
+     * @throws IncorrectIndexException when index to refer is incorrect
      */
-    void removeFromValue(Object value) throws NoValueException, PlaceException;
+    void removeFromValue(SomeType value) throws AvailableValueException, IncorrectIndexException;
 
     /**
-     * Deletes value from place
-     * @param place is the index of place with element to delete
-     * @throws PlaceException
+     * Deletes value from index
+     * @param index is the index of index with element to delete
+     * @throws IncorrectIndexException when index to refer is incorrect
      */
-    void removeFromPlace(int place) throws PlaceException;
+    void removeWithIndex(int index) throws IncorrectIndexException;
 
     /**
      * @return size of list
