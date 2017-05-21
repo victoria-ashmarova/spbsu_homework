@@ -1,21 +1,21 @@
-public class StackWithPointers implements Stack{
-    protected Element top = null;
-    protected int size = 0;
+public class StackWithPointers<SomeType> implements Stack<SomeType>{
+    private Element top = null;
+    private int size = 0;
 
     @Override
-    public void push(Object value) {
+    public void push(SomeType value) {
         Element newTop = new Element(value, top);
         top = newTop;
         size++;
     }
 
     @Override
-    public Object pop() throws EmptyStackException {
+    public SomeType pop() throws EmptyStackException {
         if (size < 1) {
             throw new EmptyStackException();
         }
 
-        Object toReturn = top.value;
+        SomeType toReturn = top.value;
         top = top.next;
         size--;
         return toReturn;
@@ -30,10 +30,10 @@ public class StackWithPointers implements Stack{
      * Class contains some value and pointer to next element
      */
     class Element{
-        Object value;
+        SomeType value;
         Element next;
 
-        Element(Object value, Element next){
+        Element(SomeType value, Element next){
             this.value = value;
             this.next = next;
         }

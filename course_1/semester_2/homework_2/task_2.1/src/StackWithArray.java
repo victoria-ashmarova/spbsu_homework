@@ -1,10 +1,14 @@
-public class StackWithArray implements Stack{
+public class StackWithArray<SomeType> implements Stack<SomeType>{
     private int sizeStack = 0;
     protected int sizeArray = 10;
-    private  Object stack[] = new Object[sizeArray];
+    private  SomeType stack[];
+
+    StackWithArray(){
+        this.stack = (SomeType[]) new Object[sizeArray];
+    }
 
     @Override
-    public void push(Object value) {
+    public void push(SomeType value) {
         if (sizeStack >= sizeArray){
             makeArraySizeMore();
         }
@@ -13,9 +17,9 @@ public class StackWithArray implements Stack{
         sizeStack++;
     }
 
-    /** The method adds 10 places to array with stack if the size of stack is more then the size of array */
+    /** The method adds 10 cells to array with stack if the size of stack is more then the size of array. */
     private void makeArraySizeMore(){
-        Object newStack[] = new Object[sizeArray + 10];
+        SomeType newStack[] = (SomeType[]) new Object[sizeArray + 10];
         for (int i = 0; i < sizeArray; i++){
             newStack[i] = stack[i];
         }
@@ -24,13 +28,13 @@ public class StackWithArray implements Stack{
     }
 
     @Override
-    public Object pop() throws EmptyStackException {
+    public SomeType pop() throws EmptyStackException {
         if (sizeStack < 1){
             throw new EmptyStackException();
         }
 
-        Object toReturn = stack[sizeStack - 1];
-        stack[sizeStack - 1] = 0;
+        SomeType toReturn = stack[sizeStack - 1];
+        stack[sizeStack - 1] = null;
         sizeStack--;
         return toReturn;
     }

@@ -1,9 +1,9 @@
-public interface Stack {
+public interface Stack<SomeType> {
     /** add value to stack */
-    void push(Object value);
+    void push(SomeType value);
 
     /** get value from stack pop */
-    Object pop() throws EmptyStackException;
+    SomeType pop() throws EmptyStackException;
 
     /** get size of stack*/
     int getSize();

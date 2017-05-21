@@ -3,70 +3,69 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class CalculatorTest {
-    /**
-     * checks if sum of two elements is correct
-     * @throws EmptyStackException
-     */
     @Test
-    public void calculatorSumTest() throws EmptyStackException {
-        Calculator calculator = new Calculator();
-        StackWithPointers stack = new StackWithPointers();
-        stack.push(3);
-        stack.push(10);
-        Object operation = '+';
-        assertEquals(13, calculator.getValueOfOperation(stack, operation));
+    public void findValueOfExpressionWithSumTest(){
+        try {
+            String toGetValue = "23 14 +";
+            assertEquals(37, Calculator.findValueOfExpressionInPostfixForm(toGetValue));
+        } catch (IncorrectExpressionException e) {
+            e.printStackTrace();
+            e.message();
+        }
     }
 
-    /**
-     * check if difference of two elements is correct
-     * @throws EmptyStackException
-     */
     @Test
-    public void calculatorDifferenceTest() throws EmptyStackException {
-        Calculator calculator = new Calculator();
-        StackWithPointers stack = new StackWithPointers();
-        stack.push(10);
-        stack.push(3);
-        Object operation = '-';
-        assertEquals(7, calculator.getValueOfOperation(stack, operation));
+    public void findValueOfExpressionWithDifferenceTest(){
+        try {
+            String toGetValue = "23 14 -";
+            assertEquals(9, Calculator.findValueOfExpressionInPostfixForm(toGetValue));
+        } catch (IncorrectExpressionException e) {
+            e.printStackTrace();
+            e.message();
+        }
     }
 
-    /**
-     * check if composition of two elements is correct
-     * @throws EmptyStackException
-     */
     @Test
-    public void calculatorCompositionTest() throws EmptyStackException {
-        Calculator calculator = new Calculator();
-        StackWithPointers stack = new StackWithPointers();
-        stack.push(10);
-        stack.push(3);
-        Object operation = '*';
-        assertEquals(30, calculator.getValueOfOperation(stack, operation));
+    public void findValueOfExpressionWithMultiplicationTest(){
+        try {
+            String toGetValue = "23 14 *";
+            assertEquals(322, Calculator.findValueOfExpressionInPostfixForm(toGetValue));
+        } catch (IncorrectExpressionException e) {
+            e.printStackTrace();
+            e.message();
+        }
     }
 
-    /**
-     * checks if quotient of two elements is correct
-     * @throws EmptyStackException
-     */
     @Test
-    public void calculatorQuotientTest() throws EmptyStackException {
-        Calculator calculator = new Calculator();
-        StackWithPointers stack = new StackWithPointers();
-        stack.push(30);
-        stack.push(3);
-        Object operation = '/';
-        assertEquals(10, calculator.getValueOfOperation(stack, operation));
+    public void findValueOfExpressionWithQuotientTest(){
+        try {
+            String toGetValue = "28 14 /";
+            assertEquals(2, Calculator.findValueOfExpressionInPostfixForm(toGetValue));
+        } catch (IncorrectExpressionException e) {
+            e.printStackTrace();
+            e.message();
+        }
     }
 
-    /**
-     * checks calculator's able to work right
-     * @throws EmptyStackException
-     */
     @Test
-    public void calculatorTest() throws EmptyStackException {
-        Calculator calculator = new Calculator();
-        Object expression[] = {2, 3, '*', 4, '+'};
-        assertEquals(10, calculator.findValueOfExpressionInPostfixForm(expression));
+    public void findValueOfExpressionWithDivisionToZeroTest(){
+        try {
+            String toGetValue = "28 0 /";
+            Calculator.findValueOfExpressionInPostfixForm(toGetValue);
+        } catch (IncorrectExpressionException e) {
+            e.printStackTrace();
+            e.message();
+        }
+    }
+
+    @Test
+    public void findValueOfExpressionTest(){
+        try{
+            String toGetValue = "15 4 + 5 - 45 15 / *";
+            assertEquals(42, Calculator.findValueOfExpressionInPostfixForm(toGetValue));
+        } catch (IncorrectExpressionException e) {
+            e.printStackTrace();
+            e.message();
+        }
     }
 }

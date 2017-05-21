@@ -1,5 +1,5 @@
 public class EmptyStackException extends Exception{
-    public String toString(){
-        return "EmptyStackException";
+    public void message(){
+        System.out.print("Stack is empty");
     }
 }

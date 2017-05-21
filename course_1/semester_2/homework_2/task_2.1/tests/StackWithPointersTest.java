@@ -4,57 +4,59 @@ import static org.junit.Assert.*;
 
 public class StackWithPointersTest {
     /**
-     * Checks if size of new stack is 0
+     * Checks if size of new stack is 0.
      */
     @Test
     public void getInformationAfterStackCreationTest(){
         StackWithPointers stack = new StackWithPointers();
-        assertNull(stack.top);
         assertEquals(0, stack.getSize());
     }
 
     /**
-     * Checks equals of last input and first output elements
+     * Checks equals of last input and first output elements.
      */
     @Test
     public void additionAndPopOneElementTest(){
-        StackWithPointers stack = new StackWithPointers();
+        Stack<Integer> stack = new StackWithPointers<>();
         stack.push(1);
-        stack.push('a');
+        stack.push(2);
         try {
-            assertEquals('a', stack.pop());
+            assertEquals((Integer)2, stack.pop());
         } catch (EmptyStackException e){
-            e.toString();
+            e.printStackTrace();
+            e.message();
         }
     }
 
     /**
-     * Checks equals of first input and last output elements
+     * Checks equals of first input and last output elements.
      */
     @Test
-    public void additionAndPopTwoelementsTest(){
-        StackWithPointers stack = new StackWithPointers();
+    public void additionAndPopTwoElementsTest(){
+        Stack<Integer> stack = new StackWithPointers<>();
         stack.push(1);
-        stack.push('a');
+        stack.push(2);
         try {
             stack.pop();
-            assertEquals(1, stack.pop());
+            assertEquals((Integer)1, stack.pop());
         } catch (EmptyStackException e){
-            e.toString();
+            e.printStackTrace();
+            e.message();
         }
     }
 
     /**
-     * Tries to get element from empty stack
+     * Tries to get element from empty stack.
      */
     @Test
     public void getFromEmptyStack(){
         StackWithPointers stack = new StackWithPointers();
         try {
-            Object objectFromEmptyStack = stack.pop();
-            assertNull(objectFromEmptyStack);
+            stack.pop();
         } catch (EmptyStackException e) {
-            e.toString();
+            e.printStackTrace();
+            e.message();
+            assertEquals(0, stack.getSize());
         }
     }
 }
