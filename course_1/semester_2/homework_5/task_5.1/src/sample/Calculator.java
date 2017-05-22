@@ -1,7 +1,7 @@
 package sample;
 
 /**
- * Class, contains method, which return result of operation wuth two values.
+ * Class, contains method, which return result of operation with two values.
  */
 public class Calculator {
     /**

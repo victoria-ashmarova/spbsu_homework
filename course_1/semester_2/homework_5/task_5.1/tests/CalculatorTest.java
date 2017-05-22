@@ -10,11 +10,16 @@ import org.junit.Assert;
 import org.junit.Test;
 import sample.Main;
 
+/**
+ * Class contains tests for calculator.
+ */
 public class CalculatorTest extends Application{
     private static Stage primaryStage;
     private static AssertionError assertion = null;
 
-    /** starts the JavaFX application and waits for assertion fails */
+    /**
+     * starts the JavaFX application and waits for assertion fails.
+     */
     @Test
     public void test() {
         assertion = null;
@@ -24,7 +29,7 @@ public class CalculatorTest extends Application{
     }
 
     /**
-     * finds node on scene
+     * finds node on scene.
      * @param selector is fx:id of the node
      * @param <T> is type of the node
      * @return node
@@ -33,7 +38,9 @@ public class CalculatorTest extends Application{
         return (T) primaryStage.getScene().lookup(selector);
     }
 
-    /** performs some simple actions with controls and checks if results are correct.*/
+    /**
+     *  performs some simple actions with controls and checks if results are correct.
+     */
     public void calculationTest() {
         Spinner<Double> firstSpinner = findNode("#firstSpinner");
         Spinner<Double> secondSpinner = findNode("#secondSpinner");
