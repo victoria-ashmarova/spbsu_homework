@@ -5,7 +5,7 @@ import java.io.*;
 import static org.junit.Assert.*;
 
 public class AbstractPrinterTest {
-    private final Object TABLE[][] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    private final Integer TABLE[][] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
     private final String EXPECTED_CLOCK_WISE = "5 8 9 6 3 2 1 4 7 ";
     private final String EXPECTED_COUNTER_CLOCK_WISE = "5 4 7 8 9 6 3 2 1 ";
     private final String FILE_NAME = "file.txt";
@@ -21,7 +21,7 @@ public class AbstractPrinterTest {
         PrintStream backup = System.out;
         System.setOut(printStream);
 
-        PrinterToConsole printer = new PrinterToConsole();
+        PrinterToConsole<Integer> printer = new PrinterToConsole<>();
         printer.printClockWise(TABLE);
 
         System.setOut(backup);
@@ -42,7 +42,7 @@ public class AbstractPrinterTest {
         PrintStream backup = System.out;
         System.setOut(printStream);
 
-        PrinterToConsole printer = new PrinterToConsole();
+        PrinterToConsole<Integer> printer = new PrinterToConsole<>();
         printer.printCounterClockWise(TABLE);
 
         System.setOut(backup);
@@ -58,7 +58,7 @@ public class AbstractPrinterTest {
      */
     private String getFileResultClockWise() {
         try {
-            PrinterToFile printer = new PrinterToFile(FILE_NAME);
+            PrinterToFile<Integer> printer = new PrinterToFile<>(FILE_NAME);
             printer.printClockWise(TABLE);
             printer.closePrinter();
 
@@ -70,7 +70,6 @@ public class AbstractPrinterTest {
 
             reader.close();
             fileReader.close();
-            file.delete();
             return result;
         } catch (IOException e){
             System.out.print("Couldn't get string with printed data");
@@ -84,7 +83,7 @@ public class AbstractPrinterTest {
      */
     private String getFileResultCounterClockWise() {
         try {
-            PrinterToFile printer = new PrinterToFile(FILE_NAME);
+            PrinterToFile<Integer> printer = new PrinterToFile<>(FILE_NAME);
             printer.printCounterClockWise(TABLE);
             printer.closePrinter();
 
@@ -96,7 +95,6 @@ public class AbstractPrinterTest {
 
             reader.close();
             fileReader.close();
-            file.delete();
             printer.closePrinter();
             return result;
         } catch (IOException e){

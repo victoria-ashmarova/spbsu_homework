@@ -1,12 +1,25 @@
 import java.io.IOException;
 
-abstract public class AbstractPrinter implements Printer{
+/**
+ * Contains realization of methods to print table.
+ * @param <T> is type of data to print
+ */
+abstract public class AbstractPrinter<T> implements Printer<T> {
+    @Override
+    public void print(T table[][], Main.howToPrint way){
+        if (way == Main.howToPrint.CLOCK_WISE){
+            printClockWise(table);
+        } else {
+            printCounterClockWise(table);
+        }
+    }
+
     /**
      * searches index of table's centre
      * @param table is table to search centre
      * @return index of the table's centre
      */
-    protected int getPivot(Object[][] table) {
+    protected int getPivot(T[][] table) {
         return table.length / 2;
     }
 
@@ -15,10 +28,10 @@ abstract public class AbstractPrinter implements Printer{
      * @param toWrite is object to print
      * @throws IOException
      */
-    abstract protected void write(Object toWrite) throws IOException;
+    abstract protected void write(T toWrite) throws IOException;
 
     @Override
-    public void printClockWise(Object[][] table) {
+    public void printClockWise(T[][] table) {
         try {
             int pivot = getPivot(table);
             write(table[pivot][pivot]);
@@ -44,7 +57,7 @@ abstract public class AbstractPrinter implements Printer{
     }
 
     @Override
-    public void printCounterClockWise(Object table[][]) {
+    public void printCounterClockWise(T table[][]) {
         try {
             int pivot = getPivot(table);
             write(table[pivot][pivot]);

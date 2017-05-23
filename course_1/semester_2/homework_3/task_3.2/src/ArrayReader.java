@@ -25,12 +25,12 @@ public class ArrayReader {
      * @return empty table
      * @throws NoTableException when size of table is incorrect
      */
-    public Object[][] makeTable(Scanner scan) throws NoTableException{
+    public String[][] makeTable(Scanner scan) throws NoTableException{
         try{
             int size = getSize(scan);
-            Object array[][] = new Object[size][];
+            String array[][] = new String[size][];
             for (int i = 0; i < size; i++){
-                array[i] = new Object[size];
+                array[i] =  new String[size];
             }
             return array;
         } catch (IncorrectSizeException e){
@@ -43,7 +43,7 @@ public class ArrayReader {
      * @param table is place to keeping data
      * @param scan is source of information to get values for table
      */
-    public void fullArray(Object table[][], Scanner scan) {
+    public void fullArray(String table[][], Scanner scan) {
         int size = table.length;
         for (int i = 0; i < size; i++){
             for (int j = 0; j < size; j++){

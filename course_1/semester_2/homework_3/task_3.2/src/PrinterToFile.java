@@ -2,7 +2,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class PrinterToFile  extends AbstractPrinter implements Printer {
+/**
+ * Contains realization of methods to print table to file.
+ * @param <T> is type of data to print
+ */
+public class PrinterToFile<T> extends AbstractPrinter<T> implements Printer<T> {
     /**
      * to write to file
      */
@@ -12,8 +16,9 @@ public class PrinterToFile  extends AbstractPrinter implements Printer {
         this.printer = new FileWriter(fileName);
     }
 
+
     @Override
-    protected void write(Object toWrite) throws IOException {
+    protected void write(T toWrite) throws IOException {
         printer.write(toWrite + " ");
     }
 

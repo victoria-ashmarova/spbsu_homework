@@ -11,9 +11,24 @@ public class Main {
     private enum placeToPrint{CONSOLE, FILE}
 
     /**
+     * Gets selection of place of printing table
+     * @param consoleScanner to get information of selection
+     * @return variant of place of printing table
+     */
+    private static placeToPrint placeToPrint(Scanner consoleScanner){
+        try {
+            System.out.print("Enter 0 to print the table to console. Enter else number to print the table to file: ");
+            int placeToPrint = consoleScanner.nextInt();
+            return placeToPrint == 0 ? Main.placeToPrint.CONSOLE : Main.placeToPrint.FILE;
+        } catch (InputMismatchException e) {
+            return placeToPrint.FILE;
+        }
+    }
+
+    /**
      * variants of direction of printing table
      */
-    private enum howToPrint{CLOCK_WISE, COUNTER_CLOCK_WISE}
+    public enum howToPrint{CLOCK_WISE, COUNTER_CLOCK_WISE}
 
     /**
      * Gets selection of way of printing table
@@ -27,21 +42,6 @@ public class Main {
             return  wayOfPrint == 0 ? howToPrint.COUNTER_CLOCK_WISE : howToPrint.CLOCK_WISE;
         } catch (InputMismatchException e){
             return howToPrint.CLOCK_WISE;
-        }
-    }
-
-    /**
-     * Gets selection of place of printing table
-     * @param consoleScanner to get information of selection
-     * @return variant of place of printing table
-     */
-    private static placeToPrint placeToPrint(Scanner consoleScanner){
-        try {
-            System.out.print("Enter 0 to print the table to console. Enter else number to print the table to file: ");
-            int placeToPrint = consoleScanner.nextInt();
-            return placeToPrint == 0 ? Main.placeToPrint.CONSOLE : Main.placeToPrint.FILE;
-        } catch (InputMismatchException e) {
-            return placeToPrint.FILE;
         }
     }
 
@@ -64,29 +64,20 @@ public class Main {
             ArrayReader reader = new ArrayReader();
             Scanner scan = reader.getFile();
             Scanner consoleScanner = new Scanner(System.in);
-            Object table[][] = reader.makeTable(scan);
+            String table[][] = reader.makeTable(scan);
             reader.fullArray(table, scan);
             scan.close();
             placeToPrint place = placeToPrint(consoleScanner);
             howToPrint way = howToPrint(consoleScanner);
             switch (place){
                 case CONSOLE:{
-                    PrinterToConsole printer = new PrinterToConsole();
-                    if (way == howToPrint.CLOCK_WISE){
-                        printer.printClockWise(table);
-                    } else {
-                        printer.printCounterClockWise(table);
-                    }
+                    AbstractPrinter<String> printer = new PrinterToConsole();
+                    printer.print(table, way);
                     break;
                 }
                 case FILE:{
-                    PrinterToFile printer = new PrinterToFile(getFileName(consoleScanner));
-                    if (way == howToPrint.CLOCK_WISE){
-                        printer.printClockWise(table);
-                    } else {
-                        printer.printCounterClockWise(table);
-                    }
-                    printer.closePrinter();
+                    AbstractPrinter<String> printer = new PrinterToFile(getFileName(consoleScanner));
+                    printer.print(table, way);
                     System.out.print("Data is written to file ");
                     break;
                 }
