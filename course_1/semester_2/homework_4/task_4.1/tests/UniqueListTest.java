@@ -7,77 +7,48 @@ public class UniqueListTest {
      * Check correct work method is in list
      */
     @Test
-    public void isInListTest(){
+    public void isInListTest() throws ValueIsInListException, IncorrectIndexException {
         List<Integer> list = new UniqueList<>();
-        try {
-            list.add(1, 34);
-            assertTrue(list.isInList(34));
-        } catch (PlaceException e) {
-            e.printStackTrace();
-        } catch (ValueIsInListException e) {
-            e.printStackTrace();
-        }
+        list.add(1, 34);
+        assertTrue(list.isInList(34));
     }
 
     /**
      * checks that there is no ability to add two equal element to the same place
      */
-    @Test
-    public void additionTwoEqualsElementsInBeginTest(){
+    @Test (expected = ValueIsInListException.class)
+    public void additionTwoEqualsElementsInBeginTest() throws ValueIsInListException, IncorrectIndexException {
         List<Integer> list = new UniqueList<>();
-        try {
-            list.add(1, 145);
-            list.add(1, 145);
-        } catch (PlaceException e) {
-            e.printStackTrace();
-        } catch (ValueIsInListException e) {
-            e.printStackTrace();
-        } finally {
-            assertEquals(1, list.getSize());
-        }
+        list.add(1, 145);
+        list.add(1, 145);
+        assertEquals(1, list.getSize());
     }
 
     /**
      * checks, that there is no ability to add equal element to places with different index
      */
-    @Test
-    public void additionTwoEqualElementsOnDifferentPlaces(){
+    @Test (expected = ValueIsInListException.class)
+    public void additionTwoEqualElementsOnDifferentPlaces() throws ValueIsInListException, IncorrectIndexException {
         List<Character> list = new UniqueList<>();
-        try{
-            list.add(1, 'd');
-            list.add(2, 's');
-            list.add(1, 'a');
-            list.add(3, 'd');
-        } catch (ValueIsInListException e) {
-            e.printStackTrace();
-        } catch (PlaceException e) {
-            e.printStackTrace();
-        } finally {
-            assertEquals(3, list.getSize());
-        }
+        list.add(1, 'd');
+        list.add(2, 's');
+        list.add(1, 'a');
+        list.add(3, 'd');
+        assertEquals(3, list.getSize());
     }
 
     /**
      * Checks, that there is ability to add value after its removal
      */
     @Test
-    public void addRemoveAndAddTest(){
+    public void addRemoveAndAddTest() throws ValueIsInListException, IncorrectIndexException, NoValueInListException {
         List<Character> list = new UniqueList<>();
-        try{
-            list.add(1, 'd');
-            list.add(2, 's');
-            list.add(1, 'a');
-            list.removeFromValue('d');
-            list.add(3, 'd');
-            assertEquals(3, list.searchPlace('d'));
-        } catch (ValueIsInListException e) {
-            e.printStackTrace();
-        } catch (PlaceException e) {
-            e.printStackTrace();
-        } catch (NoValueInListException e) {
-            e.printStackTrace();
-        } finally {
-            assertEquals(3, list.getSize());
-        }
+        list.add(1, 'd');
+        list.add(2, 's');
+        list.add(1, 'a');
+        list.removeFromValue('d');
+        list.add(3, 'd');
+        assertEquals(3, list.searchIndex('d'));
+        assertEquals(3, list.getSize());
     }
 }

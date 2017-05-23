@@ -16,128 +16,74 @@ public class SingleLinkedListTest {
      * Checks correct value of one element, which was added to list
      */
     @Test
-    public void additionOneElementTest(){
+    public void additionOneElementTest() throws ValueIsInListException, IncorrectIndexException {
         List<Integer> list = new SingleLinkedList<>();
-        try {
-            list.add(1, 47);
-            assertEquals((Integer) 47, list.getFromPlace(1));
-        } catch (PlaceException e) {
-            e.printStackTrace();
-        } catch (ValueIsInListException e) {
-            e.printStackTrace();
-            e.message();
-        }
+        list.add(1, 47);
+        assertEquals((Integer) 47, list.getFromIndex(1));
     }
 
     /**
      * Tries to added element to incorrect place
      */
-    @Test
-    public void incorrectAdditionTest(){
+    @Test (expected = IncorrectIndexException.class)
+    public void incorrectAdditionTest() throws ValueIsInListException, IncorrectIndexException {
         List<Integer> list = new SingleLinkedList<>();
-        try {
-            list.add(2, 47);
-        } catch (PlaceException e) {
-            e.printStackTrace();
-            e.message();
-        } catch (ValueIsInListException e) {
-            e.printStackTrace();
-            e.message();
-        } finally {
-            assertEquals(0, list.getSize());
-        }
+        list.add(2, 47);
+        assertEquals(0, list.getSize());
     }
 
     /**
      * Adds to elements with equal values and remove first of it
      */
     @Test
-    public void additionTwoEqualElementsAndRemovalOneOfItTest(){
+    public void additionTwoEqualElementsAndRemovalOneOfItTest()
+            throws IncorrectIndexException, ValueIsInListException, NoValueInListException {
         List<Integer> list = new SingleLinkedList<>();
-        try {
-            list.add(1, 47);
-            list.add(2, 47);
-            list.add(2, 35);
-            list.removeFromValue((Integer) 47);
-            assertEquals((Integer) 47, list.getFromPlace(2));
-        } catch (PlaceException e) {
-            e.printStackTrace();
-            e.message();
-        } catch (ValueIsInListException e) {
-            e.printStackTrace();
-            e.message();
-        } catch (NoValueInListException e) {
-            e.printStackTrace();
-            e.message();
-        }
+        list.add(1, 47);
+        list.add(2, 47);
+        list.add(2, 35);
+        list.removeFromValue((Integer) 47);
+        assertEquals((Integer) 47, list.getFromIndex(2));
     }
 
     /**
      * Removes all elements and element from empty list
      */
-    @Test
-    public void additionAndRemovalAllElementsTest(){
+    @Test (expected = IncorrectIndexException.class)
+    public void additionAndRemovalAllElementsTest()
+            throws ValueIsInListException, IncorrectIndexException, NoValueInListException {
         List<Character> list = new SingleLinkedList<>();
-        try{
-            list.add(1, 's');
-            list.add(1, 'g');
-            list.removeFromPlace(2);
-            list.removeFromValue('g');
-            list.removeFromPlace(12);
-        } catch (ValueIsInListException e) {
-            e.printStackTrace();
-            e.message();
-        } catch (PlaceException e) {
-            e.printStackTrace();
-            e.message();
-        } catch (NoValueInListException e) {
-            e.printStackTrace();
-            e.message();
-        }
+        list.add(1, 's');
+        list.add(1, 'g');
+        list.removeFromIndex(2);
+        list.removeFromValue('g');
+        list.removeFromIndex(12);
     }
 
     /**
      * Check correct work of method is in list
      */
     @Test
-    public void isInListTest(){
+    public void isInListTest() throws ValueIsInListException, IncorrectIndexException {
         List<Integer> list = new SingleLinkedList<>();
-        try {
-            list.add(1, 14);
-            list.add(1, 15);
-            list.add(1, 19);
-            assertTrue(list.isInList(15));
-        } catch (PlaceException e) {
-            e.printStackTrace();
-            e.message();
-        } catch (ValueIsInListException e) {
-            e.printStackTrace();
-            e.message();
-        }
-
+        list.add(1, 14);
+        list.add(1, 15);
+        list.add(1, 19);
+        assertTrue(list.isInList(15));
     }
 
     /**
      * tries to remove element, which didn't situated
+      *@throws ValueIsInListException
+     * @throws IncorrectIndexException when index of value to remove is incorrect
+     * @throws NoValueInListException when there is no value to remove
      */
-    @Test
-    public void removalNotSituatedElement(){
+    @Test (expected = NoValueInListException.class)
+    public void removalNotSituatedElement() throws ValueIsInListException, IncorrectIndexException, NoValueInListException {
         List<Character> list = new SingleLinkedList<>();
-        try{
-            list.add(1, '7');
-            list.removeFromValue('y');
-        } catch (ValueIsInListException e) {
-            e.printStackTrace();
-            e.message();
-        } catch (PlaceException e) {
-            e.printStackTrace();
-            e.message();
-        } catch (NoValueInListException e) {
-            e.printStackTrace();
-            e.message();
-        } finally {
-            assertEquals(1, list.getSize());
-        }
+        list.add(1, '7');
+        list.removeFromValue('y');
+        assertEquals(1, list.getSize());
     }
 
     /**
@@ -157,7 +103,7 @@ public class SingleLinkedListTest {
         } catch (ValueIsInListException e) {
             e.printStackTrace();
             e.message();
-        } catch (PlaceException e) {
+        } catch (IncorrectIndexException e) {
             e.printStackTrace();
             e.message();
         } catch (NoValueInListException e) {
@@ -178,11 +124,11 @@ public class SingleLinkedListTest {
             list.add(3, 'c');
             list.removeFromValue('c');
             list.add(1, 'c');
-            assertEquals((Character)'c', list.getFromPlace(1));
+            assertEquals((Character)'c', list.getFromIndex(1));
         } catch (ValueIsInListException e) {
             e.printStackTrace();
             e.message();
-        } catch (PlaceException e) {
+        } catch (IncorrectIndexException e) {
             e.printStackTrace();
             e.message();
         } catch (NoValueInListException e) {
@@ -204,11 +150,11 @@ public class SingleLinkedListTest {
             list.add(3, 'c');
             list.removeFromValue('c');
             list.add(1, 'c');
-            assertEquals((Character)'b', list.getFromPlace(3));
+            assertEquals((Character)'b', list.getFromIndex(3));
         } catch (ValueIsInListException e) {
             e.printStackTrace();
             e.message();
-        } catch (PlaceException e) {
+        } catch (IncorrectIndexException e) {
             e.printStackTrace();
             e.message();
         } catch (NoValueInListException e) {

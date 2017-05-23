@@ -3,40 +3,41 @@ public interface ListInterface<SomeType>{
      * Add element to place in list
      * @param place future index of added element
      * @param value added element
-     * @throws PlaceException
+     * @throws ValueIsInListException if there must be one element with this value
+     * @throws IncorrectIndexException when index of value to add is incorrect
      */
-    void add(int place, SomeType value) throws PlaceException, ValueIsInListException;
+    void add(int place, SomeType value) throws IncorrectIndexException, ValueIsInListException;
 
     /**
      * Gets the first number of place of the element in list
      * @param value is element to search
      * @return index of place with element
-     * @throws NoValueInListException
+     * @throws NoValueInListException when there is no value with index to return
      */
-    int searchPlace(SomeType value) throws NoValueInListException;
+    int searchIndex(SomeType value) throws NoValueInListException;
 
     /**
-     * Gets value from number of place
-     * @param place is number of place to get element
-     * @return element from this place
-     * @throws PlaceException
+     * Gets value from number of index
+     * @param index is number of index to get element
+     * @return element from this index
+     * @throws IncorrectIndexException when index of value to return is incorrect
      */
-    SomeType getFromPlace(int place) throws PlaceException;
+    SomeType getFromIndex(int index) throws IncorrectIndexException;
 
     /**
      * Deletes value from it's first location
      * @param value is element to delete
-     * @throws NoValueInListException
-     * @throws PlaceException
+     * @throws NoValueInListException when there is no value to return
+     * @throws IncorrectIndexException
      */
-    void removeFromValue(SomeType value) throws NoValueInListException, PlaceException;
+    void removeFromValue(SomeType value) throws NoValueInListException, IncorrectIndexException;
 
     /**
-     * Deletes value from place
-     * @param place is the index of place with element to delete
-     * @throws PlaceException
+     * Deletes value from index
+     * @param index is the index of index with element to delete
+     * @throws IncorrectIndexException when index of value to return is incorrect
      */
-    void removeFromPlace(int place) throws PlaceException;
+    void removeFromIndex(int index) throws IncorrectIndexException;
 
     /**
      * @return size of list
