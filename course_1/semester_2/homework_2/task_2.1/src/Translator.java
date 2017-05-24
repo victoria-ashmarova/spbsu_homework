@@ -8,57 +8,73 @@ public class Translator {
      * translates expression in infix form to expression in postfix form.
      * @param scan to get expression in infix form
      * @return string with expression in postfix form
-     * @throws IncorrectExpressionException
+     * @throws IncorrectExpressionException when expression is not correct
      */
     public static String getPostFixExpression(Scanner scan) throws IncorrectExpressionException {
-        String postfixExpression = "";
+      //  String postfixExpression = "";
         Stack<String> buffer = new StackWithPointers<>();
-        while (scan.hasNext()){
+        StringBuilder builder = new StringBuilder();
+        while (scan.hasNext()) {
             String current = scan.next();
             if (isNumber(current)){
-                postfixExpression = postfixExpression + " " + current;
+                builder.append(" " + current);
             }
             if (current.equals("(")){
                 buffer.push(current);
             }
             if (isFirstOperation(current)){
-                addFirstOperation(buffer, postfixExpression, current);
+                addFirstOperation(buffer, builder, current);
             }
             if (isSecondOperation(current)){
-                addSecondOperation(buffer, postfixExpression, current);
+                addSecondOperation(buffer, builder, current);
             }
             if (current.equals(")")){
-                try {
-                    String toAdd = buffer.pop();
-                    while (!toAdd.equals("(")){
-                        postfixExpression = postfixExpression + " " + toAdd;
-                        toAdd = buffer.pop();
-                    }
-                } catch (EmptyStackException e){
-                    throw new IncorrectExpressionException("There is no open bracket.");
-                }
+                addClosedBracket(buffer, builder);
             }
         }
-        while (buffer.getSize() > 0){
-            try {
-                postfixExpression = postfixExpression + " " + buffer.pop();
-            } catch (EmptyStackException e) {};
+        try{
+            while (buffer.getSize() > 0){
+                String toAdd = buffer.pop();
+                if (toAdd.equals("(")) {
+                    throw new IncorrectExpressionException("There is open bracket without closed bracket.");
+                } else {
+                    builder.append(" " + toAdd);
+                }
+            }
+        } catch (EmptyStackException e) {}
+        return builder.toString().substring(1);
+    }
+
+    /**
+     * adds to expression in postfix form operation between closed and opened brackets.
+     * @param buffer contains previous operations
+     * @param builder collects part of expression in postfix form
+     * @throws IncorrectExpressionException when there is no open bracket
+     */
+    private static void addClosedBracket(Stack<String> buffer, StringBuilder builder) throws IncorrectExpressionException {
+        try {
+            String toAdd = buffer.pop();
+            while (!toAdd.equals("(")) {
+                builder.append(" " + toAdd);
+                toAdd = buffer.pop();
+            }
+        } catch (EmptyStackException e){
+            throw new IncorrectExpressionException("There is closed bracket without open bracket.");
         }
-        return postfixExpression.substring(1);
     }
 
     /**
      * adds to expression in postfix form operations of multiplication and quotient.
      * @param buffer contains previous operations
-     * @param postfixExpression is part of expression in postfix form
+     * @param builder collects part of expression in postfix form
      * @param operation is current operation
      */
-    private static void addFirstOperation(Stack<String> buffer, String postfixExpression, String operation){
+    private static void addFirstOperation(Stack<String> buffer, StringBuilder builder, String operation){
         try{
             String prevOperation = buffer.pop();
             if (isFirstOperation(prevOperation)){
                 while (buffer.getSize() >= 0 && isFirstOperation(prevOperation)){
-                    postfixExpression = postfixExpression + " " + prevOperation;
+                    builder.append(" " + prevOperation);
                     prevOperation = buffer.pop();
                 }
             }
@@ -74,14 +90,14 @@ public class Translator {
     /**
      * adds to expression in postfix form operations of sum and difference.
      * @param buffer contains previous operations
-     * @param postfixExpression is part of expression in postfix form
+     * @param builder collects part of expression in postfix form
      * @param operation is current operation
      */
-    private static void addSecondOperation(Stack<String> buffer, String postfixExpression, String operation){
+    private static void addSecondOperation(Stack<String> buffer, StringBuilder builder, String operation){
         try{
             String prevOperation = buffer.pop();
             while (buffer.getSize() >= 0 && !prevOperation.equals("(")){
-                postfixExpression = postfixExpression + " " + prevOperation;
+                builder.append(" " + prevOperation);
                 prevOperation = buffer.pop();
             }
             if (prevOperation.equals("(")){
