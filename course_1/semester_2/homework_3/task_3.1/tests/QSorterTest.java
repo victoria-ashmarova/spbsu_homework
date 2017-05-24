@@ -46,15 +46,11 @@ public class QSorterTest {
      * tests quick sort of array with even number of elements
      */
     @Test
-    public void qSortSortedArrayTest() {
+    public void qSortSortedArrayTest() throws NoArrayException {
         int toSort[] = {2, 4, 5, 7};
         int expected[] = {2, 4, 5, 7};
         QSorter qSorter = new QSorter();
-        try {
-            qSorter.sort(toSort);
-        } catch (NoArrayException e) {
-            e.printStackTrace();
-        }
+        qSorter.sort(toSort);
         assertArrayEquals(expected, toSort);
     }
 }

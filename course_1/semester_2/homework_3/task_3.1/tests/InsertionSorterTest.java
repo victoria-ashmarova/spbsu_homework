@@ -18,15 +18,11 @@ public class InsertionSorterTest {
      * tests insertion sort
      */
     @Test
-    public void InsertionSortTest() {
+    public void InsertionSortTest() throws NoArrayException {
         int toSort[] = {7, 6, 4, 5, 3, 2, 1};
         int expected[] = {1, 2, 3, 4, 5, 6, 7};
         InsertionSorter iSorter = new InsertionSorter();
-        try {
-            iSorter.sort(toSort);
-        } catch (NoArrayException e) {
-            e.printStackTrace();
-        }
+        iSorter.sort(toSort);
         assertArrayEquals(expected, toSort);
     }
 }

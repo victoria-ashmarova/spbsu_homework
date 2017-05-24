@@ -2,6 +2,11 @@
  * Contains method, which implements quick sort
  */
 public class QSorter extends AbstractSorter{
+    /**
+     * Method, which sorts array with algorithm of quick sort
+     * @throws NoArrayException when there is no array to sort
+     * @param array is array to sort
+     */
     @Override
     public void sort(int[] array) throws NoArrayException {
         if (array == null){

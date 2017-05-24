@@ -4,4 +4,13 @@
  * or with incorrect data
  */
 public class IncorrectArraySizeException extends NegativeArraySizeException{
+    private String cause;
+
+    IncorrectArraySizeException(String cause){
+        this.cause = cause;
+    }
+
+    public void message(){
+        System.out.println(cause);
+    }
 }
