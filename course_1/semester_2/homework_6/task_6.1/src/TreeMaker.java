@@ -27,7 +27,10 @@ public class TreeMaker {
         }
     }
 
-
+    /**
+     * prints tree if knows its root
+     * @throws IncorrectTreeException when there is no root of tree or tree is incorrect
+     */
     public void print() throws IncorrectTreeException{
         try {
             root.printAllChildren();
@@ -37,6 +40,10 @@ public class TreeMaker {
         }
     }
 
+    /**
+     * makes tree with input data - strings woth numbers and operations
+     * @throws IncorrectTreeException when input data to make tree are incorrect
+     */
     public void makeTree() throws IncorrectTreeException {
         String current;
         Stack<Action> ownersOfEmptySons = new Stack<>();
@@ -57,7 +64,6 @@ public class TreeMaker {
             }
             if (!isNumber(current) && !isAction(current)){
                 addComplexString(ownersOfEmptySons, current);
-                //to do
             }
         }
         scan.close();
@@ -66,6 +72,11 @@ public class TreeMaker {
         }
     }
 
+    /**
+     * adds action to tree
+     * @param ownersOfEmptySons is store of future parents for next nodes
+     * @param toAdd is action to add to ree
+     */
     private void addActionToTree(Stack<Action> ownersOfEmptySons, Action toAdd){
         if (ownersOfEmptySons.empty()) {
             root = toAdd;
@@ -87,6 +98,11 @@ public class TreeMaker {
         }
     }
 
+    /**
+     * creates Action, using its string identifier
+     * @param whatAction is string identifier of action
+     * @return object with action
+     */
     private Action makeAction(String whatAction){
         Action newAction = null;
         switch (whatAction) {
@@ -95,7 +111,8 @@ public class TreeMaker {
                 break;
             }
             case "-": {
-                newAction = new Difference();
+                newAction
+                        = new Difference();
                 break;
             }
             case "*": {
@@ -110,6 +127,11 @@ public class TreeMaker {
         return newAction;
     }
 
+    /**
+     * adds number value to tree
+     * @param ownersOfEmptySons is store of future parents for next nodes
+     * @param toAdd is value for Node Value to add
+     */
     private void addNumberToTree(Stack<Action> ownersOfEmptySons, int toAdd){
         if (ownersOfEmptySons.empty()) {
             root = new Value(toAdd);
@@ -129,6 +151,11 @@ public class TreeMaker {
         }
     }
 
+    /**
+     * adds string, where may be identifier not only one node
+     * @param ownersOfEmptySons is store of future parents for next nodes
+     * @param toAdd is string with identifiers of nodes
+     */
     private void addComplexString(Stack<Action> ownersOfEmptySons, String toAdd){
         int indexOfLastBracket = -1;
         int indexOfLastButOneBracket = -1;
@@ -156,6 +183,11 @@ public class TreeMaker {
         }
     }
 
+    /**
+     * checks if string identifier of number
+     * @param toCheck is string identifier
+     * @return true if it is
+     */
     private boolean isNumber(String toCheck){
         if (toCheck.length() == 0) {
             return false;
@@ -173,6 +205,11 @@ public class TreeMaker {
         return toReturn;
     }
 
+    /**
+     *
+     * @param toConvert is string to convert to integer value
+     * @return integer value
+     */
     private int converterToNumber(String toConvert){
         int toReturn = 0;
         for (int i = 0; i < toConvert.length() - 1; i++) {
@@ -185,21 +222,36 @@ public class TreeMaker {
         return toReturn;
     }
 
+    /**
+     * checks if string is action
+     * @param toCheck is string to check
+     * @return true if it is
+     */
     private boolean isAction(String toCheck) {
         return toCheck.equals("+") || toCheck.equals("-") || toCheck.equals("*") || toCheck.equals("/");
     }
 
+    /**
+     * checks can string be identifier of tree nodes
+     * @param toCheck is string to check
+     * @return true if it is
+     */
     private boolean hasAbilityToMakeTree(String toCheck){
         boolean toReturn = true;
         for (int i = 0; i < toCheck.length(); i++) {
-            if (!isNumerActionOrBracket(toCheck.charAt(i))){
+            if (!isNumberActionOrBracket(toCheck.charAt(i))){
                 toReturn = false;
             }
         }
         return toReturn;
     }
 
-    private boolean isNumerActionOrBracket(char toCheck) {
+    /**
+     * checks if symbol in string with tree element can be there
+     * @param toCheck is string with tree element
+     * @return true if it is
+     */
+    private boolean isNumberActionOrBracket(char toCheck) {
         return (toCheck >= '0' && toCheck <= '9') || toCheck == '+' || toCheck == '-'
                 || toCheck == '*' || toCheck == '/' || toCheck == '(' || toCheck == ')';
     }

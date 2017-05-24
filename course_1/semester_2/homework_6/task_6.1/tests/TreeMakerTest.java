@@ -64,85 +64,67 @@ public class TreeMakerTest {
 
     /**
      * check correct printing tree with one action
+     * @throws IncorrectTreeException when there is no ability to get value of tree
      */
     @Test
-    public void treeWithOneActionTest(){
+    public void treeWithOneActionTest() throws IncorrectTreeException {
         final String TREE = "(+ 2 4)";
         final String EXPECTED_TREE = "(+ 2  4 )";
-        try {
-            assertTrue(EXPECTED_TREE.equals(getStringOfTree(TREE)));
-        } catch (IncorrectTreeException e) {
-            e.printStackTrace();
-        }
+        assertTrue(EXPECTED_TREE.equals(getStringOfTree(TREE)));
     }
 
     /**
      * checks correct value of tree with one action
+     * @throws IncorrectTreeException when there is no ability to get value of tree
      */
     @Test
-    public void treeWithOneActionResultTest(){
+    public void treeWithOneActionResultTest() throws IncorrectTreeException {
         final String TREE = "(+ 2 4)";
         final int RESULT = 6;
-        try {
-            assertEquals(RESULT, getValueOfTree(TREE));
-        } catch (IncorrectTreeException e) {
-            e.printStackTrace();
-        }
+        assertEquals(RESULT, getValueOfTree(TREE));
     }
 
     /**
      * checks correct printing of tree with two actions
+     * @throws IncorrectTreeException when there is no ability to get value of tree
      */
     @Test
-    public void treeWithTwoActionsTest(){
+    public void treeWithTwoActionsTest() throws IncorrectTreeException {
         final String TREE = "(*(+ 2 4)3";
         final String EXPECTED_TREE = "(*(+ 2  4 ) 3 )";
-        try {
-            assertTrue(EXPECTED_TREE.equals(getStringOfTree(TREE)));
-        } catch (IncorrectTreeException e) {
-            e.printStackTrace();
-        }
+        assertTrue(EXPECTED_TREE.equals(getStringOfTree(TREE)));
     }
 
     /**
      * checks correct value of tree with two actions
+     * @throws IncorrectTreeException when there is no ability to get value of tree
      */
     @Test
-    public void treeWithTwoActionsResultTest(){
+    public void treeWithTwoActionsResultTest() throws IncorrectTreeException {
         final String TREE = "(*(+ 2 4)3";
         final int RESULT = 18;
-        try {
-            assertEquals(RESULT, getValueOfTree(TREE));
-        } catch (IncorrectTreeException e) {
-            e.printStackTrace();
-        }
+        assertEquals(RESULT, getValueOfTree(TREE));
     }
 
     /**
      * checks correct printing of tree with all kinds of actions
+     * @throws IncorrectTreeException when there is no ability to get value of tree
      */
     @Test
-    public void treeWithALotOfActionsTest(){
+    public void treeWithALotOfActionsTest() throws IncorrectTreeException {
         final String TREE = "(+ (* (- 19 5) 5)(/ 28 (* 2 7)))";
         final String EXPECTED_TREE = "(+(*(- 19  5 ) 5 )(/ 28 (* 2  7 )))";
-        try {
-            assertTrue(EXPECTED_TREE.equals(getStringOfTree(TREE)));
-        } catch (IncorrectTreeException e) {
-            e.printStackTrace();
-        }
+        assertTrue(EXPECTED_TREE.equals(getStringOfTree(TREE)));
     }
 
     /**
      * checks correct value of tree with all kinds of actions
+     * @throws IncorrectTreeException when there is no ability to get value of tree
      */
     @Test
-    public void treeWithALotOfActionsResultTest(){
+    public void treeWithALotOfActionsResultTest() throws IncorrectTreeException {
         final String TREE = "(+ (* (- 19 5) 5)(/ 28 (* 2 7)))";
         final int RESULT = 72;
-        try {
-            assertEquals(RESULT, getValueOfTree(TREE));
-        } catch (IncorrectTreeException e) {
-            e.printStackTrace();
-        }
+        assertEquals(RESULT, getValueOfTree(TREE));
     }
 }
