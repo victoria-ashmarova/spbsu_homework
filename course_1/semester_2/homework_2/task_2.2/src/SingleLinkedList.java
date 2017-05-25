@@ -1,23 +1,24 @@
 /**
  * Class contains functional of single linked list.
- * @param <SomeType> is type of list element
+ * @param <T> is type of list element
  */
-public class SingleLinkedList<SomeType> extends List<SomeType>{
-    private ElementOfSingleLinkedList first;
+public class SingleLinkedList<T> extends List<T> {
+    private Element first;
 
     /**
-     * Class contains pointer to next element of list
+     * Class contains pointers to next element
      */
-    protected class ElementOfSingleLinkedList extends List.Element{
-        ElementOfSingleLinkedList next;
-        ElementOfSingleLinkedList(Object value, ElementOfSingleLinkedList next){
-            this.value = value;
+    protected class Element extends List<T>.Element{
+        Element next;
+
+        Element(T value, Element next) {
+            super(value);
             this.next = next;
         }
     }
 
     @Override
-    public void add(int index, SomeType value) throws IncorrectIndexException{
+    public void add(int index, T value) throws IncorrectIndexException{
         if (index < 1){
             throw new IncorrectIndexException("Index is less then 1.");
         }
@@ -26,20 +27,20 @@ public class SingleLinkedList<SomeType> extends List<SomeType>{
         }
         if (index == 1){
             if (size < 1){
-                first = new ElementOfSingleLinkedList(value, null);
+                first = new Element(value, null);
             } else {
-                first = new ElementOfSingleLinkedList(value, first);
+                first = new Element(value, first);
             }
             size++;
             return;
         }
         int i = 1;
-        ElementOfSingleLinkedList temp = first;
+        Element temp = first;
         while (i < (index - 1) && temp.next != null){
             i++;
             temp = temp.next;
         }
-        temp.next = new ElementOfSingleLinkedList(value, temp.next);
+        temp.next = new Element(value, temp.next);
         size++;
     }
 
@@ -57,7 +58,7 @@ public class SingleLinkedList<SomeType> extends List<SomeType>{
             return;
         }
         int i = 1;
-        ElementOfSingleLinkedList temp = first;
+        Element temp = first;
         while (i < index && temp.next.next != null){
             i++;
             temp = temp.next;
@@ -67,13 +68,13 @@ public class SingleLinkedList<SomeType> extends List<SomeType>{
     }
 
     @Override
-    public int searchIndex(SomeType value) throws AvailableValueException {
+    public int searchIndex(T value) throws AvailableValueException {
         if (size < 1){
             throw new AvailableValueException("List is empty.");
         }
         int i = 1;
-        ElementOfSingleLinkedList temp = first;
-        while (temp != null && temp.getValue() != value){
+        Element temp = first;
+        while (temp != null && temp.value != value){
             i++;
             temp = temp.next;
         }
@@ -84,7 +85,7 @@ public class SingleLinkedList<SomeType> extends List<SomeType>{
     }
 
     @Override
-    public SomeType getWithIndex(int index) throws IncorrectIndexException, AvailableValueException{
+    public T getWithIndex(int index) throws IncorrectIndexException, AvailableValueException{
         if (size < 1){
             throw new AvailableValueException("List is empty.");
         }
@@ -94,23 +95,23 @@ public class SingleLinkedList<SomeType> extends List<SomeType>{
         if (index > size + 1){
             throw new IncorrectIndexException("Index is more then size of list.");
         }
-        SomeType toReturn = null;
+        T toReturn = null;
         if (index == 1){
-            toReturn = (SomeType) first.getValue();
+            toReturn = first.value;
         } else {
             int i = 1;
-            ElementOfSingleLinkedList temp = first;
+            Element temp = first;
             while (i < index && temp.next != null){
                 i++;
                 temp = temp.next;
             }
-            toReturn = (SomeType) temp.getValue();
+            toReturn = temp.value;
         }
         return toReturn;
     }
 
     @Override
-    public void removeFromValue(SomeType value) throws AvailableValueException, IncorrectIndexException{
+    public void removeFromValue(T value) throws AvailableValueException, IncorrectIndexException{
         int place = searchIndex(value);
         removeWithIndex(place);
     }

@@ -17,188 +17,132 @@ public class SingleLinkedListTest {
 
     /**
      * Checks list size after addition one element.
+     * @throws IncorrectIndexException in add method
      */
     @Test
-    public void additionOneElementCheckSizeTest(){
-        try {
-            List<Integer> list = new SingleLinkedList<>();
-            list.add(1, 4);
-            assertEquals(1, list.getSize());
-        } catch (IncorrectIndexException e) {
-            e.printStackTrace();
-            e.message();
-        }
+    public void additionOneElementCheckSizeTest() throws IncorrectIndexException {
+        List<Integer> list = new SingleLinkedList<>();
+        list.add(1, 4);
+        assertEquals(1, list.getSize());
     }
 
     /**
      * Checks value of added element.
+     * @throws IncorrectIndexException in add method
+     * @throws AvailableValueException in get woth index method
      */
     @Test
-    public void additionOneElementCheckElementValueTest(){
-        try {
-            List<Integer> list = new SingleLinkedList<>();
-            list.add(1, 4);
-            assertEquals((Integer) 4, list.getWithIndex(1));
-        } catch (AvailableValueException e){
-            e.printStackTrace();
-            e.message();
-        } catch (IncorrectIndexException e) {
-            e.printStackTrace();
-            e.message();
-        }
+    public void additionOneElementCheckElementValueTest() throws IncorrectIndexException, AvailableValueException {
+        List<Integer> list = new SingleLinkedList<>();
+        list.add(1, 4);
+        assertEquals((Integer) 4, list.getWithIndex(1));
     }
 
     /**
      * Checks size of list after addition two elements.
+     * @throws IncorrectIndexException in addition method
      */
     @Test
-    public void additionSomeElementsCheckSizeTest(){
-        try {
-            List<Integer> list = new SingleLinkedList<>();
-            list.add(1, 4);
-            list.add(1, 616);
-            assertEquals(2, list.getSize());
-        } catch (IncorrectIndexException e){
-            e.printStackTrace();
-            e.message();
-        }
+    public void additionSomeElementsCheckSizeTest() throws IncorrectIndexException {
+        List<Integer> list = new SingleLinkedList<>();
+        list.add(1, 4);
+        list.add(1, 616);
+        assertEquals(2, list.getSize());
     }
 
     /**
      * Checks the value of the first element after two additions on the first place.
+     * @throws IncorrectIndexException in addition method
+     * @throws AvailableValueException in get with index method
      */
     @Test
-    public void additionSomeElementsCheckFirstValueTest(){
-        try {
-            List<Integer> list = new SingleLinkedList<>();
-            list.add(1, 4);
-            list.add(1, -5);
-            assertEquals((Integer) (-5), list.getWithIndex(1));
-        } catch (AvailableValueException e){
-            e.printStackTrace();
-            e.message();
-        } catch (IncorrectIndexException e){
-            e.printStackTrace();
-            e.message();
-        }
+    public void additionSomeElementsCheckFirstValueTest() throws IncorrectIndexException, AvailableValueException {
+        List<Integer> list = new SingleLinkedList<>();
+        list.add(1, 4);
+        list.add(1, -5);
+        assertEquals((Integer) (-5), list.getWithIndex(1));
     }
 
     /**
      * Checks the value of the second element after two additions on the first place.
+     * @throws IncorrectIndexException in add method
+     * @throws AvailableValueException in get with method
      */
     @Test
-    public void additionSomeElementsCheckSecondElementTest(){
-        try {
-            List<Integer> list = new SingleLinkedList<>();
-            list.add(1, 4);
-            list.add(1, -5);
-            assertEquals((Integer) 4, list.getWithIndex(2));
-        } catch (AvailableValueException e){
-            e.printStackTrace();
-            e.message();
-        } catch (IncorrectIndexException e){
-            e.printStackTrace();
-            e.message();
-        }
+    public void additionSomeElementsCheckSecondElementTest() throws IncorrectIndexException, AvailableValueException {
+        List<Integer> list = new SingleLinkedList<>();
+        list.add(1, 4);
+        list.add(1, -5);
+        assertEquals((Integer) 4, list.getWithIndex(2));
     }
 
     /**
      * Checks value of the third element after three additions.
+     * @throws IncorrectIndexException in addition method
+     * @throws AvailableValueException in search index method
      */
     @Test
-    public void searchPlaceTest(){
-        try {
-            List<Integer> list = new SingleLinkedList<>();
-            list.add(1, 4);
-            list.add(1, -5);
-            list.add(2, 36);
-            assertEquals(3, list.searchIndex(4));
-        } catch (IncorrectIndexException e){
-            e.printStackTrace();
-            e.message();
-        } catch (AvailableValueException e){
-            e.printStackTrace();
-            e.message();
-        }
+    public void searchPlaceTest() throws IncorrectIndexException, AvailableValueException {
+        List<Integer> list = new SingleLinkedList<>();
+        list.add(1, 4);
+        list.add(1, -5);
+        list.add(2, 36);
+        assertEquals(3, list.searchIndex(4));
     }
 
     /**
      * Checks the size of list after addition and removal from place.
+     * @throws IncorrectIndexException in add and remove method
      */
     @Test
-    public void removeFromPlaceCheckSizeTest(){
-        try {
-            List<Integer> list = new SingleLinkedList<>();
-            list.add(1, 4);
-            list.add(1, -5);
-            list.add(2, 36);
-            list.removeWithIndex(1);
-            assertEquals(2, list.getSize());
-        } catch (IncorrectIndexException e){
-            e.printStackTrace();
-            e.message();
-        }
+    public void removeFromPlaceCheckSizeTest() throws IncorrectIndexException {
+        List<Integer> list = new SingleLinkedList<>();
+        list.add(1, 4);
+        list.add(1, -5);
+        list.add(2, 36);
+        list.removeWithIndex(1);
+        assertEquals(2, list.getSize());
     }
 
     /**
      * Checks the size of list after addition and removal from value.
+     * @throws IncorrectIndexException in add method
+     * @throws AvailableValueException in remove method
      */
     @Test
-    public void removeFromValueCheckSizeTest(){
-        try {
-            List<Integer> list = new SingleLinkedList<>();
-            list.add(1, 4);
-            list.add(1, -5);
-            list.add(2, 36);
-            list.removeFromValue(36);
-            assertEquals(2, list.getSize());
-        } catch (IncorrectIndexException e){
-            e.printStackTrace();
-            e.message();
-        } catch (AvailableValueException e){
-            e.printStackTrace();
-            e.message();
-        }
+    public void removeFromValueCheckSizeTest() throws IncorrectIndexException, AvailableValueException {
+        List<Integer> list = new SingleLinkedList<>();
+        list.add(1, 4);
+        list.add(1, -5);
+        list.add(2, 36);
+        list.removeFromValue(36);
+        assertEquals(2, list.getSize());
     }
 
     /**
      * Tries to get element from empty list.
+     * @throws IncorrectIndexException in get with index method
+     * @throws AvailableValueException in get with index method
      */
-    @Test
-    public void searchInEmptyListTest() {
+    @Test (expected = AvailableValueException.class)
+    public void searchInEmptyListTest() throws IncorrectIndexException, AvailableValueException {
         List<Integer> list = new SingleLinkedList<>();
-        try {
-            assertNotEquals((Integer) 3, list.getWithIndex(1));
-        } catch (AvailableValueException e) {
-            e.printStackTrace();
-            e.message();
-        } catch (IncorrectIndexException e) {
-            e.printStackTrace();
-            e.message();
-        } finally {
-            assertEquals(0, list.getSize());
-        }
+        assertNotEquals((Integer) 3, list.getWithIndex(1));
+        assertEquals(0, list.getSize());
     }
 
     /**
      * Tries to get element from place, which is not situated.
+     * @throws IncorrectIndexException in addition method
+     * @throws AvailableValueException in get with index method
      */
     @Test
-    public void searchFromNotCorrectIndex() throws IncorrectIndexException {
+    public void searchFromNotCorrectIndex() throws IncorrectIndexException, AvailableValueException {
         List<Integer> list = new SingleLinkedList<>();
-        try {
-            list.add(1, 4);
-            list.add(1, -5);
-            list.add(2, 36);
-            list.getWithIndex(4);
-        } catch (AvailableValueException e){
-            e.printStackTrace();
-            e.message();
-        } catch (IncorrectIndexException e) {
-            e.printStackTrace();
-            e.message();
-        } finally {
-            assertNotEquals(4, list.getSize());
-        }
+        list.add(1, 4);
+        list.add(1, -5);
+        list.add(2, 36);
+        list.getWithIndex(4);
+        assertNotEquals(4, list.getSize());
     }
 }

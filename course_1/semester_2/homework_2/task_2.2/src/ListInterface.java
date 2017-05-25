@@ -1,15 +1,15 @@
 /**
  * Interface contains functional of list.
- * @param <SomeType> is type of list element
+ * @param <T> is type of list element
  */
-public interface ListInterface <SomeType>{
+public interface ListInterface<T> {
     /**
      * Add element to index in list.
      * @param index future index of added element
      * @param value added element
      * @throws IncorrectIndexException when index to refer is incorrect
      */
-    void add(int index, SomeType value) throws IncorrectIndexException;
+    void add(int index, T value) throws IncorrectIndexException;
 
     /**
      * Gets the first number of place of the element in list.
@@ -17,7 +17,7 @@ public interface ListInterface <SomeType>{
      * @return index of place with element
      * @throws AvailableValueException when there is no ability to get this value
      */
-    int searchIndex(SomeType value) throws AvailableValueException;
+    int searchIndex(T value) throws AvailableValueException;
 
     /**
      * Gets value from number of index.
@@ -26,7 +26,7 @@ public interface ListInterface <SomeType>{
      * @throws IncorrectIndexException when index to refer is incorrect
      * @throws AvailableValueException when there is no ability to get this value
      */
-    SomeType getWithIndex(int index) throws IncorrectIndexException, AvailableValueException;
+    T getWithIndex(int index) throws IncorrectIndexException, AvailableValueException;
 
     /**
      * Deletes value from it's first location.
@@ -34,7 +34,7 @@ public interface ListInterface <SomeType>{
      * @throws AvailableValueException when there is no ability to get this value
      * @throws IncorrectIndexException when index to refer is incorrect
      */
-    void removeFromValue(SomeType value) throws AvailableValueException, IncorrectIndexException;
+    void removeFromValue(T value) throws AvailableValueException, IncorrectIndexException;
 
     /**
      * Deletes value from index

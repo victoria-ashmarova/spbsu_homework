@@ -1,25 +1,25 @@
 /**
  * Class contains functional of double linked list.
- * @param <SomeType> is type of list element
+ * @param <T> is type of list element
  */
-public class DoubleLinkedList<SomeType> extends List <SomeType>{
-    private ElementOfDoubleLinkedList first;
+public class DoubleLinkedList<T> extends List<T> {
+    private Element first;
 
     /**
-     * Class contains pointers to last and to next elements
+     * Class contains pointers to last element and next element
      */
-    protected class ElementOfDoubleLinkedList extends List.Element{
-        ElementOfDoubleLinkedList next;
-        ElementOfDoubleLinkedList prev;
-        ElementOfDoubleLinkedList(SomeType value, ElementOfDoubleLinkedList next, ElementOfDoubleLinkedList prev){
-            this.value = value;
+    protected class Element extends List.Element {
+        Element prev;
+        Element next;
+        Element(T value, Element next, Element prev){
+            super(value);
             this.next = next;
             this.prev = prev;
         }
     }
 
     @Override
-    public void add(int index, SomeType value) throws IncorrectIndexException{
+    public void add(int index, T value) throws IncorrectIndexException{
         if (index < 1){
             throw new IncorrectIndexException("Index is less then 1.");
         }
@@ -28,21 +28,21 @@ public class DoubleLinkedList<SomeType> extends List <SomeType>{
         }
         if (index == 1){
             if (size < 1){
-                first = new ElementOfDoubleLinkedList(value, null, null);
+                first = new Element(value, null, null);
             } else {
-                first = new ElementOfDoubleLinkedList(value, first, null);
+                first = new Element(value, first, null);
                 first.next.prev = first;
             }
             size++;
             return;
         }
         int i = 1;
-        ElementOfDoubleLinkedList temp = first;
+        Element temp = first;
         while (i < (index - 1) && temp.next != null){
             i++;
             temp = temp.next;
         }
-        temp.next = new ElementOfDoubleLinkedList(value, temp.next, temp);
+        temp.next = new Element(value, temp.next, temp);
         temp.next.next.prev = temp.next;
         size++;
     }
@@ -66,7 +66,7 @@ public class DoubleLinkedList<SomeType> extends List <SomeType>{
             return;
         }
         int i = 1;
-        ElementOfDoubleLinkedList temp = first;
+        Element temp = first;
         while (i < index - 1 && temp.next.next != null){
             i++;
             temp = temp.next;
@@ -81,13 +81,13 @@ public class DoubleLinkedList<SomeType> extends List <SomeType>{
     }
 
     @Override
-    public int searchIndex(SomeType value) throws AvailableValueException {
+    public int searchIndex(T value) throws AvailableValueException {
         if (size < 1){
             throw new AvailableValueException("List is empty.");
         }
         int i = 1;
-        ElementOfDoubleLinkedList temp = first;
-        while (temp != null && temp.getValue() != value){
+        Element temp = first;
+        while (temp != null && temp.value != value){
             i++;
             temp = temp.next;
         }
@@ -98,7 +98,7 @@ public class DoubleLinkedList<SomeType> extends List <SomeType>{
     }
 
     @Override
-    public SomeType getWithIndex(int index) throws IncorrectIndexException, AvailableValueException {
+    public T getWithIndex(int index) throws IncorrectIndexException, AvailableValueException {
         if (size < 1){
             throw new AvailableValueException("List is empty");
         }
@@ -108,23 +108,23 @@ public class DoubleLinkedList<SomeType> extends List <SomeType>{
         if (index > size + 1){
             throw new IncorrectIndexException("Index is more then size of list.");
         }
-        SomeType toReturn = null;
+        T toReturn = null;
         if (index == 1){
-            toReturn = (SomeType) first.getValue();
+            toReturn = (T) first.value;
         } else {
             int i = 1;
-            ElementOfDoubleLinkedList temp = first;
+            Element temp = first;
             while (i < index && temp.next != null){
                 i++;
                 temp = temp.next;
             }
-            toReturn = (SomeType) temp.getValue();
+            toReturn = (T) temp.value;
         }
         return toReturn;
     }
 
     @Override
-    public void removeFromValue(SomeType value) throws AvailableValueException, IncorrectIndexException {
+    public void removeFromValue(T value) throws AvailableValueException, IncorrectIndexException {
         int place = searchIndex(value);
         removeWithIndex(place);
     }

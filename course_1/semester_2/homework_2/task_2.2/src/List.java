@@ -2,16 +2,14 @@
  * Class contains size of list
  * ans class Element, which contains its value
  */
-abstract public class List<SomeType> implements ListInterface<SomeType>{
+abstract public class List<T> implements ListInterface<T> {
     protected  int size = 0;
-    protected class Element{
-        protected SomeType value;
 
-        /**
-         * @return value of element
-         */
-        protected SomeType getValue(){
-            return this.value;
+    abstract protected class Element{
+        protected T value;
+
+        Element(T value){
+            this.value = value;
         }
     }
 
