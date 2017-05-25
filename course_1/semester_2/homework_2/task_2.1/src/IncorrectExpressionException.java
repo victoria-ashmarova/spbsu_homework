@@ -1,3 +1,6 @@
+/**
+ * Exception, which is thrown, when there is no ability to get value of input exception.
+ */
 public class IncorrectExpressionException extends Throwable {
     private String cause;
 
@@ -5,6 +8,9 @@ public class IncorrectExpressionException extends Throwable {
         this.cause = cause;
     }
 
+    /**
+     * prints, why exception is incorrect
+     */
     public void message(){
         System.out.print("Couldn't work with expression. " + cause);
     }
