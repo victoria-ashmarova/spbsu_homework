@@ -1,8 +1,10 @@
+package ashmarova.task_2_2_1;
+
 /**
  * Class realizes stack using array
  * @param <T> if type of data
  */
-public class StackWithPointers<T> implements Stack<T>{
+public class StackWithPointers<T> implements Stack<T> {
     private Element top = null;
     private int size = 0;
 

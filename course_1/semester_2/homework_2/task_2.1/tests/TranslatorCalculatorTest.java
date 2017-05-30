@@ -1,3 +1,4 @@
+import ashmarova.task_2_2_1.*;
 import org.junit.Test;
 
 import java.util.Scanner;

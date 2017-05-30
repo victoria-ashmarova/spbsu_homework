@@ -1,13 +1,15 @@
+package ashmarova.task_2_2_1;
+
 /**
  * Class realizes stack using array
  * @param <T> is type of data
  */
-public class StackWithArray<T> implements Stack<T>{
+public class StackWithArray<T> implements Stack<T> {
     private int sizeStack = 0;
     protected int sizeArray = 10;
     private T stack[];
 
-    StackWithArray(){
+    public StackWithArray(){
         this.stack = (T[]) new Object[sizeArray];
     }
 

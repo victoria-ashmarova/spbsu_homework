@@ -1,3 +1,5 @@
+package ashmarova.task_2_2_1;
+
 import java.util.Scanner;
 
 public class Main {

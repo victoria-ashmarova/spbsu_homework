@@ -1,3 +1,5 @@
+package ashmarova.task_2_2_1;
+
 /**
  * Exception, which is thrown, when there is no ability to get value of input exception.
  */

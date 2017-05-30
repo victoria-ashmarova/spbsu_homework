@@ -1,3 +1,5 @@
+package ashmarova.task_2_2_1;
+
 import java.util.Scanner;
 
 /**
@@ -11,13 +13,12 @@ public class Translator {
      * @throws IncorrectExpressionException when expression is not correct
      */
     public static String getPostFixExpression(Scanner scan) throws IncorrectExpressionException {
-      //  String postfixExpression = "";
         Stack<String> buffer = new StackWithPointers<>();
         StringBuilder builder = new StringBuilder();
         while (scan.hasNext()) {
             String current = scan.next();
             if (isNumber(current)){
-                builder.append(" " + current);
+                builder.append(" ").append(current);
             }
             if (current.equals("(")){
                 buffer.push(current);
@@ -38,7 +39,7 @@ public class Translator {
                 if (toAdd.equals("(")) {
                     throw new IncorrectExpressionException("There is open bracket without closed bracket.");
                 } else {
-                    builder.append(" " + toAdd);
+                    builder.append(" ").append(toAdd);
                 }
             }
         } catch (EmptyStackException e) {}
@@ -55,7 +56,7 @@ public class Translator {
         try {
             String toAdd = buffer.pop();
             while (!toAdd.equals("(")) {
-                builder.append(" " + toAdd);
+                builder.append(" ").append(toAdd);
                 toAdd = buffer.pop();
             }
         } catch (EmptyStackException e){
@@ -74,7 +75,7 @@ public class Translator {
             String prevOperation = buffer.pop();
             if (isFirstOperation(prevOperation)){
                 while (buffer.getSize() >= 0 && isFirstOperation(prevOperation)){
-                    builder.append(" " + prevOperation);
+                    builder.append(" ").append(prevOperation);
                     prevOperation = buffer.pop();
                 }
             }
@@ -97,7 +98,7 @@ public class Translator {
         try{
             String prevOperation = buffer.pop();
             while (buffer.getSize() >= 0 && !prevOperation.equals("(")){
-                builder.append(" " + prevOperation);
+                builder.append(" ").append(prevOperation);
                 prevOperation = buffer.pop();
             }
             if (prevOperation.equals("(")){

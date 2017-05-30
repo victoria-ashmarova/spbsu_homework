@@ -1,3 +1,5 @@
+package ashmarova.task_2_2_1;
+
 /**
  * Class contains methods to get a value of an expression in postfix form
  */
@@ -48,9 +50,8 @@ public class Calculator {
      */
     public static int findValueOfExpressionInPostfixForm(String expressionInPostfixForm) throws IncorrectExpressionException {
         try {
-            int toReturn = 0;
             String tokens[] = expressionInPostfixForm.split(" ");
-            Stack<Integer> values = new StackWithPointers<>();
+            Stack<Integer> values = new StackWithArray<>();
             for (int i = 0; i < tokens.length; i++) {
                 try {
                     Integer toAdd = Integer.parseInt(tokens[i]);
@@ -75,7 +76,7 @@ public class Calculator {
     }
 
     /**
-     *
+     * checks if string is operation identifier
      * @param toCheck is string, which can be operation.
      * @return is string operation or not
      */
