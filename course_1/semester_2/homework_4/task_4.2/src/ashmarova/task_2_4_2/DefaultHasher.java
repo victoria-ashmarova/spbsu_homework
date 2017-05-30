@@ -1,3 +1,5 @@
+package ashmarova.task_2_4_2;
+
 public class DefaultHasher<T> implements Hasher<T> {
     /**
      * gets default hash code

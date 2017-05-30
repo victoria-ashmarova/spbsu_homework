@@ -1,17 +1,19 @@
+package ashmarova.task_2_4_2;
+
 public interface HashTableInterface <T>{
     /**
      * addes value to hash table
      * @param value is value to add
-     * @throws ProblemWithElementsException when value is in table
+     * @throws UnknownProblemException when value is in table
      */
-    void add(T value) throws ProblemWithElementsException;
+    void add(T value) throws UnknownProblemException, ValueIsInTableException;
 
     /**
      * removes value from hash table
      * @param value is value to remove
-     * @throws ProblemWithElementsException when there is no value to remove from table
+     * @throws UnknownProblemException when there is no value to remove from table
      */
-    void remove(T value) throws ProblemWithElementsException;
+    void remove(T value) throws UnknownProblemException, ValueIsNotInTableException;
 
     /**
      * checks is value is in table

@@ -1,8 +1,8 @@
-package list;
+package ashmarova.task_2_4_2.list;
 
 public interface ListInterface<T>{
     /**
-     * Add element to index in list
+     * Add element to index in ashmarova.task_2_4_2.list
      * @param index future index of added element
      * @param value added element
      * @throws ValueIsInListException if there must be one element with this value
@@ -11,7 +11,7 @@ public interface ListInterface<T>{
     void add(int index, T value) throws IncorrectIndexException, ValueIsInListException;
 
     /**
-     * Gets the first number of place of the element in list
+     * Gets the first number of place of the element in ashmarova.task_2_4_2.list
      * @param value is element to search
      * @return index of place with element
      * @throws NoValueInListException when there is no value with index to return
@@ -42,14 +42,14 @@ public interface ListInterface<T>{
     void removeFromIndex(int index) throws IncorrectIndexException;
 
     /**
-     * @return size of list
+     * @return size of ashmarova.task_2_4_2.list
      */
     int getSize();
 
     /**
-     * Checks if value is  in list
-     * @param value to search in list
-     * @return true if value is in list
+     * Checks if value is  in ashmarova.task_2_4_2.list
+     * @param value to search in ashmarova.task_2_4_2.list
+     * @return true if value is in ashmarova.task_2_4_2.list
      */
     boolean isInList(T value);
 }

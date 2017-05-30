@@ -1,18 +1,18 @@
-package list;
+package ashmarova.task_2_4_2.list;
 
 abstract public class List <T> implements ListInterface<T> {
     /**
-     * the first element of list
+     * the first element of ashmarova.task_2_4_2.list
      */
     protected Element first;
 
     /**
-     * size of list
+     * size of ashmarova.task_2_4_2.list
      */
     protected  int size = 0;
 
     /**
-     * list element
+     * ashmarova.task_2_4_2.list element
      */
     protected class Element{
         protected T value;
@@ -24,7 +24,7 @@ abstract public class List <T> implements ListInterface<T> {
     }
 
     /**
-     * @return size of list
+     * @return size of ashmarova.task_2_4_2.list
      */
     @Override
     public int getSize(){

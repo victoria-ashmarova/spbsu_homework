@@ -1,3 +1,7 @@
+package ashmarova.task_2_4_2;
+
+import ashmarova.task_2_4_2.Hasher;
+
 public class PolynomialStringHasher implements Hasher<String> {
     /**
      * gets hash as value of polynomial

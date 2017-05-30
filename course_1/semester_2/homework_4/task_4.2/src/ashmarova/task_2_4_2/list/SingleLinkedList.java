@@ -1,12 +1,12 @@
-package list;
+package ashmarova.task_2_4_2.list;
 
 /**
- * Class contains functional of single linked list
+ * Class contains functional of single linked ashmarova.task_2_4_2.list
  * @param <T> is type of elements
  */
 public class SingleLinkedList <T> extends List<T>{
     /**
-     * Add element to place in list
+     * Add element to place in ashmarova.task_2_4_2.list
      * @param index is future index of added element
      * @param value added element
      * @throws ValueIsInListException if there must be one element with this value
@@ -62,9 +62,9 @@ public class SingleLinkedList <T> extends List<T>{
     }
 
     /**
-     * Checks if value is  in list
-     * @param value to search in list
-     * @return true if value is in list
+     * Checks if value is  in ashmarova.task_2_4_2.list
+     * @param value to search in ashmarova.task_2_4_2.list
+     * @return true if value is in ashmarova.task_2_4_2.list
      */
     @Override
     public boolean isInList(T value) {
@@ -77,7 +77,7 @@ public class SingleLinkedList <T> extends List<T>{
     }
 
     /**
-     * Gets the first number of place of the element in list
+     * Gets the first number of place of the element in ashmarova.task_2_4_2.list
      * @param value is element to search
      * @return index of place with element
      * @throws NoValueInListException when there is no value with index to return

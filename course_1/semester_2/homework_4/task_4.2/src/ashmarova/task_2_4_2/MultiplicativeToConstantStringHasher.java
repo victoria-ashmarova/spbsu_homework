@@ -1,3 +1,7 @@
+package ashmarova.task_2_4_2;
+
+import ashmarova.task_2_4_2.Hasher;
+
 public class MultiplicativeToConstantStringHasher implements Hasher<String> {
     /**
      * gets hash of string as sum of string's elements

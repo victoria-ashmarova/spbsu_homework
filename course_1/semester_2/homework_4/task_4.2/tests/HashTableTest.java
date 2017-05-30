@@ -1,3 +1,4 @@
+import ashmarova.task_2_4_2.*;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -19,10 +20,11 @@ public class HashTableTest {
 
     /**
      * checks correct work of addition method
-     * @throws ProblemWithElementsException in method add
+     * @throws UnknownProblemException in addition method
+     * @throws ValueIsInTableException in addition method
      */
     @Test
-    public void additionSomeDifferentEntriesTest() throws ProblemWithElementsException {
+    public void additionSomeDifferentEntriesTest() throws UnknownProblemException, ValueIsInTableException {
         hasher = new PolynomialStringHasher();
         HashTable<String> table = new HashTable<>(hasher);
         table.add("aaa");
@@ -33,10 +35,11 @@ public class HashTableTest {
 
     /**
      * checks correct work of addition method, when there is trying to add situated element
-     * @throws ProblemWithElementsException when there is trying to add situated element
+     * @throws UnknownProblemException in addition method
+     * @throws ValueIsInTableException when there is trying to add situated element
      */
-    @Test (expected = ProblemWithElementsException.class)
-    public void additionSomeEqualEntriesTest() throws ProblemWithElementsException {
+    @Test (expected = ValueIsInTableException.class)
+    public void additionSomeEqualEntriesTest() throws UnknownProblemException, ValueIsInTableException {
         hasher = new PolynomialStringHasher();
         HashTable<String> table = new HashTable<>(hasher);
         table.add("aaa");
@@ -48,10 +51,11 @@ public class HashTableTest {
 
     /**
      * adds elements to change size of table
-     * @throws ProblemWithElementsException in method add
+     * @throws UnknownProblemException in addition method
+     * @throws ValueIsInTableException in addition method
      */
     @Test
-    public void additionTooMushElementsTest() throws ProblemWithElementsException {
+    public void additionTooMushElementsTest() throws UnknownProblemException, ValueIsInTableException {
         hasher = new MultiplicativeToConstantStringHasher();
         HashTable<String> table = new HashTable<>(hasher);
         for (char toAdd = 'a'; toAdd <= 'z'; toAdd++) {
@@ -63,10 +67,12 @@ public class HashTableTest {
 
     /**
      * checks correct size with removal of element
-     * @throws ProblemWithElementsException in method remove
+     * @throws UnknownProblemException in addition and removal method
+     * @throws ValueIsInTableException in addition method
+     * @throws ValueIsNotInTableException in removal method
      */
     @Test
-    public void removalElementFromTableSizeTest() throws ProblemWithElementsException {
+    public void removalElementFromTableSizeTest() throws UnknownProblemException, ValueIsInTableException, ValueIsNotInTableException {
         hasher = new MultiplicativeToConstantStringHasher();
         HashTable<String> table = new HashTable<>(hasher);
         table.add("aaa");
@@ -78,10 +84,12 @@ public class HashTableTest {
 
     /**
      * checks absents of element after its removal
-     * @throws ProblemWithElementsException in method remove
+     * @throws UnknownProblemException in addition and removal method
+     * @throws ValueIsNotInTableException in removal method
+     * @throws ValueIsInTableException in addition method
      */
     @Test
-    public void removalElementFromTableValueTest() throws ProblemWithElementsException {
+    public void removalElementFromTableValueTest() throws UnknownProblemException, ValueIsInTableException, ValueIsNotInTableException {
         hasher = new MultiplicativeToConstantStringHasher();
         HashTable<String> table = new HashTable<>(hasher);
         table.add("aaa");
@@ -93,10 +101,11 @@ public class HashTableTest {
 
     /**
      * checks correct work of search method when value to search is in table
-     * @throws ProblemWithElementsException in method add
+     * @throws ValueIsInTableException in addition method
+     * @throws UnknownProblemException in method add
      */
     @Test
-    public void isInTableTablePositiveTest() throws ProblemWithElementsException {
+    public void isInTableTablePositiveTest() throws UnknownProblemException, ValueIsInTableException {
         hasher = new MultiplicativeToConstantStringHasher();
         HashTable<String> table = new HashTable<>(hasher);
         table.add("aaa");
@@ -105,10 +114,11 @@ public class HashTableTest {
 
     /**
      * checks correct work of search method when value to search is not in table
-     * @throws ProblemWithElementsException in method add
+     * @throws UnknownProblemException in method add
+     * @throws ValueIsInTableException in addition method
      */
     @Test
-    public void isInTableTableNegativeTest() throws ProblemWithElementsException {
+    public void isInTableTableNegativeTest() throws UnknownProblemException, ValueIsInTableException {
         hasher = new MultiplicativeToConstantStringHasher();
         HashTable<String> table = new HashTable<>(hasher);
         table.add("aaa");

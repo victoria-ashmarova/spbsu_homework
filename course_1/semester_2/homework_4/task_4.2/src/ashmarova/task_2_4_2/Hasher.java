@@ -1,3 +1,5 @@
+package ashmarova.task_2_4_2;
+
 public interface Hasher<T> {
     /**
      * gets hash of value;

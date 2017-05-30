@@ -1,16 +1,16 @@
-import list.IncorrectIndexException;
-import list.NoValueInListException;
-import list.ValueIsInListException;
+package ashmarova.task_2_4_2;
+
+import ashmarova.task_2_4_2.list.*;
 
 /**
  * Class which realizes hash table functional
  * @param <T> is type of data
  */
-public class HashTable <T> implements HashTableInterface <T> {
+public class HashTable <T> implements HashTableInterface<T> {
     private final double CRITICAL_LOAD_FACTOR = 1.5;
     private final int INITIAL_SIZE = 10;
     private final double EXTENSION_VALUE = 1.2;
-    private list.UniqueList<T> table[] = new list.UniqueList[INITIAL_SIZE];
+    private UniqueList<T> table[] = new UniqueList[INITIAL_SIZE];
     private Hasher<T> hasher = null;
 
     public HashTable(Hasher<T> hasher){
@@ -21,16 +21,17 @@ public class HashTable <T> implements HashTableInterface <T> {
     private int amountOfElements = 0;
 
     /**
-     * addes value to hash table
+     * adds value to hash table
      * @param value is value to add
-     * @throws ProblemWithElementsException when value to addition is in table
+     * @throws UnknownProblemException when there is unknown problem with addition
+     * @throws ValueIsInTableException when value to addition is in table
      */
     @Override
-    public void add(T value) throws ProblemWithElementsException {
+    public void add(T value) throws UnknownProblemException, ValueIsInTableException {
         int position = hasher.hashFunction(value) % table.length;
 
         if (table[position] == null){
-            table[position] = new list.UniqueList<>();
+            table[position] = new UniqueList<>();
         }
 
         try{
@@ -39,23 +40,24 @@ public class HashTable <T> implements HashTableInterface <T> {
             if (table[position].getSize() == 2) {
                 amountOfConflicts++;
             }
-            if (getLoadFactor() > CRITICAL_LOAD_FACTOR || getMaxLenght() > table.length) {
+            if (getLoadFactor() > CRITICAL_LOAD_FACTOR || getMaxLength() > table.length) {
                 refill((int) (table.length * EXTENSION_VALUE));
             }
         } catch (ValueIsInListException e) {
-            throw new ProblemWithElementsException("This element is in table yet.");
+            throw new ValueIsInTableException();
         } catch (IncorrectIndexException e) {
-            throw new ProblemWithElementsException("Unknown problem with addition.");
+            throw new UnknownProblemException("Unknown problem with addition.");
         }
     }
 
     /**
      * removes value from hash table
      * @param value is value to remove
-     * @throws ProblemWithElementsException when value for removal is not in table
+     * @throws UnknownProblemException when there is not ability to remove value
+     * @throws ValueIsNotInTableException when value for removal is not in table
      */
     @Override
-    public void remove(T value) throws ProblemWithElementsException {
+    public void remove(T value) throws UnknownProblemException, ValueIsNotInTableException {
         int position = hasher.hashFunction(value) % table.length;
         try {
             table[position].removeFromValue(value);
@@ -67,32 +69,29 @@ public class HashTable <T> implements HashTableInterface <T> {
                 table[position] = null;
             }
         } catch (NullPointerException e) {
-            throw new ProblemWithElementsException("There is not this element in table.");
+            throw new ValueIsNotInTableException();
         } catch (IncorrectIndexException e) {
-            throw new ProblemWithElementsException("Unknown problem with removal.");
+            throw new UnknownProblemException("Unknown problem with removal.");
         } catch (NoValueInListException e) {
-            throw new ProblemWithElementsException("There is not this element in table.");
+            throw new ValueIsNotInTableException();
         }
     }
 
     /**
-     * checks if value is in list
+     * checks if value is in ashmarova.task_2_4_2.list
      * @param value is value to check
      * @return true if value is in table
      */
     @Override
     public boolean isInTable(T value) {
         int position = hasher.hashFunction(value) % table.length;
-        if (table[position] == null) {
-            return false;
-        }
-        return table[position].isInList(value);
+        return table[position] != null && table[position].isInList(value);
     }
 
     /**
      * prints statistics of hash table.
      * amount of cells, amount of elements, load factor, amount of conflicts,
-     * max lenght of chain and currect hash function are printed.
+     * max lenhgt of chain and currect hash function are printed.
      */
     @Override
     public void printStat() {
@@ -100,16 +99,16 @@ public class HashTable <T> implements HashTableInterface <T> {
                 "\nAmount of elements " + amountOfElements +
                 "\nLoad factor " + getLoadFactor() +
                 "\nAmount of conflicts " + amountOfConflicts +
-                "\nMax lenght in conflict cells " + getMaxLenght() +
+                "\nMax lenght in conflict cells " + getMaxLength() +
                 "\nCurrent hash function " + hasher.toString() + "\n");
     }
 
     /**
-     * @return lenght of max chain
+     * @return length of max chain
      */
-    private int getMaxLenght() {
+    private int getMaxLength() {
         int toReturn = 0;
-        for (list.UniqueList<T> cell : table){
+        for (ashmarova.task_2_4_2.list.UniqueList<T> cell : table){
             if (cell != null) {
                 if (cell.getSize() > toReturn) {
                     toReturn = cell.getSize();
@@ -143,33 +142,35 @@ public class HashTable <T> implements HashTableInterface <T> {
     /**
      * sets hash function
      * @param hasher is hasher to set
-     * @throws ProblemWithElementsException when there is no ability to refill table
+     * @throws UnknownProblemException when there is no ability to refill table
      */
-    public void setHasher(Hasher<T> hasher) throws ProblemWithElementsException {
+    public void setHasher(Hasher<T> hasher) throws UnknownProblemException {
         this.hasher = hasher;
         refill(table.length);
     }
 
     /**
-     * chandes table size and location of elements.
+     * changes table size and location of elements.
      * @param newSizeOfTable is size of table to refill
-     * @throws ProblemWithElementsException when ther eis no ability to refill table
+     * @throws UnknownProblemException when there is no ability to refill table
      */
-    public void refill(int newSizeOfTable) throws ProblemWithElementsException {
-        list.UniqueList<T>[] tableToRefill = table;
-        table = new list.UniqueList[newSizeOfTable];
+    private void refill(int newSizeOfTable) throws UnknownProblemException {
+        ashmarova.task_2_4_2.list.UniqueList<T>[] tableToRefill = table;
+        table = new UniqueList[newSizeOfTable];
         amountOfConflicts = 0;
         amountOfElements = 0;
-        for (list.UniqueList<T> cell : tableToRefill) {
+        for (ashmarova.task_2_4_2.list.UniqueList<T> cell : tableToRefill) {
             try {
                 while (cell.getSize() > 0) {
                     T element = cell.getFromIndex(1);
                     add(element);
                     cell.removeFromIndex(1);
                 }
+            } catch (ValueIsInTableException e) {
+                throw new UnknownProblemException("Unknown problem with table's refilling.");
             } catch (IncorrectIndexException e) {
-                throw new ProblemWithElementsException("Unknown problem with table's refilling.");
-            } catch (NullPointerException e) {}
+                throw new UnknownProblemException("Unknown problem with table's refilling.");
+            }
         }
     }
 }

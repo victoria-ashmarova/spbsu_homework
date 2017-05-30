@@ -1,3 +1,5 @@
+package ashmarova.task_2_4_2;
+
 import java.util.Scanner;
 
 public class Main {
@@ -55,7 +57,7 @@ public class Main {
         MULTIPLICATIVE_TO_CONSTANT, POLYNOMIAL, DEFAULT;
 
         /**
-         * prints comformity numbers and hash functions
+         * prints conformity numbers and hash functions
          */
         public static void printFunction() {
             System.out.print("Press\n 1 - to choose function with polynomial\n" +
@@ -95,8 +97,10 @@ public class Main {
         try {
             table.add(toAdd);
             System.out.println("Value was added.");
-        } catch (ProblemWithElementsException e) {
+        } catch (ValueIsInTableException e) {
             e.message();
+        } catch (UnknownProblemException e) {
+            e.printStackTrace();
         }
     }
 
@@ -111,7 +115,9 @@ public class Main {
         try {
             table.remove(toRemove);
             System.out.println("Value was removed.");
-        } catch (ProblemWithElementsException e) {
+        } catch (UnknownProblemException e) {
+            e.message();
+        } catch (ValueIsNotInTableException e) {
             e.message();
         }
     }
@@ -163,7 +169,7 @@ public class Main {
         }
         try {
             table.setHasher(hasher);
-        } catch (ProblemWithElementsException e) {
+        } catch (UnknownProblemException e) {
             e.message();
         }
     }
