@@ -1,84 +1,50 @@
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import org.junit.Assert;
 import org.junit.Test;
-import sample.Main;
+import sample.Calculator;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Class contains tests for calculator.
  */
-public class CalculatorTest extends Application{
-    private static Stage primaryStage;
-    private static AssertionError assertion = null;
+public class CalculatorTest{
+    private final double DELTA = 0.0001;
 
     /**
-     * starts the JavaFX application and waits for assertion fails.
+     * checks if sum is correct
      */
     @Test
-    public void test() {
-        assertion = null;
-        CalculatorTest.launch(CalculatorTest.class);
-        if (assertion != null)
-            throw assertion;
+    public void sumTest() {
+        assertEquals(9, Calculator.calculate(6, 3, '+'), DELTA);
     }
 
     /**
-     * finds node on scene.
-     * @param selector is fx:id of the node
-     * @param <T> is type of the node
-     * @return node
+     * checks if difference is correct
      */
-    public static <T> T findNode(String selector) {
-        return (T) primaryStage.getScene().lookup(selector);
+    @Test
+    public void differenceTest() {
+        assertEquals(3, Calculator.calculate(6, 3, '-'), DELTA);
     }
 
     /**
-     *  performs some simple actions with controls and checks if results are correct.
+     * checks if multiplication is correct
      */
-    public void calculationTest() {
-        Spinner<Double> firstSpinner = findNode("#firstSpinner");
-        Spinner<Double> secondSpinner = findNode("#secondSpinner");
-        ComboBox actionBox = findNode("#actionBox");
-        TextField result = findNode("#resultField");
-
-        firstSpinner.getValueFactory().setValue(15.0);
-        secondSpinner.getValueFactory().setValue(3.0);
-
-        Assert.assertTrue(result.getText().equals("18.0"));
-
-        actionBox.getSelectionModel().select("-");
-        Assert.assertTrue(result.getText().equals("12.0"));
-
-        actionBox.getSelectionModel().select("*");
-        Assert.assertTrue(result.getText().equals("45.0"));
-
-        actionBox.getSelectionModel().select("/");
-        Assert.assertTrue(result.getText().equals("5.0"));
+    @Test
+    public void multiplicationTest() {
+        assertEquals(18, Calculator.calculate(6, 3, '*'), DELTA);
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        this.primaryStage = primaryStage;
+    /**
+     * checks if quotient is correct
+     */
+    @Test
+    public void quotientTest() {
+        assertEquals(2, Calculator.calculate(6, 3, '/'), DELTA);
+    }
 
-        Parent root = FXMLLoader.load(Main.class.getResource("Calculator.fxml"));
-        primaryStage.setTitle("Simple calculator");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.setResizable(false);
-        primaryStage.show();
-
-        try {
-            calculationTest();
-        } catch (AssertionError e) {
-            assertion = e;
-            primaryStage.close();
-        }
-
-        primaryStage.close();
+    /**
+     * checks if division by zero s not available
+     */
+    @Test (expected = ArithmeticException.class)
+    public void divisionByZeroTest() {
+        assertEquals(3, Calculator.calculate(6, 0, '/'), DELTA);
     }
 }
