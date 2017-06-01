@@ -1,3 +1,4 @@
+import ashmarova.task_2_4_1.*;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

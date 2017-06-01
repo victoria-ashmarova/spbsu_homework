@@ -1,10 +1,29 @@
+package ashmarova.task_2_4_1;
+
 /**
  * Class contains functional of single linked list
- * @param <SomeType> is type of elements
+ * @param <T> is type of elements
  */
-public class SingleLinkedList <SomeType> extends List<SomeType>{
+public class SingleLinkedList<T> extends List<T> {
+    /**
+     * the first element of list
+     */
+    private Element first;
+
+    /**
+     * Class contains list element: value and pointer to next element
+     */
+    private class Element {
+        T value;
+        Element next;
+        Element(T value, Element next){
+            this.value = value;
+            this.next = next;
+        }
+    }
+
     @Override
-    public void add(int index, SomeType value) throws IncorrectIndexException, ValueIsInListException {
+    public void add(int index, T value) throws IncorrectIndexException, ValueIsInListException {
         if (index < 1 || index > size + 1){
             throw new IncorrectIndexException();
         }
@@ -48,7 +67,7 @@ public class SingleLinkedList <SomeType> extends List<SomeType>{
     }
 
     @Override
-    public boolean isInList(SomeType value) {
+    public boolean isInList(T value) {
         if (size < 1){  return false;}
         Element temp = first;
         while (temp != null && !value.equals(temp.value)){
@@ -58,7 +77,7 @@ public class SingleLinkedList <SomeType> extends List<SomeType>{
     }
 
     @Override
-    public int searchIndex(SomeType value) throws NoValueInListException {
+    public int searchIndex(T value) throws NoValueInListException {
         if (size < 1){
             throw new NoValueInListException();
         }
@@ -75,11 +94,11 @@ public class SingleLinkedList <SomeType> extends List<SomeType>{
     }
 
     @Override
-    public SomeType getFromIndex(int index) throws IncorrectIndexException {
+    public T getFromIndex(int index) throws IncorrectIndexException {
         if (index < 1 || index > size){
             throw new IncorrectIndexException();
         }
-        SomeType toReturn;
+        T toReturn;
         if (index == 1){
             toReturn = first.value;
         } else {
@@ -95,7 +114,7 @@ public class SingleLinkedList <SomeType> extends List<SomeType>{
     }
 
     @Override
-    public void removeFromValue(SomeType value) throws NoValueInListException, IncorrectIndexException {
+    public void removeFromValue(T value) throws NoValueInListException, IncorrectIndexException {
         int index = searchIndex(value);
         removeFromIndex(index);
     }

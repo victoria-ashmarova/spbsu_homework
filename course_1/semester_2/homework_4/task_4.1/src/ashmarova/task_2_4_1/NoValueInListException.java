@@ -1,3 +1,5 @@
+package ashmarova.task_2_4_1;
+
 /**
  * Exception, which is thrown, when somebody tries to go to value,
  * which didn't situated in list

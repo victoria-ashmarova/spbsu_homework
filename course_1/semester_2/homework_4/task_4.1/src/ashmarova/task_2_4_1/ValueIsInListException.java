@@ -1,3 +1,5 @@
+package ashmarova.task_2_4_1;
+
 /**
  * Exception, which is thrown in unique list,
  * when somebody wants to add element, which is in list

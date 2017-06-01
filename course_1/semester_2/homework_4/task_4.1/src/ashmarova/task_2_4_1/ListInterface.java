@@ -1,4 +1,6 @@
-public interface ListInterface<SomeType>{
+package ashmarova.task_2_4_1;
+
+public interface ListInterface<T>{
     /**
      * Add element to place in list
      * @param place future index of added element
@@ -6,7 +8,7 @@ public interface ListInterface<SomeType>{
      * @throws ValueIsInListException if there must be one element with this value
      * @throws IncorrectIndexException when index of value to add is incorrect
      */
-    void add(int place, SomeType value) throws IncorrectIndexException, ValueIsInListException;
+    void add(int place, T value) throws IncorrectIndexException, ValueIsInListException;
 
     /**
      * Gets the first number of place of the element in list
@@ -14,7 +16,7 @@ public interface ListInterface<SomeType>{
      * @return index of place with element
      * @throws NoValueInListException when there is no value with index to return
      */
-    int searchIndex(SomeType value) throws NoValueInListException;
+    int searchIndex(T value) throws NoValueInListException;
 
     /**
      * Gets value from number of index
@@ -22,7 +24,7 @@ public interface ListInterface<SomeType>{
      * @return element from this index
      * @throws IncorrectIndexException when index of value to return is incorrect
      */
-    SomeType getFromIndex(int index) throws IncorrectIndexException;
+    T getFromIndex(int index) throws IncorrectIndexException;
 
     /**
      * Deletes value from it's first location
@@ -30,7 +32,7 @@ public interface ListInterface<SomeType>{
      * @throws NoValueInListException when there is no value to return
      * @throws IncorrectIndexException
      */
-    void removeFromValue(SomeType value) throws NoValueInListException, IncorrectIndexException;
+    void removeFromValue(T value) throws NoValueInListException, IncorrectIndexException;
 
     /**
      * Deletes value from index
@@ -49,5 +51,5 @@ public interface ListInterface<SomeType>{
      * @param value to search in list
      * @return true if value is in list
      */
-    boolean isInList(SomeType value);
+    boolean isInList(T value);
 }
