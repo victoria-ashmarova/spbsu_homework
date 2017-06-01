@@ -31,6 +31,8 @@ public class Controller {
         firstSpinner.valueProperty().addListener(valueListener);
         secondSpinner.valueProperty().addListener(valueListener);
         actionBox.valueProperty().addListener(actionListener);
+
+
         calculate();
     }
 
