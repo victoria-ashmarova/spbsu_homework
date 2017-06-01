@@ -12,37 +12,22 @@ public class Controller {
     private boolean lastPressedWasWithAction = false;
 
     @FXML Label expression;
-
     @FXML Label currentValue;
-
     @FXML Button sum;
-
     @FXML Button difference;
-
     @FXML Button multiplication;
-
     @FXML Button quotient;
-
+    @FXML Button calculate;
     @FXML Button clear;
-
     @FXML Button digit_0;
-
     @FXML Button digit_1;
-
     @FXML Button digit_2;
-
     @FXML Button digit_3;
-
     @FXML Button digit_4;
-
     @FXML Button digit_5;
-
     @FXML Button digit_6;
-
     @FXML Button digit_7;
-
     @FXML Button digit_8;
-
     @FXML Button digit_9;
 
     private ArrayList<Button> digits = new ArrayList<>();
@@ -68,6 +53,7 @@ public class Controller {
         actions.add(difference);
         actions.add(multiplication);
         actions.add(quotient);
+        actions.add(calculate);
     }
 
     /**
@@ -77,7 +63,7 @@ public class Controller {
      * @param actionEvent is action with clear button
      */
     @FXML
-    public void clear(ActionEvent actionEvent) {
+    public void pressClear(ActionEvent actionEvent) {
         makeButtonsNotDisable(actions);
         makeButtonsNotDisable(digits);
         expression.setText("");
@@ -148,6 +134,7 @@ public class Controller {
     public void pressCalculate(ActionEvent actionEvent) {
         makeButtonsDisable(digits);
         makeButtonsDisable(actions);
+
         try {
             Integer value = calc.calculate(currentValue.getText());
             currentValue.setText(value.toString());
