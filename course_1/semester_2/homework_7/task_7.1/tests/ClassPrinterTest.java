@@ -1,62 +1,82 @@
 import ashmarova.task_2_7_1.ClassPrinter;
 import org.junit.Test;
 
+import java.util.TreeSet;
+
 import static org.junit.Assert.*;
 
 public class ClassPrinterTest {
     /**
-     * check correct work of method, which dets information about class
+     * checks correctness of getting modifiers
      */
     @Test
-    public void printTest(){
-        assertEquals(EXPECTED, ClassPrinter.getInformationAboutClass(ClassForTest.class));
+    public void checkCorrectModifiersTest() {
+        TreeSet<String> expectedModifiers = new TreeSet<>();
+        expectedModifiers.add("private");
+        expectedModifiers.add("final");
+        TreeSet<String> classModifiers = ClassPrinter.getModifiers(SomeClass.class.getModifiers());
+        assertTrue(expectedModifiers.containsAll(classModifiers) && classModifiers.containsAll(expectedModifiers));
     }
 
     /**
-     * interface for class for test
+     * checks correctness of getting methods
      */
-    interface PrinterForTest{
-        void print();
+    @Test
+    public void checkCorrectMethodsTest() {
+        TreeSet<String> expectedMethod = new TreeSet<>();
+        expectedMethod.add("void setValue");
+        expectedMethod.add("void plusTwo");
+        expectedMethod.add("String concatString");
+        TreeSet<String> methods = ClassPrinter.getMethods(SomeClass.class);
+        assertTrue(methods.equals(expectedMethod));
     }
 
     /**
-     * class to check correct printing
+     * checks correctness of getting fields
      */
-    private class ClassForTest implements PrinterForTest{
-       protected int value;
-       private String line;
+    @Test
+    public void checkCorrectFieldsTest() {
+        TreeSet<String> fields = ClassPrinter.getFields(SomeClass.class);
+        TreeSet<String> expectedFields = new TreeSet<>();
+        expectedFields.add("int");
+        expectedFields.add("String");
+        assertTrue(fields.equals(expectedFields));
+    }
 
-       ClassForTest(String line) {
-           this.line = line;
-       }
+    /**
+     * checks correctness of getting interfaces
+     */
+    @Test
+    public void checkInterfacesTest() {
+        TreeSet<String> interfaces = ClassPrinter.getInterfaces(SomeClass.class);
+        assertEquals(0, interfaces.size());
+    }
 
-       public void setValue(int value) {
-           this.value = value;
-       }
+    /**
+     * class for test
+     */
+    private final class SomeClass {
+        private int value;
+        public String line;
 
-       public int getValue() {
-           return value;
-       }
+        public SomeClass(int value, String line) {
+            this.value = value;
+            this.line = line;
+        }
 
-       public void appendLine(String appendix) {
-           line.concat(appendix);
-       }
+        public void setValue(int value) {
+            this.value = value;
+        }
 
-        @Override
-        public void print() {
-            System.out.print(line);
+        protected void plusTwo() throws Exception {
+            this.value += 2;
+            if (value == 1) {
+                throw new Exception();
+            }
+        }
+
+        public String concatString(String toAdd) {
+            return line.concat(toAdd);
         }
     }
-
-    private final String EXPECTED = "private  class ClassForTest extends Object  implements PrinterForTest {\n" +
-            "    protected int value;\n" +
-            "    private String line;\n" +
-            " \n" +
-            "    ClassForTest(String);\n" +
-            " \n" +
-            "    public int getValue();\n" +
-            "    public void print();\n" +
-            "    public void setValue(int);\n" +
-            "    public void appendLine(String);\n" +
-            "}\n";
 }

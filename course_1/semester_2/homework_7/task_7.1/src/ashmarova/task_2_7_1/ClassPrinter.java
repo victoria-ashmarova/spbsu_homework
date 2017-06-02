@@ -2,6 +2,8 @@ package ashmarova.task_2_7_1;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Class, which contains methods of getting information about class
@@ -16,21 +18,98 @@ public class ClassPrinter {
      */
     public static String getInformationAboutClass(Class toDescribe) {
         StringBuilder builder = new StringBuilder();
-        int numberOfTabs = 0;
 
-        getModifiers(toDescribe.getModifiers(), builder);
-        getClassName(toDescribe, builder);
-        getSuperClass(toDescribe, builder);
-        getInterfaces(toDescribe, builder);
+        TreeSet<String> modifiers = getModifiers(toDescribe.getModifiers());
+        String className = toDescribe.getSimpleName();
+        String superClass = toDescribe.getSuperclass().getSimpleName();
+        TreeSet<String> interfaces = getInterfaces(toDescribe);
+
+        bondingStrings(modifiers, builder, false);
+        builder.append(" ").append(className);
+        if (!superClass.equals(null)) {
+            builder.append(" extends ").append(superClass);
+        }
+        if (interfaces.size() != 0) {
+            builder.append(" implements");
+            bondingStrings(interfaces, builder, true);
+        }
 
         builder.append(" {\n");
-        getFields(toDescribe, builder, numberOfTabs + 1);
-        builder.append(" \n");
-        getConstructor(toDescribe, builder, numberOfTabs + 1);
-        builder.append(" \n");
-        getMethods(toDescribe, builder, numberOfTabs + 1);
-        builder.append("}\n");
+        addConstructors(builder, toDescribe);
+        addFields(builder, toDescribe);
+        addMethods(builder, toDescribe);
+        builder.append("}");
         return builder.toString();
+    }
+
+    /**
+     * adds fields to string builder
+     * @param builder is builder to add
+     * @param toDescribe is class to get fields
+     */
+    private static void addFields(StringBuilder builder, Class toDescribe) {
+        Field fields[] = toDescribe.getDeclaredFields();
+        for (Field field : fields) {
+            TreeSet<String> fieldModifiers = getModifiers(field.getModifiers());
+            addTabs(1, builder);
+            bondingStrings(fieldModifiers, builder, false);
+            builder.append(" ").append(field.getType().getSimpleName()).append(" ").append(field.getName()).append(";\n");
+        }
+    }
+
+    /**
+     * adds methods to string builder
+     * @param builder is builder to add
+     * @param toDescribe is class to get methods
+     */
+    private static void addMethods(StringBuilder builder, Class toDescribe) {
+        Method[] declaredMethods = toDescribe.getDeclaredMethods();
+        for (Method method : declaredMethods) {
+            TreeSet<String> modifiersOfMethod = getModifiers(method.getModifiers());
+            TreeSet<String> exceptions = getExceptionsOfMethod(method);
+            TreeSet<String> params = getParametersOfMethod(method);
+
+            addTabs(1, builder);
+            bondingStrings(modifiersOfMethod, builder, false);
+            builder.append(" ").append(method.getName());
+
+            builder.append("(");
+            if (params.size() != 0) {
+                bondingStrings(params, builder, true);
+            }
+            builder.append(")");
+            if (exceptions.size() != 0) {
+                builder.append(" throws ");
+                bondingStrings(exceptions, builder, true);
+            }
+            builder.append(";\n");
+        }
+    }
+
+    /**
+     * adds constructors to string builder
+     * @param builder is builder to add
+     * @param toDescribe is class to get constructors
+     */
+    private static void addConstructors(StringBuilder builder, Class toDescribe) {
+        Constructor constructors[] = toDescribe.getConstructors();
+        for (Constructor constructor : constructors) {
+            TreeSet<String> constructorsModifiers = getModifiers(constructor.getModifiers());
+            TreeSet<String> constructorsException = getExceptionsOfConstructor(constructor);
+            TreeSet<String> constructorsParams = getParametersOfConstructor(constructor);
+            addTabs(1, builder);
+            bondingStrings(constructorsModifiers, builder, false);
+            builder.append(" ").append(toDescribe.getSimpleName()).append(" ");
+            if (!constructorsException.isEmpty()) {
+                builder.append(" throws");
+                bondingStrings(constructorsException, builder, true);
+            }
+            builder.append("(");
+            if (!constructorsParams.isEmpty()) {
+                bondingStrings(constructorsParams, builder, true);
+            }
+            builder.append(");\n");
+        }
     }
 
     /**
@@ -45,197 +124,156 @@ public class ClassPrinter {
     }
 
     /**
-     * gets simple name of class
-     * @param toDescribe is class to describe
-     * @param builder to collect string with describing
-     */
-    private static void getClassName(Class toDescribe, StringBuilder builder) {
-        String className = toDescribe.getSimpleName();
-        builder.append(" class ").append(className);
-    }
-
-    /**
      * gets modifiers of class
      * @param mods is modifiers
-     * @param builder to collect string with describing
      */
-    private static void getModifiers(int mods, StringBuilder builder) {
+    public static TreeSet<String> getModifiers(int mods) {
+        TreeSet<String> modifiers = new TreeSet<>();
         if (Modifier.isPublic(mods)) {
-            builder.append("public ");
+            modifiers.add("public");
         }
         if (Modifier.isPrivate(mods)) {
-            builder.append("private ");
+            modifiers.add("private");
         }
         if (Modifier.isProtected(mods)) {
-            builder.append("protected ");
+            modifiers.add("protected");
         }
         if (Modifier.isAbstract(mods)) {
-            builder.append("abstract ");
+            modifiers.add("abstract");
         }
         if (Modifier.isStatic(mods)) {
-            builder.append("static ");
+            modifiers.add("static");
         }
         if (Modifier.isNative(mods)) {
-            builder.append("native ");
+            modifiers.add("native");
         }
         if (Modifier.isTransient(mods)) {
-            builder.append("transient ");
+            modifiers.add("transient");
         }
         if (Modifier.isVolatile(mods)) {
-            builder.append("volatile ");
+            modifiers.add("volatile");
         }
-    }
-
-    /**
-     * gets super class
-     * @param toDescribe is class to get its super class
-     * @param builder to collet string with describing
-     */
-    private static void getSuperClass(Class toDescribe, StringBuilder builder) {
-        Class superClass = toDescribe.getSuperclass();
-        if (!superClass.equals("")) {
-            builder.append(" extends ").append(superClass.getSimpleName());
+        if (Modifier.isFinal(mods)) {
+            modifiers.add("final");
         }
+        return modifiers;
     }
 
     /**
      * gets interfaces of class
-     * @param toDescibe is class to get interface
-     * @param builder to collect string with describing
+     * @param toDescribe is class to get interface
      */
-    private static void getInterfaces(Class toDescibe, StringBuilder builder) {
-        Class interfaces[] = toDescibe.getInterfaces();
-        if (interfaces.length > 0) {
-            builder.append("  implements");
-            for (int i = 0; i < interfaces.length; i++) {
-                builder.append(" ").append(interfaces[i].getSimpleName());
-            }
+    public static TreeSet<String> getInterfaces(Class toDescribe) {
+        TreeSet<String> interfacesSet = new TreeSet<>();
+        Class interfaces[] = toDescribe.getInterfaces();
+        for (Class currentInterface : interfaces) {
+            interfacesSet.add(currentInterface.getSimpleName());
         }
-    }
-
-    /**
-     * gets constructors of class
-     * @param toDescribe is class to get constructors
-     * @param builder to collect string with describing
-     * @param numberOfTabs is number of tabulations in beginnings if string
-     */
-    private static void getConstructor(Class toDescribe, StringBuilder builder, int numberOfTabs) {
-        Constructor constructors[] = toDescribe.getDeclaredConstructors();
-        for (int i = 0; i < constructors.length; i++) {
-            addTabs(numberOfTabs, builder);
-            builder.append(toDescribe.getSimpleName());
-            getParametersOfConstructor(constructors[i], builder);
-            getExceptionsOfConstructor(constructors[i], builder);
-        }
+        return interfacesSet;
     }
 
     /**
      * gets parameters of class constructor
      * @param constructor to get parameter to collect string with information about class
-     * @param builder
      */
-    private static void getParametersOfConstructor(Constructor constructor, StringBuilder builder) {
-        builder.append("(");
+    public static TreeSet<String> getParametersOfConstructor(Constructor constructor) {
+        TreeSet<String> constructorsParameters = new TreeSet<>();
         Class paramTypes[] = constructor.getParameterTypes();
         for (int i = 1; i < paramTypes.length; i++) {
             Class paramType = paramTypes[i];
-            builder.append(paramType.getSimpleName());
-            if (i < paramTypes.length - 1) {
-                builder.append(", ");
-            }
+            constructorsParameters.add(paramType.getSimpleName());
         }
-        builder.append(");\n");
+        return constructorsParameters;
     }
 
     /**
      * gets exception of class constructor
      * @param constructor to gets exceptions
-     * @param builder to collect information about class
      */
-    private static void getExceptionsOfConstructor(Constructor constructor, StringBuilder builder) {
+    public static TreeSet<String> getExceptionsOfConstructor(Constructor constructor) {
+        TreeSet<String> constructorsExceptions = new TreeSet<>();
         Class exceptions[] = constructor.getExceptionTypes();
         if (exceptions.length > 0) {
-            builder.append(" throws");
             for (int i = 0; i < exceptions.length; i++) {
-                builder.append(" ").append(exceptions[i].getSimpleName());
-                if (i != exceptions.length - 1) {
-                    builder.append(",");
-                }
+                constructorsExceptions.add(exceptions[i].getSimpleName());
             }
         }
+        return constructorsExceptions;
     }
 
     /**
      * gets methods from class
      * @param toDescribe is class to get method
-     * @param builder to collect string with information about class
-     * @param numberOfTabs is number of tabulations in beginnings if string
      */
-    private static void getMethods(Class toDescribe, StringBuilder builder, int numberOfTabs) {
+    public static TreeSet<String> getMethods(Class toDescribe) {
+        TreeSet<String> methods = new TreeSet<>();
         Method declaredMethods[] = toDescribe.getDeclaredMethods();
         for (Method method : declaredMethods) {
-            addTabs(numberOfTabs, builder);
-            getModifiers(method.getModifiers(), builder);
-            builder.append(method.getReturnType().getName()).append(" ");
-            builder.append(method.getName());
-            getParametersOfMethod(method, builder);
-            getExceptionsOfMethod(method, builder);
-            builder.append(";\n");
+            methods.add(method.getReturnType().getSimpleName() + " " + method.getName());
         }
+        return methods;
     }
 
     /**
      * gets parameters of method
      * @param method to get parameters
-     * @param builder to collect string with information about class
      */
-    private static void getParametersOfMethod(Method method, StringBuilder builder) {
+    public static TreeSet<String> getParametersOfMethod(Method method) {
+        TreeSet<String> parameters = new TreeSet<>();
         Class paramTypes[] = method.getParameterTypes();
-        builder.append("(");
-        for (int i = 0; i < paramTypes.length; i++) {
-            Class paramType = paramTypes[i];
-            if (i != 0) {
-                builder.append(", ");
-            }
-            builder.append(paramType.getSimpleName());
+        for (Class param : paramTypes) {
+            parameters.add(param.getSimpleName());
         }
-        builder.append(")");
-
+        return parameters;
     }
 
     /**
      * gets exception of method
      * @param method to gets exceptions
-     * @param builder to collect information about class
      */
-    private static void getExceptionsOfMethod(Method method, StringBuilder builder) {
+    public static TreeSet<String> getExceptionsOfMethod(Method method) {
+        TreeSet<String> methodsExceptions = new TreeSet<>();
         Class exceptions[] = method.getExceptionTypes();
         if (exceptions.length > 0) {
-            builder.append(" throws");
             for (int i = 0; i < exceptions.length; i++) {
-                builder.append(" ").append(exceptions[i].getSimpleName());
-                if (i != exceptions.length - 1) {
-                    builder.append(",");
-                }
+                methodsExceptions.add(exceptions[i].getSimpleName());
             }
         }
+        return methodsExceptions;
     }
 
     /**
      * gets fields of class
      * @param toDescribe is class to get information
-     * @param builder to collect information about class
-     * @param numberOfTabs is number of tabulations in beginnings if string
      */
-    private static void getFields(Class toDescribe, StringBuilder builder, int numberOfTabs) {
+    public static TreeSet<String> getFields(Class toDescribe) {
+        TreeSet<String> fields = new TreeSet<>();
         Field declaredFields[] = toDescribe.getDeclaredFields();
         for (int i = 0; i < declaredFields.length - 1; i++) {
             Field field = declaredFields[i];
-            addTabs(numberOfTabs, builder);
             Class fieldType = field.getType();
-            getModifiers(field.getModifiers(), builder);
-            builder.append(fieldType.getSimpleName()).append(" ").append(field.getName());
-            builder.append(";\n");
+            fields.add(fieldType.getSimpleName());
+        }
+        return fields;
+    }
+
+    /**
+     * bonds strings from set with string
+     * @param set isSetWithStrings
+     * @param builder to collectStrings
+     * @param comma if strings must be separated with comma
+     */
+    public static void bondingStrings(Set<String> set, StringBuilder builder, boolean comma) {
+        int counter = 0;
+        for (String toAdd : set) {
+            builder.append(toAdd);
+            counter++;
+            if (counter < set.size()) {
+                if (comma) {
+                    builder.append(",");
+                }
+                builder.append(" ");
+            }
         }
     }
 }
