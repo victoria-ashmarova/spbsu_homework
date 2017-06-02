@@ -106,7 +106,7 @@ public class Controller {
      */
     @FXML
     public void move(Button button) {
-        if (button.getText() == "") {
+        if (button.getText().equals("")) {
             button.setText(game.getCurrentLabel());
             game.setState(buttons.indexOf(button), button.getText());
             if (game.checkWin(buttons.indexOf(button)) == null) {

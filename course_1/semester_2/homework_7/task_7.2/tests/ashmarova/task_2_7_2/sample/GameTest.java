@@ -27,7 +27,7 @@ public class GameTest {
         game.setState(0, "X");
         game.setState(1, "X");
         game.setState(2, "X");
-        assertTrue(game.checkWin(2) == "X");
+        assertTrue(game.checkWin(2).equals("X"));
     }
 
     /**
@@ -39,7 +39,7 @@ public class GameTest {
         game.setState(1, "O");
         game.setState(4, "O");
         game.setState(7, "O");
-        assertTrue(game.checkWin(1) == "O");
+        assertTrue(game.checkWin(1).equals("O"));
     }
 
     /**
@@ -51,7 +51,7 @@ public class GameTest {
         game.setState(0, "O");
         game.setState(4, "O");
         game.setState(8, "O");
-        assertTrue(game.checkWin(4) == "O");
+        assertTrue(game.checkWin(4).equals("O"));
     }
 
     /**
@@ -63,6 +63,6 @@ public class GameTest {
         game.setState(2, "X");
         game.setState(4, "X");
         game.setState(6, "X");
-        assertTrue(game.checkWin(4) == "X");
+        assertTrue(game.checkWin(4).equals("X"));
     }
 }
