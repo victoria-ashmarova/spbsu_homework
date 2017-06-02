@@ -1,6 +1,5 @@
+import ashmarova.task_2_7_1.ClassPrinter;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 

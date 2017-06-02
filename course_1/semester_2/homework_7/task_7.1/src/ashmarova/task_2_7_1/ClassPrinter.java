@@ -1,3 +1,5 @@
+package ashmarova.task_2_7_1;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 
@@ -49,7 +51,7 @@ public class ClassPrinter {
      */
     private static void getClassName(Class toDescribe, StringBuilder builder) {
         String className = toDescribe.getSimpleName();
-        builder.append(" class " + className);
+        builder.append(" class ").append(className);
     }
 
     /**
@@ -92,7 +94,7 @@ public class ClassPrinter {
     private static void getSuperClass(Class toDescribe, StringBuilder builder) {
         Class superClass = toDescribe.getSuperclass();
         if (!superClass.equals("")) {
-            builder.append(" extends " + superClass.getSimpleName());
+            builder.append(" extends ").append(superClass.getSimpleName());
         }
     }
 
@@ -106,7 +108,7 @@ public class ClassPrinter {
         if (interfaces.length > 0) {
             builder.append("  implements");
             for (int i = 0; i < interfaces.length; i++) {
-                builder.append(" " + interfaces[i].getSimpleName());
+                builder.append(" ").append(interfaces[i].getSimpleName());
             }
         }
     }
@@ -155,7 +157,7 @@ public class ClassPrinter {
         if (exceptions.length > 0) {
             builder.append(" throws");
             for (int i = 0; i < exceptions.length; i++) {
-                builder.append(" " + exceptions[i].getSimpleName());
+                builder.append(" ").append(exceptions[i].getSimpleName());
                 if (i != exceptions.length - 1) {
                     builder.append(",");
                 }
@@ -174,7 +176,7 @@ public class ClassPrinter {
         for (Method method : declaredMethods) {
             addTabs(numberOfTabs, builder);
             getModifiers(method.getModifiers(), builder);
-            builder.append(method.getReturnType().getName() + " ");
+            builder.append(method.getReturnType().getName()).append(" ");
             builder.append(method.getName());
             getParametersOfMethod(method, builder);
             getExceptionsOfMethod(method, builder);
@@ -211,7 +213,7 @@ public class ClassPrinter {
         if (exceptions.length > 0) {
             builder.append(" throws");
             for (int i = 0; i < exceptions.length; i++) {
-                builder.append(" " + exceptions[i].getSimpleName());
+                builder.append(" ").append(exceptions[i].getSimpleName());
                 if (i != exceptions.length - 1) {
                     builder.append(",");
                 }
@@ -232,7 +234,7 @@ public class ClassPrinter {
             addTabs(numberOfTabs, builder);
             Class fieldType = field.getType();
             getModifiers(field.getModifiers(), builder);
-            builder.append(fieldType.getSimpleName() + " " + field.getName());
+            builder.append(fieldType.getSimpleName()).append(" ").append(field.getName());
             builder.append(";\n");
         }
     }
