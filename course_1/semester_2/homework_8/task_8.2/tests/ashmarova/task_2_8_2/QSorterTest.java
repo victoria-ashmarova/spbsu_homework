@@ -12,7 +12,7 @@ public class QSorterTest {
     private final int MAX_VALUE = 256;
     private final Random generator = new Random();
     private final long MAX_TIME_DIFFERENCE = 100;
-    private final int LIMIT_OF_THREADS = 8;
+    private final int LIMIT_OF_THREADS = 10;
 
     /**
      * generates array with integer elements
