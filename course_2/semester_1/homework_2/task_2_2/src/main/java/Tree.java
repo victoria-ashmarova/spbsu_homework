@@ -28,22 +28,26 @@ public class Tree<T extends Comparable> implements Iterable<T>{
             return data.compareTo(root.getData()) == 0;
         }
 
-        try {
-            TreeNode<T> node;
-            if (data.compareTo(parent.getData()) < 0) {
-                node = parent.getLeftChild();
-            } else {
-                node = parent.getRightChild();
-            }
-            return data.compareTo(node.getData()) == 0;
-        } catch (NullPointerException e) {
+
+        TreeNode<T> node;
+        if (data.compareTo(parent.getData()) < 0) {
+            node = parent.getLeftChild();
+        } else {
+            node = parent.getRightChild();
+        }
+
+        if (node == null) {
             return false;
         }
+
+        return data.compareTo(node.getData()) == 0;
+
     }
 
     /** addition to tree*/
     public void add(T data) {
         TreeNode<T> parent = findParent(data, root);
+
         if (parent == null) {
             if (root == null) {
                 root = new TreeNode<T>(data);
@@ -66,24 +70,23 @@ public class Tree<T extends Comparable> implements Iterable<T>{
     /** removal data from tree*/
     public void remove(T data) {
         TreeNode<T> parent = findParent(data, root);
+
         if (parent == null) {
             root = refreshedNode(root);
         } else {
             boolean isLeftChild = data.compareTo(parent.getData()) < 0;
             TreeNode<T> deleted = isLeftChild ? parent.getLeftChild() : parent.getRightChild();
-            try {
-                if (isLeftChild) {
-                    parent.setLeftChild(refreshedNode(deleted));
-                } else {
-                    parent.setRightChild(refreshedNode(deleted));
-                }
-            } catch (NullPointerException e) {
-                return;
+
+            if (isLeftChild) {
+                parent.setLeftChild(refreshedNode(deleted));
+            } else {
+                parent.setRightChild(refreshedNode(deleted));
             }
         }
 
     }
 
+    /** gets node, which must will be on place of deleted node*/
     private TreeNode<T> refreshedNode(TreeNode<T> toRefresh) {
         if (toRefresh == null) {
             return null;
@@ -95,19 +98,19 @@ public class Tree<T extends Comparable> implements Iterable<T>{
         TreeNode<T> rightSon = toRefresh.getRightChild();
 
         if (leftSon != null) {
-            try {
-                TreeNode<T> leaf = findParent(rightSon.getData(), leftSon);
-                leaf.setRightChild(rightSon);
-                return leftSon;
-            } catch (NullPointerException e) {
+            if (rightSon == null) {
                 return leftSon;
             }
+
+            TreeNode<T> leaf = findParent(rightSon.getData(), leftSon);
+            leaf.setRightChild(rightSon);
+            return leftSon;
         } else {
             return rightSon;
         }
     }
 
-    /** finding node, which is parent or node with current data or can be it*/
+    /** finding node, which is parent of node with current data or can be it*/
     private TreeNode<T> findParent(T data, TreeNode<T> root) {
         if (root == null) {
             return null;
@@ -121,18 +124,19 @@ public class Tree<T extends Comparable> implements Iterable<T>{
         boolean stopCondition = false;
         while (!stopCondition) {
             TreeNode<T> nextParent = (data.compareTo(parent.getData()) < 0) ? parent.getLeftChild() : parent.getRightChild();
-            try {
+
+            if (nextParent == null) {
+                stopCondition = true;
+            } else {
+
                 if (data.compareTo(nextParent.getData()) == 0) {
                     stopCondition = true;
                 } else {
                     parent = nextParent;
                 }
-            } catch (NullPointerException e) {
-                stopCondition = true;
             }
         }
         return parent;
-
     }
 
     /** creation iterator*/
@@ -159,11 +163,13 @@ public class Tree<T extends Comparable> implements Iterable<T>{
             }
         }
 
+        //** checks if there is next element in tree*/
         public boolean hasNext() {
             return next != null;
         }
 
-        public T next () throws NoSuchElementException {
+        //** gets next element from tree*/
+        public T next() throws NoSuchElementException {
             if (next == null) {
                 throw new NoSuchElementException();
             }
@@ -192,6 +198,7 @@ public class Tree<T extends Comparable> implements Iterable<T>{
             return current.getData();
         }
 
+        //** deletes current element of tree*/
         public void remove() throws IllegalStateException {
             if (current == null) {
                 throw new IllegalStateException();
