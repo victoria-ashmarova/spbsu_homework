@@ -121,4 +121,47 @@ public class TreeTest {
             last = element;
         }
     }
+
+    @Test
+    public void removalOneElementTest() {
+        Integer[] elements = {5, 3, 7, 4, 2, 1, 9, 8};
+        Tree<Integer> tree = createTree(elements);
+        Iterator<Integer> iterator = tree.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().equals(5)) {
+                iterator.remove();
+            }
+        }
+        assertFalse(tree.search(3));
+        assertEquals(7, tree.getSize());
+    }
+
+    @Test (expected = IllegalStateException.class)
+    public void twoRemovalsAfterOneCallNextTest() {
+        Integer[] elements = {5, 3, 7, 4, 2, 1, 9, 8};
+        Tree<Integer> tree = createTree(elements);
+        Iterator<Integer> iterator = tree.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().equals(3)) {
+                iterator.remove();
+                iterator.remove();
+            }
+        }
+    }
+
+    @Test
+    public void correctRemovalTest() {
+        Integer[] elements = {5, 3, 7, 4, 2, 1, 9, 8};
+        Tree<Integer> tree = createTree(elements);
+        Iterator<Integer> iterator = tree.iterator();
+        Integer sum = 0;
+        while (iterator.hasNext()) {
+           Integer value = iterator.next();
+           if (value % 2 == 0) {
+               iterator.remove();
+           }
+        }
+        assertEquals(5, tree.getSize());
+
+    }
 }

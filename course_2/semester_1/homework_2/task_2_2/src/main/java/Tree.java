@@ -207,6 +207,7 @@ public class Tree<T extends Comparable> implements Iterable<T>{
                 nodeStack.push(current.getRightChild());
             }
             Tree.this.remove(current.getData());
+            current = null;
         }
     }
 }
