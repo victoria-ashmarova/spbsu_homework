@@ -150,6 +150,7 @@ public class Tree<T extends Comparable> implements Iterable<T>{
         private TreeNode<T> next;
         private Stack<TreeNode<T>> nodeStack;
 
+        //** sets first element as tree's element with less value*/
         public TreeIterator() {
             this.current = null;
             this.next = root;

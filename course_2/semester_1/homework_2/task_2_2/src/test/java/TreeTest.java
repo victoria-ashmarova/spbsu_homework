@@ -128,7 +128,7 @@ public class TreeTest {
         Tree<Integer> tree = createTree(elements);
         Iterator<Integer> iterator = tree.iterator();
         while (iterator.hasNext()) {
-            if (iterator.next().equals(5)) {
+            if (iterator.next().equals(3)) {
                 iterator.remove();
             }
         }
@@ -162,6 +162,5 @@ public class TreeTest {
            }
         }
         assertEquals(5, tree.getSize());
-
     }
 }
