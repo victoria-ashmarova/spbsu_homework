@@ -1,21 +1,19 @@
 /**
  * Created by Виктория on 13.12.2017.
  */
-abstract public class Computer {
-    protected String nameOfOS;
-    protected double probabilityOfInfection;
-    protected boolean isInfected = false;
+public class Computer {
+    private NameOfOS nameOfOS;
+    private boolean isInfected = false;
 
-    //how to infect?
     public void setInfection() {
         this.isInfected = true;
     }
 
     public double getProbabilityOfInfection() {
-        return this.probabilityOfInfection;
+        return this.nameOfOS.getProbabilityOfInfection();
     }
 
     public String getNameOfOS() {
-        return this.nameOfOS;
+        return this.nameOfOS.getName();
     }
 }

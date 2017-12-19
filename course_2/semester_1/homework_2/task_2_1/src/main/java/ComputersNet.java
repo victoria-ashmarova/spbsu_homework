@@ -7,9 +7,10 @@ public class ComputersNet {
     private ArrayList<Computer> computers;
     private boolean[][] connection;
 
-    //читает из файла информацию о сети и компах и перегоняет ее суда
-    public ComputersNet() {
-        //todo
+    //сюда скидывается уже чтецом полученная инфа
+    public ComputersNet(ArrayList<Computer> computers, boolean[][]connection) {
+        this.computers = computers;
+        this.connection = connection;
     }
 
     public Computer getComputer(int number) {
