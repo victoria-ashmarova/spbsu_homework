@@ -2,7 +2,7 @@
  * Created by Виктория on 19.12.2017.
  */
 public enum OperationSystem {
-    WINDOWS, MAS_O__S, LINUX;
+    WINDOWS, MAC_O_S, LINUX;
 
     private final double windowsProbabilityOfInfection = 0.5;
     private final double linuxProbabilityOfInfection = 0.7;
@@ -13,7 +13,7 @@ public enum OperationSystem {
             case LINUX: {
                 return linuxProbabilityOfInfection;
             }
-            case MAS_O__S: {
+            case MAC_O_S: {
                 return macOSProbabilityOfInfection;
             }
             case WINDOWS: {

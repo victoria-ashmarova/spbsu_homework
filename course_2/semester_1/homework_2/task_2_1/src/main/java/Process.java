@@ -32,7 +32,7 @@ public class Process {
                 stepOfChecking(net, iteration); //период?
                 iteration++;
             }
-        } catch (NoNetException e) {
+        } catch (IncorrectDataException e) {
             e.message();
         }
     }
@@ -53,7 +53,7 @@ public class Process {
 
             i++;
         }
-        return i;
+        return i - 1;
     }
 
     /**

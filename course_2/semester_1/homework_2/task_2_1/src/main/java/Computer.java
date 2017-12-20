@@ -1,5 +1,5 @@
 /**
- * Created by Виктория on 13.12.2017.
+ * Keeping information about operation system and state of infection
  */
 public class Computer {
     private final int number;
@@ -24,6 +24,6 @@ public class Computer {
     }
 
     public void print() {
-        System.out.println(number + ".) " + operationSystem.name() + " is infected:" + isInfected());
+        System.out.println(number + 1 + ".) " + operationSystem.name() + " is infected:" + isInfected());
     }
 }
