@@ -18,12 +18,13 @@ public class ComputersNet {
     }
 
     public boolean areConnected(int first, int second) throws IncorrectComputerNumberException{
-        if (first < 0  || first > computers.size() || second < 0 || second > computers.size()) {
-            throw new IncorrectComputerNumberException();
+        if (first < 0  ||  second < 0) {
+            throw new IncorrectComputerNumberException("Number of computer is less then zero");
         }
+        if (first > computers.size() || second > computers.size()) {
+            throw new IncorrectComputerNumberException("Number of computer is more then amount of computers");
+        }
+
         return this.connection[first][second];
     }
-
-    public class IncorrectComputerNumberException extends Exception {}
-    //добавить исключение для неправильных прочтений с файла
 }
