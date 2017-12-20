@@ -11,6 +11,10 @@ public class Computer {
         this.operationSystem = operationSystem;
     }
 
+    public boolean isInfected() {
+        return this.isInfected;
+    }
+
     public void setInfection() {
         this.isInfected = true;
     }
@@ -19,7 +23,7 @@ public class Computer {
         return this.operationSystem.getProbabilityOfInfection();
     }
 
-    public String getOperationSystem() {
-        return this.operationSystem.name();
+    public void print() {
+        System.out.println(number + ".) " + operationSystem.name() + " is infected:" + isInfected());
     }
 }

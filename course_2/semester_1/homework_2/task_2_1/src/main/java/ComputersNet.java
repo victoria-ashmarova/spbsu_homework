@@ -13,8 +13,12 @@ public class ComputersNet {
         this.connection = connection;
     }
 
-    public Computer getComputer(int number) {
-        return this.computers.get(number);
+    public Computer getComputer(int index) {
+        return this.computers.get(index);
+    }
+
+    public int getSize() {
+        return this.computers.size();
     }
 
     public boolean areConnected(int first, int second) throws IncorrectComputerNumberException{
@@ -26,5 +30,11 @@ public class ComputersNet {
         }
 
         return this.connection[first][second];
+    }
+
+    public void printState() {
+        for (Computer computer : computers) {
+            computer.print();
+        }
     }
 }
