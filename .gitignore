@@ -1,4 +1,8 @@
 target/
-.idea/
+libraries/
+out/
+artifacts/
+*.html
+*.xml
 !misc.xml
 !modules.xml
