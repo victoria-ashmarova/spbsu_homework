@@ -1,24 +1,36 @@
 import java.util.ArrayList;
 
 /**
- * Created by Виктория on 13.12.2017.
+ * Keeps information about connection between computers
  */
 public class ComputersNet {
     private ArrayList<Computer> computers;
     private boolean[][] connection;
+    private int periodOfChecking;
+    private int attemptsCoefficient;
 
-    //сюда скидывается уже чтецом полученная инфа
-    public ComputersNet(ArrayList<Computer> computers, boolean[][]connection) {
+
+    public ComputersNet(ArrayList<Computer> computers, boolean[][]connection, int periodOfChecking, int attemptsCoefficient) {
         this.computers = computers;
         this.connection = connection;
+        this.periodOfChecking = periodOfChecking;
+        this.attemptsCoefficient = attemptsCoefficient;
     }
 
     public Computer getComputer(int index) {
-        return this.computers.get(index);
+        return this.computers.get(index - 1);
     }
 
     public int getSize() {
         return this.computers.size();
+    }
+
+    public int getPeriodOfChecking() {
+        return this.periodOfChecking;
+    }
+
+    public int getAttemptsCoefficient() {
+        return this.attemptsCoefficient;
     }
 
     public boolean areConnected(int first, int second) throws IncorrectComputerNumberException{

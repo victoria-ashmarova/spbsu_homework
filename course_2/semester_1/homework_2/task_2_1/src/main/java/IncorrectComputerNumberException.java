@@ -1,5 +1,5 @@
 /**
- * Created by Виктория on 20.12.2017.
+ *
  */
 public class IncorrectComputerNumberException extends Exception {
     private String cause;

@@ -5,18 +5,18 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
- * Creates net, getting information about it from file
+ * Creates net, gets information about it from file
  */
 public class NetsCreator {
     /** gets name of file from console*/
-    private String nameOfFile() {
+    private static String nameOfFile() {
         System.out.print("Enter the name of file>");
         Scanner sc = new Scanner(System.in);
         return sc.next();
     }
 
     /** gets file scanner from its name*/
-    private Scanner getFileScanner() throws FileNotFoundException {
+    public static Scanner getFileScanner() throws FileNotFoundException {
         File file = new File(nameOfFile());
         return new Scanner(file);
     }
@@ -26,37 +26,51 @@ public class NetsCreator {
      * @return ComputersNet
      * @throws IncorrectDataException when there is no file to read or file to read is incorrect
      */
-    public ComputersNet createNet() throws IncorrectDataException {
+    public ComputersNet createNet(Scanner fileScanner) throws IncorrectDataException {
         try {
-            Scanner file = getFileScanner();
+            int numberOfComputers = fileScanner.nextInt();
+            int period = fileScanner.nextInt();
+            int attemptsCoefficient = fileScanner.nextInt();
 
-            int numberOfComputers = file.nextInt();
-            file.nextLine();
+            fileScanner.nextLine();
             if (numberOfComputers < 2) {
                 throw new IncorrectDataException("Error. Amount of computers in net is less, than 2.");
             }
-
-            boolean[][] connection = new boolean[numberOfComputers][numberOfComputers];
-            for (int i = 0; i < numberOfComputers; i++) {
-                for (int j = 0; j < numberOfComputers; j++) {
-                    connection[i][j] = false;
-                }
+            if (period < 1) {
+                throw new IncorrectDataException("Error. Period of checking of net is less, than 1");
             }
+            if (attemptsCoefficient < 1) {
+                throw new IncorrectDataException("Error. Iteration coefficient is less, than 1");
+            }
+
+            boolean[][] connection = createConnectionTable(numberOfComputers);
+
             ArrayList<Computer> computers = new ArrayList<Computer>();
 
-            while (file.hasNext()) {
-                String[] data = file.nextLine().split(" ");
+            while (fileScanner.hasNext()) {
+                String[] data = fileScanner.nextLine().split(" ");
                 addComputer(data, computers, connection);
             }
 
-            file.close();
-            return new ComputersNet(computers, connection);
+            fileScanner.close();
+            return new ComputersNet(computers, connection, period, attemptsCoefficient);
 
-        } catch (FileNotFoundException e) {
+        } catch (NullPointerException e) {
             throw new IncorrectDataException ("Error. Couldn't open the file to create net.");
         } catch (NoSuchElementException e) {
             throw new IncorrectDataException ("Error. There is incorrect data in file.");
         }
+    }
+
+    /** created boolean table of connection, where all values are false*/
+    private boolean[][] createConnectionTable(int numberOfComputers) {
+        boolean[][] connection = new boolean[numberOfComputers][numberOfComputers];
+        for (int i = 0; i < numberOfComputers; i++) {
+            for (int j = 0; j < numberOfComputers; j++) {
+                connection[i][j] = false;
+            }
+        }
+        return connection;
     }
 
     /**

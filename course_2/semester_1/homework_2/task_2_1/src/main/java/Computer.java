@@ -1,5 +1,5 @@
 /**
- * Keeping information about operation system and state of infection
+ * Keeps information about operation system and state of infection
  */
 public class Computer {
     private final int number;

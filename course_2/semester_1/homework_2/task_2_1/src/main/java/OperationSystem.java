@@ -1,5 +1,5 @@
 /**
- * Created by Виктория on 19.12.2017.
+ * Keeps names of operation systems and its probabilities of infection
  */
 public enum OperationSystem {
     WINDOWS, MAC_O_S, LINUX;
