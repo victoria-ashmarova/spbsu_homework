@@ -101,7 +101,7 @@ public class NetsCreator {
             throw new IncorrectDataException("Error of net creation. There is incorrect name of operation system");
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new IncorrectDataException("Error of net creation. There is incorrect input data about connection between computers.");
-        } 
+        }
     }
 
     /**
