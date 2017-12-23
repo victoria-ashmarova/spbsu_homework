@@ -33,15 +33,15 @@ public class ComputersNet {
         return this.attemptsCoefficient;
     }
 
-    public boolean areConnected(int first, int second) throws IncorrectComputerNumberException{
-        if (first < 0  ||  second < 0) {
+    public boolean firstIsConnectedWithSecond(int first, int second) throws IncorrectComputerNumberException{
+        if (first < 1  ||  second < 1) {
             throw new IncorrectComputerNumberException("Number of computer is less then zero");
         }
         if (first > computers.size() || second > computers.size()) {
             throw new IncorrectComputerNumberException("Number of computer is more then amount of computers");
         }
 
-        return this.connection[first][second];
+        return this.connection[first - 1][second - 1];
     }
 
     public void printState() {

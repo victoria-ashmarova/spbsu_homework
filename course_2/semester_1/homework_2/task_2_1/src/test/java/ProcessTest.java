@@ -13,7 +13,7 @@ public class ProcessTest {
 
     /** test correctness of step of infection*/
     @Test
-    public void stepOfInfectionTest() throws IncorrectDataException {
+    public void firstStepOfInfectionTest() throws IncorrectDataException {
         Random rnd = new Random();
         NetsCreator creator = new NetsCreator();
         ComputersNet net = creator.createNet(new Scanner(testData));
@@ -28,5 +28,37 @@ public class ProcessTest {
         assertFalse(net.getComputer(4).isInfected());
         assertFalse(net.getComputer(5).isInfected());
         assertFalse(net.getComputer(6).isInfected());
+    }
+
+    @Test
+    public void someStepOfInfectionTest() throws IncorrectDataException {
+        Random rnd = new Random();
+        NetsCreator creator = new NetsCreator();
+        ComputersNet net = creator.createNet(new Scanner(testData));
+
+        net.getComputer(1).setInfection();
+        net.getComputer(3).setInfection();
+        net.getComputer(5).setInfection();
+        Queue<Integer> toInfect = new ConcurrentLinkedQueue<Integer>();
+        toInfect.add(2);
+        toInfect.add(4);
+
+        Process.stepOfInfection(toInfect, net, rnd);
+        boolean nextState = (net.getComputer(2).isInfected() && !toInfect.contains(2))
+                || (!net.getComputer(2).isInfected() && toInfect.contains(2));
+        assertTrue(nextState);
+    }
+
+    @Test
+    public void additionConnectedWithInfectedTest() throws IncorrectDataException {
+        NetsCreator creator = new NetsCreator();
+        ComputersNet net = creator.createNet(new Scanner(testData));
+        net.getComputer(3).setInfection();
+        Queue<Integer> toInfect = new ConcurrentLinkedQueue<Integer>();
+        Process.addConnectedWithInfected(3, net, toInfect);
+        assertEquals(3, toInfect.size());
+        assertTrue(toInfect.contains(1));
+        assertTrue(toInfect.contains(4));
+        assertTrue(toInfect.contains(5));
     }
 }

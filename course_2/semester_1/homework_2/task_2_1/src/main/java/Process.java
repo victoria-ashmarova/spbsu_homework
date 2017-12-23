@@ -43,10 +43,10 @@ public class Process {
 
     /** infected one computer of net and returns its number*/
     private static Integer primaryInfection(ComputersNet net, Random rnd) {
-        int i = 0;
+        int i = 1;
         boolean stopCondition = false;
 
-        while (!stopCondition && i < net.getSize()) {
+        while (!stopCondition && i <= net.getSize()) {
             double currentProbability = getCurrentProbabilityOfInfection(rnd);
             Computer current = net.getComputer(i);
 
@@ -86,10 +86,10 @@ public class Process {
      * @param net for getting connected computers
      * @param toInfect queue for infection
      */
-    private static void addConnectedWithInfected(int numberOfInfected, ComputersNet net, Queue<Integer> toInfect) {
+    protected static void addConnectedWithInfected(int numberOfInfected, ComputersNet net, Queue<Integer> toInfect) {
         try {
-            for (int i = 0; i < net.getSize(); i++) {
-                if (net.areConnected(numberOfInfected, i) && !net.getComputer(i).isInfected()) {
+            for (int i = 1; i <= net.getSize(); i++) {
+                if (net.firstIsConnectedWithSecond(numberOfInfected, i) && !net.getComputer(i).isInfected()) {
                     toInfect.add(i);
                 }
             }

@@ -11,6 +11,10 @@ public class Computer {
         this.operationSystem = operationSystem;
     }
 
+    public int getNumber() {
+        return this.number;
+    }
+
     public boolean isInfected() {
         return this.isInfected;
     }

@@ -44,21 +44,20 @@ public class NetsCreator {
             }
 
             boolean[][] connection = createConnectionTable(numberOfComputers);
-
             ArrayList<Computer> computers = new ArrayList<Computer>();
-
             while (fileScanner.hasNext()) {
                 String[] data = fileScanner.nextLine().split(" ");
                 addComputer(data, computers, connection);
             }
 
             fileScanner.close();
+            if (numberOfComputers != computers.size()) {
+                throw new IncorrectDataException("Error. Actual amount of computers in net if different from set.");
+            }
             return new ComputersNet(computers, connection, period, attemptsCoefficient);
 
         } catch (NullPointerException e) {
             throw new IncorrectDataException ("Error. Couldn't open the file to create net.");
-        } catch (NoSuchElementException e) {
-            throw new IncorrectDataException ("Error. There is incorrect data in file.");
         }
     }
 
@@ -83,6 +82,9 @@ public class NetsCreator {
     private void addComputer(String[] data, ArrayList<Computer> computers, boolean[][]connection) throws IncorrectDataException{
         try {
             int numberOfComputer = Integer.parseInt(data[0]) - 1;
+            if (numberIsInList(numberOfComputer, computers)) {
+                throw new IncorrectDataException("Error of net creation. There is two computers with the same number.");
+            }
 
             OperationSystem operationSystem = OperationSystem.valueOf(data[1]);
             computers.add(new Computer(numberOfComputer, operationSystem));
@@ -90,17 +92,28 @@ public class NetsCreator {
             for (int i = 2; i < data.length; i++) {
                 int numberOfConnected = Integer.parseInt(data[i]) - 1;
                 if (numberOfComputer == numberOfConnected) {
-                    throw new IncorrectDataException("Incorrect input data");
+                    throw new IncorrectDataException("Error. Computer mustn't connect with itself.");
                 }
                 connection[numberOfComputer][numberOfConnected] = true;
 
             }
         } catch (IllegalArgumentException e) {
-            throw new IncorrectDataException("Error. There is incorrect name of operation system");
+            throw new IncorrectDataException("Error of net creation. There is incorrect name of operation system");
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new IncorrectDataException("Error. There is incorrect input data about connection between computers.");
-        } catch (NullPointerException e) {
-            throw new IncorrectDataException("Incorrect input data");
+            throw new IncorrectDataException("Error of net creation. There is incorrect input data about connection between computers.");
+        } 
+    }
+
+    /**
+     * @param number to check
+     * @param computers list with computers
+     * @return if computer with this number is in list
+     */
+    private boolean numberIsInList(int number, ArrayList<Computer> computers) {
+        boolean contains = false;
+        for (Computer computer : computers) {
+            contains = contains || computer.getNumber() == number;
         }
+        return contains;
     }
 }
