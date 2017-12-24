@@ -13,31 +13,24 @@ public class Game {
         redraw();
     }
 
-    public Relief getRelief() {
-        return this.relief;
-    }
-
-    public Tank tank() {
-        return this.tank;
-    }
-
     private void redraw() {
         this.relief.draw();
         this.tank.draw();
     }
 
-    public void moveTank(boolean rightDirection) {
-        double angle = 0;
-        tank.moveTank(rightDirection, angle);
+    private void moveTank(boolean rightDirection) {
+        double angle = relief.inclinationAngle(tank.getCenterX(), rightDirection);
+        double distanceToVertex = relief.distanceToVertex(tank.getCenterX());
+        tank.moveTank(rightDirection, angle, distanceToVertex);
         redraw();
     }
 
-    public void changeInclinationAngle(boolean clockWiseDirection) {
+    private void gunRotate(boolean clockWiseDirection) {
         tank.gunRotate(clockWiseDirection);
         redraw();
     }
 
-    public void shoot() {
+    private void shoot() {
         //аааааааааааа
     }
 
@@ -45,11 +38,11 @@ public class Game {
     public void handleKeyPress(KeyEvent e) {
         switch (e.getCode()) {
             case UP: {
-                changeInclinationAngle(true);
+                gunRotate(true);
                 break;
             }
             case DOWN: {
-                changeInclinationAngle(false);
+                gunRotate(false);
                 break;
             }
             case RIGHT: {

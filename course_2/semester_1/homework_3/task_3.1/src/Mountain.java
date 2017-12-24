@@ -9,12 +9,18 @@ public class Mountain {
     private double rightEdge;
     private double bottomLevel;
 
+    private final double rightEdgeAngle;
+    private final double leftEdgeAngle;
+
     public Mountain(double peak, double peakHeight, double leftEdge, double rightEdge, double bottomLevel) {
         this.peak = peak;
-        this.peakHeight = peakHeight;
+        this.peakHeight = bottomLevel - peakHeight;
         this.leftEdge = leftEdge;
         this.rightEdge = rightEdge;
         this.bottomLevel = bottomLevel;
+
+        this.rightEdgeAngle = Math.atan(peakHeight / (rightEdge - peak));
+        this.leftEdgeAngle = Math.atan(peakHeight / (leftEdge - peak));
     }
 
     public int getSize() {
@@ -22,7 +28,7 @@ public class Mountain {
     }
 
     public double getPeakHeight() {
-        return this.bottomLevel - this.peakHeight;
+        return this.peakHeight;
     }
 
     public double getPeak() {
@@ -43,7 +49,15 @@ public class Mountain {
     }
 
     public double[] getY() {
-        double[] y = new double[]{bottomLevel, bottomLevel - peakHeight, bottomLevel};
+        double[] y = new double[]{bottomLevel, peakHeight, bottomLevel};
         return y;
+    }
+
+    public double getLeftEdgeAngle() {
+        return leftEdgeAngle;
+    }
+
+    public double getRightEdgeAngle() {
+        return rightEdgeAngle;
     }
 }

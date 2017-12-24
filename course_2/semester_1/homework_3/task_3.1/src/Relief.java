@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Relief {
     private final Canvas canvas;
     private GraphicsContext graphicsContext;
-    ArrayList<Mountain> mountains;
+    private ArrayList<Mountain> mountains;
 
     public Relief(Canvas canvas) {
         this.canvas = canvas;
@@ -18,27 +18,59 @@ public class Relief {
         this.mountains = generateMountains();
     }
 
-    public ArrayList<Mountain> getMountains() {
-        return this.mountains;
-    }
-
     public void draw() {
         graphicsContext.setFill(Color.BLUE);
         graphicsContext.fillRect(0, 0 , canvas.getWidth(), canvas.getHeight()); //костыльно
+
         graphicsContext.setFill(Color.GREEN);
         for (int i = 0; i < mountains.size(); i++) {
             graphicsContext.fillPolygon(mountains.get(i).getX(), mountains.get(i).getY(), mountains.get(i).getSize());
         }
+        double outsole = canvas.getHeight() * 0.9;
+        graphicsContext.fillRect(0, outsole, canvas.getWidth(), canvas.getHeight() - outsole);
+
     }
 
-    //здесь их производство и захардкордим
     private ArrayList<Mountain> generateMountains() {
         ArrayList<Mountain> mountains = new ArrayList<Mountain>();
         //магическое создание гор
-        double height = canvas.getHeight();
-        mountains.add(new Mountain(100, 300, 0, 300, height));
-        mountains.add(new Mountain(400, 200, 250, 500, height));
-        mountains.add(new Mountain(500, 100, 400, 600, height));
+        mountains.add(new Mountain(200, 200, 0, 400, canvas.getHeight()));
+        mountains.add(new Mountain(500, 200, 400, 600, canvas.getHeight()));
         return mountains;
+    }
+
+    private int numberOfMountain(double x) {
+        int i = 0;
+        boolean stopCondition = false;
+        while (i < mountains.size() && !stopCondition) {
+            if (x > mountains.get(i).getLeftEdge() && x < mountains.get(i).getRightEdge()) {
+                stopCondition = true;
+            }
+            i++;
+        }
+        return i - 1;
+    }
+
+    public double distanceToVertex(double x) {
+        Mountain mountain = mountains.get(numberOfMountain(x));
+        double toPeak = Math.abs(x - mountain.getPeak());
+        double toLeft = Math.abs(x - mountain.getLeftEdge());
+        double toRight = Math.abs(x - mountain.getRightEdge());
+        return Math.min(Math.min(toLeft, toPeak), toRight);
+    }
+
+    public double inclinationAngle(double x, boolean rightDirection) {
+        Mountain mountain = mountains.get(numberOfMountain(x));
+        double angle = 0;
+        if (x == mountain.getPeak()) {
+            angle = (rightDirection) ? mountain.getRightEdgeAngle() : mountain.getLeftEdgeAngle();
+        }
+        if (x > mountain.getPeak()) {
+            angle = mountain.getRightEdgeAngle();
+        }
+        if (x < mountain.getPeak()) {
+            angle = mountain.getLeftEdgeAngle();
+        }
+        return angle;
     }
 }
