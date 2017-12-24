@@ -1,5 +1,3 @@
-package sample;
-
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -10,26 +8,30 @@ import javafx.scene.paint.Color;
 public class Tank {
     private Canvas canvas;
     private GraphicsContext graphicsContext;
-    private double inclinationAngle = 0;
+
     private final double height = 10;
     private final double width = 15;
     private final double gunLength = 20;
     private final double gunDiam = 3;
     private final double littleShellDiam = 2;
 
+    private final double step = 10;
+    private final double angleDelta = Math.PI / 4;
+
     private double centerX;
     private double centerY;
+    private double inclinationAngle = 0;
 
-    public Tank(Canvas canvas) {
+    public Tank(Canvas canvas, double startX, double startY) {
         this.canvas = canvas;
         this.graphicsContext = canvas.getGraphicsContext2D();
+        this.centerX = startX;
+        this.centerY = startY;
     }
 
-    public void draw(double x, double y) {
+    public void draw() {
         graphicsContext.setFill(Color.YELLOW);
-        graphicsContext.fillRect(x, y, width * 2, height * 2);
-        centerX = x + width;
-        centerY = y + height;
+        graphicsContext.fillRect(centerX - width, centerY - height, width * 2, height * 2);
         drawGun();
     }
 
@@ -54,12 +56,16 @@ public class Tank {
         //связь с углом наклона пушки
     }
 
-    public void changeInclinationAngle(double delta) {
-        inclinationAngle += delta;
+    public void gunRotate(boolean clockWiseDirection) {
+        inclinationAngle += (clockWiseDirection) ? -angleDelta : angleDelta;
         inclinationAngle = (inclinationAngle > Math.PI * 2) ? inclinationAngle - Math.PI * 2 : inclinationAngle;
-        //как убрать старую пушку?
-        //этим должен заниматься класс с игрой
-        //не хочется перерисовывать всю пушку из-за одного ружья
+    }
+
+    public void moveTank(boolean rightDirection, double angleOfInclination) {
+        double xStep = step * Math.cos(angleOfInclination);
+        double yStep = step * Math.sin(angleOfInclination);
+        centerX += (rightDirection) ? xStep : -xStep;
+        centerY += (rightDirection) ? yStep : -yStep;
     }
 
     /** draws shell*/
