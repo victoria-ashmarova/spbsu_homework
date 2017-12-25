@@ -1,9 +1,5 @@
 import javafx.scene.input.KeyEvent;
 
-import javax.management.timer.Timer;
-import java.util.concurrent.TimeUnit;
-
-
 /**
  * Process of playing
  */
@@ -19,11 +15,18 @@ public class Game {
         redraw();
     }
 
+    /**
+     * draws background and tank
+     */
     private void redraw() {
         this.relief.draw();
         this.tank.draw();
     }
 
+    /**
+     * moves tank according to background
+     * @param rightDirection is true, when tank must go with right direction
+     */
     private void moveTank(boolean rightDirection) {
         double angle = relief.inclinationAngle(tank.getCenterX(), rightDirection);
         double distanceToVertex = relief.distanceToVertex(tank.getCenterX());
@@ -31,13 +34,18 @@ public class Game {
         redraw();
     }
 
+    /**
+     * rotates gun of tank
+     * @param clockWiseDirection is true, when gun of tank must go with clockwise direction
+     */
     private void gunRotate(boolean clockWiseDirection) {
         tank.gunRotate(clockWiseDirection);
         redraw();
     }
 
-    //а еще х может за горизонт улететь
-    //поточность
+    /**
+     * implements moving of ball from tank
+     */
     private void flyingOfBall() {
         double x = tank.getGunsX();
         double y = tank.getGunsY();
@@ -48,6 +56,9 @@ public class Game {
         shooting.start();
     }
 
+    /**
+     * handler for key events
+     */
     public void handleKeyPress(KeyEvent e) {
         switch (e.getCode()) {
             case UP: {
@@ -73,8 +84,9 @@ public class Game {
         }
     }
 
-
-
+    /**
+     * implementation of shooting
+     */
     private class Shooting extends Thread{
         private double x;
         private double y;
@@ -92,10 +104,10 @@ public class Game {
         public void run() {
             double stepX = speed * Math.cos(angle);
             double startSpeedY = speed * Math.sin(angle);
-
+            boolean stopCondition = false;
             int t = 0;
-            while (y > 0) {
-                tank.drawBall(x, y);
+            while (!stopCondition) {
+                stopCondition = !tank.drawBall(x, y) || relief.isMountainPoint(x, y);
                 t++;
                 x += stepX;
 

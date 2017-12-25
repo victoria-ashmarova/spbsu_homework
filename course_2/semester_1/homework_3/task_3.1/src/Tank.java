@@ -3,7 +3,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /**
- * Drawing and shooting of tank
+ * Keeps information about tank
  */
 public class Tank {
     private Canvas canvas;
@@ -31,12 +31,18 @@ public class Tank {
         this.centerY = startY;
     }
 
+    /**
+     * draw tank on canvas
+     */
     public void draw() {
         graphicsContext.setFill(Color.YELLOW);
         graphicsContext.fillRect(centerX - width, centerY - height, width * 2, height * 2);
         drawGun();
     }
 
+    /**
+     * draws gun of tank on canvas
+     */
     private void drawGun() {
         int numberOfPoints = 4;
         double cos = Math.cos(gunsAngle);
@@ -55,12 +61,21 @@ public class Tank {
     }
 
 
-
+    /**
+     * change gun's angle of inclination
+     * @param clockWiseDirection is true if gun must go with clockwise direction
+     */
     public void gunRotate(boolean clockWiseDirection) {
         gunsAngle += (clockWiseDirection) ? -angleDelta : angleDelta;
         gunsAngle = (gunsAngle > Math.PI * 2) ? gunsAngle - Math.PI * 2 : gunsAngle;
     }
 
+    /**
+     * changes location of tank
+     * @param rightDirection is true, when tank must go with right direction
+     * @param angleOfInclination is angle of inclination of mountain, where tank is located
+     * @param distanceToVertex is distance between tank and closes vertex of mountain
+     */
     public void moveTank(boolean rightDirection, double angleOfInclination, double distanceToVertex) {
         double xStep = 0;
         double yStep = 0;
@@ -93,7 +108,6 @@ public class Tank {
         return this.centerX;
     }
 
-    //getters for shooting
     public double getGunsAngle() {
         return this.gunsAngle;
     }
@@ -110,8 +124,19 @@ public class Tank {
         return this.speed;
     }
 
-    public void drawBall(double x, double y) {
+    /**
+     *
+     * @param x is x coordinate of center of ball
+     * @param y is y coordinate of center of ball
+     * @return true if there is ability to draw ball
+     */
+    public boolean drawBall(double x, double y) {
+        if (x < 0 || x > canvas.getWidth() || y < 0) {
+            return false;
+        }
+
         graphicsContext.setFill(Color.PURPLE);
         graphicsContext.fillOval(x, canvas.getHeight() - y, littleBallsDiam, littleBallsDiam);
+        return true;
     }
 }

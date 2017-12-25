@@ -5,19 +5,24 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
 /**
- * Drawing some relief on background
+ * Keeps information about mountains on background.
  */
 public class Relief {
     private final Canvas canvas;
     private GraphicsContext graphicsContext;
     private ArrayList<Mountain> mountains;
+    private final double outsole;
 
     public Relief(Canvas canvas) {
         this.canvas = canvas;
         this.graphicsContext = canvas.getGraphicsContext2D();
         this.mountains = generateMountains();
+        this.outsole = canvas.getHeight() * 0.9;
     }
 
+    /**
+     * draw background on canvas
+     */
     public void draw() {
         graphicsContext.setFill(Color.BLUE);
         graphicsContext.fillRect(0, 0 , canvas.getWidth(), canvas.getHeight()); //костыльно
@@ -26,11 +31,15 @@ public class Relief {
         for (int i = 0; i < mountains.size(); i++) {
             graphicsContext.fillPolygon(mountains.get(i).getX(), mountains.get(i).getY(), mountains.get(i).getSize());
         }
-        double outsole = canvas.getHeight() * 0.9;
+
         graphicsContext.fillRect(0, outsole, canvas.getWidth(), canvas.getHeight() - outsole);
 
     }
 
+    /**
+     * creates mountains for background
+     * @return array list with mountains
+     */
     private ArrayList<Mountain> generateMountains() {
         ArrayList<Mountain> mountains = new ArrayList<Mountain>();
         mountains.add(new Mountain(150, 200, 0, 300, canvas.getHeight()));
@@ -38,6 +47,11 @@ public class Relief {
         return mountains;
     }
 
+    /**
+     * searches mountains, which contains x
+     * @param x is x coordinate
+     * @return number of mountain, which contains x or -1 if x is between mountains
+     */
     private int numberOfMountain(double x) {
         int i = 0;
         boolean mountainFound = false;
@@ -63,6 +77,11 @@ public class Relief {
         return (mountainNotFound) ? -1 : i - 1;
     }
 
+    /**
+     * @param x is x coordinate
+     * @param rightDirection is true, if it is necessary to get right edge in mountain peak
+     * @return angle of inclination of appropriate slope of appropriate mountain
+     */
     public double inclinationAngle(double x, boolean rightDirection) {
         int number = numberOfMountain(x);
         if (number == -1) {
@@ -82,6 +101,10 @@ public class Relief {
         return angle;
     }
 
+    /**
+     * @param x is x coordinate
+     * @return distance between x and closest vertex of moiuntain
+     */
     public double distanceToVertex(double x) {
         double min = canvas.getWidth();
         for (Mountain mountain : mountains) {
@@ -91,5 +114,25 @@ public class Relief {
             min = Math.min(Math.min(min, distToPeak), Math.min(distToLeft, distToRight));
         }
         return min;
+    }
+
+    /**
+     * @param x is x coordinate
+     * @param y is y coordinate
+     * @return true if point with x and y coordinates is in mountain
+     */
+    public boolean isMountainPoint(double x, double y) {
+        int number = numberOfMountain(x);
+        if (number == -1) {
+            return y < (canvas.getHeight() - outsole);
+        }
+
+        Mountain mountain = mountains.get(number);
+        double angle = inclinationAngle(x, true);
+        double vertex = (x < mountain.getPeak()) ? mountain.getLeftEdge() : mountain.getRightEdge();
+
+        double horizon = Math.abs((x - vertex) * Math.tan(angle));
+
+        return y <= horizon;
     }
 }

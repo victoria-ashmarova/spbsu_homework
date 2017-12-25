@@ -1,5 +1,5 @@
 /**
- * Created by Виктория on 19.12.2017.
+ * Information about ome mountain.
  */
 public class Mountain {
     private final int size = 3;
@@ -43,11 +43,19 @@ public class Mountain {
         return this.rightEdge;
     }
 
+    /**
+     * converts x coordinates of mountain vertexes to array
+     * @return array with x coordinates
+     */
     public double[] getX() {
         double[] x = new double[]{leftEdge, peak, rightEdge};
         return x;
     }
 
+    /**
+     * converts y coordinates of mountain vertexes to array
+     * @return array with y coordinates
+     */
     public double[] getY() {
         double[] y = new double[]{bottomLevel, peakHeight, bottomLevel};
         return y;
