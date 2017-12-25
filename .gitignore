@@ -1,4 +1,8 @@
 target/
 libraries/
-compiler.xml
-workspace.xml
+out/
+artifacts/
+*.html
+*.xml
+!misc.xml
+!modules.xml
