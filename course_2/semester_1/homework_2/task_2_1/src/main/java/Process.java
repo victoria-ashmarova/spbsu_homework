@@ -10,29 +10,12 @@ public class Process {
         try {
             NetsCreator creator = new NetsCreator();
             ComputersNet net = creator.createNet(NetsCreator.getFileScanner());
-            Random rnd = new Random();
+            Virus virus = new RandomInfectingVirus();
 
-            Integer numberOfFirstInfected = primaryInfection(net, rnd);
-            int maxIterations = net.getAttemptsCoefficient() * net.getSize();
-            int periodOfChecking = net.getPeriodOfChecking();
+            Integer numberOfFirstInfected = primaryInfection(net, virus);
 
-            if (numberOfFirstInfected == net.getSize()) {
-                System.out.print("Primary infection didn't situate");
-                return;
-            }
+            process(numberOfFirstInfected, net, virus);
 
-            Queue<Integer> toInfect = new ConcurrentLinkedQueue<Integer>();
-            addConnectedWithInfected(numberOfFirstInfected, net, toInfect);
-
-            int iteration = 0;
-            while (iteration < maxIterations && !toInfect.isEmpty()) {
-                stepOfInfection(toInfect, net, rnd);
-                if (iteration % periodOfChecking == 0) {
-                    stepOfChecking(net, iteration / periodOfChecking + 1);
-                }
-                iteration++;
-            }
-            finalMessage(toInfect);
 
         } catch (IncorrectDataException e) {
             e.message();
@@ -41,16 +24,37 @@ public class Process {
         }
     }
 
+    protected static void process(Integer numberOfFirstInfected, ComputersNet net, Virus virus) {
+        int maxIterations = net.getAttemptsCoefficient() * net.getSize();
+        int periodOfChecking = net.getPeriodOfChecking();
+
+        if (numberOfFirstInfected == net.getSize()) {
+            System.out.print("Primary infection didn't situate");
+            return;
+        }
+
+        Queue<Integer> toInfect = new ConcurrentLinkedQueue<Integer>();
+        addConnectedWithInfected(numberOfFirstInfected, net, toInfect);
+
+        int iteration = 0;
+        while (iteration < maxIterations && !toInfect.isEmpty()) {
+            stepOfInfection(toInfect, net, virus);
+            if (iteration % periodOfChecking == 0) {
+                stepOfChecking(net, iteration / periodOfChecking + 1);
+            }
+            iteration++;
+        }
+        finalMessage(toInfect);
+    }
+
     /** infected one computer of net and returns its number*/
-    private static Integer primaryInfection(ComputersNet net, Random rnd) {
+    private static Integer primaryInfection(ComputersNet net, Virus virus) {
         int i = 1;
         boolean stopCondition = false;
 
         while (!stopCondition && i <= net.getSize()) {
-            double currentProbability = getCurrentProbabilityOfInfection(rnd);
             Computer current = net.getComputer(i);
-
-            if (current.getProbabilityOfInfection() > currentProbability) {
+            if (virus.infect(current.getProbabilityOfInfection())) {
                 current.setInfection();
                 stopCondition = true;
             }
@@ -66,13 +70,15 @@ public class Process {
      * Else its number is added to queue again
      * @param toInfect if queue with computers, which are able to be infected
      * @param net is net with computers
-     * @param rnd to generate current probability of infection
+     * @param virus to generate current probability of infection
      */
-    protected static void stepOfInfection(Queue<Integer> toInfect, ComputersNet net, Random rnd) {
+    protected static void stepOfInfection(Queue<Integer> toInfect, ComputersNet net, Virus virus) {
         int numberToInfect = toInfect.remove();
-        double currentProbabilityOfInfection = getCurrentProbabilityOfInfection(rnd);
         Computer current = net.getComputer(numberToInfect);
-        if (currentProbabilityOfInfection < current.getProbabilityOfInfection()) {
+        if (current.isInfected()) {
+            return;
+        }
+        if (virus.infect(current.getProbabilityOfInfection())) {
             current.setInfection();
             addConnectedWithInfected(numberToInfect, net, toInfect);
         } else {
@@ -89,23 +95,12 @@ public class Process {
     protected static void addConnectedWithInfected(int numberOfInfected, ComputersNet net, Queue<Integer> toInfect) {
         try {
             for (int i = 1; i <= net.getSize(); i++) {
-                if (net.firstIsConnectedWithSecond(numberOfInfected, i) && !net.getComputer(i).isInfected()) {
+                if (net.firstIsConnectedWithSecond(numberOfInfected, i) && !net.getComputer(i).isInfected() && !toInfect.contains(i)) {
                     toInfect.add(i);
                 }
             }
         } catch (IncorrectComputerNumberException e) {
         }
-    }
-
-    /**
-     * Method for getting value, which defines current probability of infection.
-     * if this value is less, than computers's probability of infection, computer will be infected
-     * @param rnd to get random value
-     * @return value of probability of infection
-     */
-    private static double getCurrentProbabilityOfInfection(Random rnd) {
-        double currentProbabilityOfInfection = rnd.nextDouble();
-        return currentProbabilityOfInfection - (int) currentProbabilityOfInfection;
     }
 
     /**

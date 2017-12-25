@@ -14,7 +14,7 @@ public class ProcessTest {
     /** test correctness of step of infection*/
     @Test
     public void firstStepOfInfectionTest() throws IncorrectDataException {
-        Random rnd = new Random();
+        Virus rnd = new RandomInfectingVirus();
         NetsCreator creator = new NetsCreator();
         ComputersNet net = creator.createNet(new Scanner(testData));
 
@@ -32,7 +32,7 @@ public class ProcessTest {
 
     @Test
     public void someStepOfInfectionTest() throws IncorrectDataException {
-        Random rnd = new Random();
+        Virus rnd = new RandomInfectingVirus();
         NetsCreator creator = new NetsCreator();
         ComputersNet net = creator.createNet(new Scanner(testData));
 
@@ -60,5 +60,80 @@ public class ProcessTest {
         assertTrue(toInfect.contains(1));
         assertTrue(toInfect.contains(4));
         assertTrue(toInfect.contains(5));
+    }
+
+    @Test
+    public void sequenceOfInfectionTest() throws IncorrectDataException {
+        Virus virus = new HardTestVirus();
+        NetsCreator creator = new NetsCreator();
+        ComputersNet net = creator.createNet(new Scanner(testData));
+
+        Integer numberOfFirstInfected = 3;
+        net.getComputer(numberOfFirstInfected).setInfection();
+        Queue<Integer> toInfect = new ConcurrentLinkedQueue<Integer>();
+        Process.addConnectedWithInfected(numberOfFirstInfected, net, toInfect);
+        assertTrue(toInfect.size() == 3);
+
+        Process.stepOfInfection(toInfect, net, virus);
+        assertTrue(net.getComputer(1).isInfected());
+        assertTrue(toInfect.size() == 3);
+
+        Process.stepOfInfection(toInfect, net, virus);
+        assertTrue(net.getComputer(4).isInfected());
+        assertTrue(toInfect.size() == 2);
+
+        Process.stepOfInfection(toInfect, net, virus);
+        assertTrue(net.getComputer(5).isInfected());
+        assertTrue(toInfect.size() == 1);
+
+        Process.stepOfInfection(toInfect, net, virus);
+        assertTrue(net.getComputer(2).isInfected());
+        assertTrue(toInfect.size() == 0);
+
+        assertFalse(net.getComputer(6).isInfected());
+    }
+
+    @Test
+    public void otherSequenceOfInfectionTest() throws IncorrectDataException {
+        Virus virus = new HardTestVirus();
+        NetsCreator creator = new NetsCreator();
+        ComputersNet net = creator.createNet(new Scanner(testData));
+
+        Integer numberOfFirstInfected = 6;
+        net.getComputer(numberOfFirstInfected).setInfection();
+        Queue<Integer> toInfect = new ConcurrentLinkedQueue<Integer>();
+
+        Process.addConnectedWithInfected(numberOfFirstInfected, net, toInfect);
+        assertTrue(toInfect.size() == 3);
+
+        Process.stepOfInfection(toInfect, net, virus);
+        assertTrue(net.getComputer(1).isInfected());
+        assertTrue(toInfect.size() == 3);
+
+        Process.stepOfInfection(toInfect, net, virus);
+        assertTrue(net.getComputer(3).isInfected());
+        assertTrue(toInfect.size() == 3);
+
+        Process.stepOfInfection(toInfect, net, virus);
+        assertTrue(net.getComputer(5).isInfected());
+        assertTrue(toInfect.size() == 2);
+
+        Process.stepOfInfection(toInfect, net, virus);
+        assertTrue(net.getComputer(2).isInfected());
+        assertTrue(toInfect.size() == 1);
+
+        Process.stepOfInfection(toInfect, net, virus);
+        assertTrue(net.getComputer(4).isInfected());
+        assertTrue(toInfect.size() == 0);
+    }
+
+
+    /**
+     * Virus, which always infects computer
+     */
+    private class HardTestVirus implements Virus{
+        public boolean infect(double probabilityOfInfection) {
+            return true;
+        }
     }
 }
