@@ -19,7 +19,7 @@ public class Main extends Application {
         root.getChildren().add(canvas);
         primaryStage.sizeToScene();
 
-        Game game = new Game(new Relief(canvas), new Tank(canvas, 200, 200)); //точка старта?
+        Game game = new Game(new Relief(canvas), new Tank(canvas, 150, 200)); //точка старта?
 
         primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override

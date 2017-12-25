@@ -33,34 +33,42 @@ public class Relief {
 
     private ArrayList<Mountain> generateMountains() {
         ArrayList<Mountain> mountains = new ArrayList<Mountain>();
-        //магическое создание гор
-        mountains.add(new Mountain(200, 200, 0, 400, canvas.getHeight()));
+        mountains.add(new Mountain(150, 200, 0, 300, canvas.getHeight()));
         mountains.add(new Mountain(500, 200, 400, 600, canvas.getHeight()));
         return mountains;
     }
 
     private int numberOfMountain(double x) {
         int i = 0;
-        boolean stopCondition = false;
-        while (i < mountains.size() && !stopCondition) {
-            if (x > mountains.get(i).getLeftEdge() && x < mountains.get(i).getRightEdge()) {
-                stopCondition = true;
+        boolean mountainFound = false;
+        boolean mountainNotFound = false;
+        if (x < mountains.get(i).getLeftEdge()) {
+            return -1;
+        }
+        while (i < mountains.size() && !mountainFound && !mountainNotFound) {
+            if (x >= mountains.get(i).getLeftEdge() && x <= mountains.get(i).getRightEdge()) {
+                mountainFound = true;
+            }
+            if (x > mountains.get(i).getRightEdge()) {
+                if (i == mountains.size() - 1) {
+                    mountainNotFound = true;
+                } else {
+                    if (x < mountains.get(i + 1).getLeftEdge()) {
+                        mountainNotFound = true;
+                    }
+                }
             }
             i++;
         }
-        return i - 1;
-    }
-
-    public double distanceToVertex(double x) {
-        Mountain mountain = mountains.get(numberOfMountain(x));
-        double toPeak = Math.abs(x - mountain.getPeak());
-        double toLeft = Math.abs(x - mountain.getLeftEdge());
-        double toRight = Math.abs(x - mountain.getRightEdge());
-        return Math.min(Math.min(toLeft, toPeak), toRight);
+        return (mountainNotFound) ? -1 : i - 1;
     }
 
     public double inclinationAngle(double x, boolean rightDirection) {
-        Mountain mountain = mountains.get(numberOfMountain(x));
+        int number = numberOfMountain(x);
+        if (number == -1) {
+            return 0;
+        }
+        Mountain mountain = mountains.get(number);
         double angle = 0;
         if (x == mountain.getPeak()) {
             angle = (rightDirection) ? mountain.getRightEdgeAngle() : mountain.getLeftEdgeAngle();
@@ -72,5 +80,16 @@ public class Relief {
             angle = mountain.getLeftEdgeAngle();
         }
         return angle;
+    }
+
+    public double distanceToVertex(double x) {
+        double min = canvas.getWidth();
+        for (Mountain mountain : mountains) {
+            double distToLeft = Math.abs(x - mountain.getLeftEdge());
+            double distToRight = Math.abs(x - mountain.getRightEdge());
+            double distToPeak = Math.abs(x - mountain.getPeak());
+            min = Math.min(Math.min(min, distToPeak), Math.min(distToLeft, distToRight));
+        }
+        return min;
     }
 }

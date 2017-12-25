@@ -13,7 +13,6 @@ public class Tank {
     private final double width = 15;
     private final double gunLength = 20;
     private final double gunDiam = 3;
- //   private final double littleShellDiam = 2;
 
     private final double step = 10;
     private final double angleDelta = Math.PI / 6;
@@ -21,6 +20,9 @@ public class Tank {
     private double centerX;
     private double centerY;
     private double gunsAngle = 0;
+
+    private final double speed = 30;
+    private final double littleBallsDiam = 6;
 
     public Tank(Canvas canvas, double startX, double startY) {
         this.canvas = canvas;
@@ -52,9 +54,7 @@ public class Tank {
         graphicsContext.fillPolygon(xPoints, yPoints, numberOfPoints);
     }
 
-    public void shoot() {
-        //связь с углом наклона пушки
-    }
+
 
     public void gunRotate(boolean clockWiseDirection) {
         gunsAngle += (clockWiseDirection) ? -angleDelta : angleDelta;
@@ -89,17 +89,29 @@ public class Tank {
         centerY = newCenterY;
     }
 
-    /*
-    public void drawShell(double xCenter, double yCenter) {
-        canvas.getGraphicsContext2D().setFill(Color.BLACK);
-        canvas.getGraphicsContext2D().fillOval(xCenter, yCenter, littleShellDiam, littleShellDiam);
-    }*/
-
     public double getCenterX() {
         return this.centerX;
     }
 
-    public double getCenterY() {
-        return this.centerY;
+    //getters for shooting
+    public double getGunsAngle() {
+        return this.gunsAngle;
+    }
+
+    public double getGunsX() {
+        return centerX + (width + gunLength) * Math.cos(gunsAngle);
+    }
+
+    public double getGunsY() {
+        return canvas.getHeight() - (centerY + (height + gunLength) * Math.sin(gunsAngle));
+    }
+
+    public double getSpeed() {
+        return this.speed;
+    }
+
+    public void drawBall(double x, double y) {
+        graphicsContext.setFill(Color.PURPLE);
+        graphicsContext.fillOval(x, canvas.getHeight() - y, littleBallsDiam, littleBallsDiam);
     }
 }
