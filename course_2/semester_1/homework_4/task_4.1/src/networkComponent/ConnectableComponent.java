@@ -11,19 +11,19 @@ import java.net.Socket;
 /**
  * The same part of client's and server's components
  */
-abstract public class CommunicableComponent implements Communicable{
+abstract public class ConnectableComponent implements Connectable {
     protected Game game;
 
     protected Socket socket;
     protected DataInputStream in;
     protected DataOutputStream out;
 
-    private boolean stopCondition = false;
+    private volatile boolean stopCondition = false;
 
     @Override
     public void sendRequest(Action action) throws IOException {
         Action currentRequest = action;
-        out.writeUTF(action.name());
+        out.writeUTF(currentRequest.name());
         out.flush();
     }
 
@@ -40,7 +40,7 @@ abstract public class CommunicableComponent implements Communicable{
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            return;
         }
     }
 
@@ -50,13 +50,12 @@ abstract public class CommunicableComponent implements Communicable{
     }
 
     @Override
-    public void close() {
+    public void close() throws DisableConnectionException {
         try {
             in.close();
             out.close();
-            socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DisableConnectionException("Couldn't close connection");
         }
     }
 }

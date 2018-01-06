@@ -2,20 +2,19 @@ package networkComponent;
 
 import gameComponent.*;
 
-import javax.xml.crypto.Data;
 import java.net.*;
 import java.io.*;
 
 /**
  * For sending and getting messages about other player
  */
-public class ServerComponent extends CommunicableComponent {
+public class ServerComponent extends ConnectableComponent {
     private int port = 6666;
     private ServerSocket ss;
 
-    public ServerComponent(Game game) {
+    public ServerComponent(Game game) throws DisableConnectionException{
         this.game = game;
-        game.setCommunicable(this);
+        game.setConnectable(this);
 
         try {
             ss = new ServerSocket(port);
@@ -30,7 +29,7 @@ public class ServerComponent extends CommunicableComponent {
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
         } catch(IOException e) {
-            e.printStackTrace();
+            throw new DisableConnectionException("Couldn't connect with client player");
         }
     }
 }

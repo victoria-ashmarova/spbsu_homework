@@ -1,74 +1,83 @@
 package gameComponent;
 
 import javafx.scene.input.KeyEvent;
-import networkComponent.Communicable;
+import networkComponent.Connectable;
+import networkComponent.DisableConnectionException;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Process of playing
  */
 public class Game {
     private final Relief relief;
-    private final Tank thisTank;
-    private Communicable communicable;
+    private final Tank localTank;
+    private Connectable connectable;
 
-    private Tank thatTank;
+    private final Tank remoteTank;
     private Tank actingTank;
 
     private volatile boolean stopGame = false; //остановка игры при попадаении ядром в танк
 
     private final double G = 9.8;
-//    private List<Thread> flyingBalls;
 
-    public Game(Relief relief, Tank thisTank, Tank thatTank) {
+    /**
+     * creates game with two tanks
+     */
+    public Game(Relief relief, Tank localTank, Tank remoteTank) {
         this.relief = relief;
-        this.thisTank = thisTank;
-        this.thatTank = thatTank;
+        this.localTank = localTank;
+        this.remoteTank = remoteTank;
         redraw();
 
-        this.actingTank = thisTank;
-   //     flyingBalls = new LinkedList<>();
+        this.actingTank = localTank;
     }
 
-    public void setCommunicable(Communicable communicable) {
-        this.communicable = communicable;
+    /**
+     * adds component to connect with remote player
+     */
+    public void setConnectable(Connectable connectable) {
+        this.connectable = connectable;
     }
 
-    //черту синхронизацию
-    public void initCommunication() {
-       Thread com = new Thread(communicable);
+    /**
+     * initiates connection with remote player
+     */
+    public void initConnection() {
+       Thread com = new Thread(connectable);
        com.start();
     }
 
-    public void closeCommunication() {
+    public void closeCommunication() throws DisableConnectionException {
         stopGame = true;
-     //   flyingBalls.clear();
-        communicable.close();
+        connectable.close();
     }
 
-    private void sendRequest(Action action) {
+    /**
+     * sends action to do for remote player
+     * @param action to handle by other player
+     * @throws DisableConnectionException when there is no abitily to send request
+     */
+    private void sendRequest(Action action) throws DisableConnectionException {
         try {
-            communicable.sendRequest(action);
+            connectable.sendRequest(action);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DisableConnectionException("Couldn't connect with other player");
         }
     }
 
     /**
-     * draws background and thisTank
+     * draws background and localTank
      */
     private void redraw() {
         this.relief.draw();
-        this.thisTank.draw();
-        this.thatTank.draw();
+        this.localTank.draw();
+        this.remoteTank.draw();
     }
 
     /**
-     * moves thisTank according to background
-     * @param rightDirection is true, when thisTank must go with right direction
+     * moves localTank according to background
+     * @param rightDirection is true, when localTank must go with right direction
      */
     private void moveTank(boolean rightDirection) {
         double angle = relief.inclinationAngle(actingTank.getCenterX(), rightDirection);
@@ -78,8 +87,8 @@ public class Game {
     }
 
     /**
-     * rotates gun of thisTank
-     * @param clockWiseDirection is true, when gun of thisTank must go with clockwise direction
+     * rotates gun of localTank
+     * @param clockWiseDirection is true, when gun of localTank must go with clockwise direction
      */
     private void gunRotate(boolean clockWiseDirection) {
         actingTank.gunRotate(clockWiseDirection);
@@ -87,7 +96,7 @@ public class Game {
     }
 
     /**
-     * implements moving of ball from thisTank
+     * implements moving of ball from localTank
      */
     private void flyingOfBall() {
         double x = actingTank.getGunsX();
@@ -96,18 +105,17 @@ public class Game {
         double speed = actingTank.getSpeed();
 
         Thread shooting = new Shooting(x, y, angle, speed);
-     //       flyingBalls.add(shooting);
         shooting.start();
     }
 
     /**
      * handler for key events
      */
-    public void handleKeyPress(KeyEvent e) {
+    public void handleKeyPress(KeyEvent e) throws DisableConnectionException {
         if (stopGame) {
             return;
         }
-        actingTank = thisTank;
+        actingTank = localTank;
         switch (e.getCode()) {
             case UP: {
                 gunRotate(true);
@@ -135,14 +143,19 @@ public class Game {
                 break;
             }
             case SHIFT: {
-                thisTank.changeBall();
+                actingTank.changeBall();
                 sendRequest(Action.CHANGE_BALL);
+                break;
             }
         }
     }
 
+    /**
+     * handles remote requests
+     * @param action to handle
+     */
     public void handleRequest(Action action) {
-        actingTank = thatTank;
+        actingTank = remoteTank;
         switch (action) {
             case ROTATE_RIGHT: {
                 gunRotate(true);
@@ -165,12 +178,8 @@ public class Game {
                 break;
             }
             case CHANGE_BALL: {
-                thatTank.changeBall();
+                actingTank.changeBall();
                 break;
-            }
-            case STOP_GAME: {
-                this.stopGame = true;
-                this.communicable.stopCommunication();
             }
         }
     }
@@ -189,10 +198,14 @@ public class Game {
             this.y = y;
             this.angle = angle;
             this.speed = speed;
+
         }
 
+        /**
+         * checking of hitting one tank by other's ball
+         */
         private boolean hitting(double diam) {
-            Tank targetTank = (actingTank == thisTank) ? thatTank : thisTank;
+            Tank targetTank = (actingTank == localTank) ? remoteTank : localTank;
 
             double thatX = targetTank.getCenterX();
             double thatY = targetTank.getCenterY();
@@ -205,7 +218,7 @@ public class Game {
         public void run() {
             double stepX = speed * Math.cos(angle);
             double startSpeedY = speed * Math.sin(angle);
-            double diam = thisTank.getCurrentDiamOfBall();
+            double diam = actingTank.getCurrentDiamOfBall();
             boolean stopCondition = stopGame;
             int t = 0;
             while (!stopCondition) {
@@ -228,11 +241,8 @@ public class Game {
             if (hitting(diam)) {
                 stopGame = true;
                 actingTank.drawFunnel(x, y, diam);
-                thisTank.printResult(actingTank == thisTank); //что же будет?
-                sendRequest(Action.STOP_GAME);
-                communicable.stopCommunication();
-            } else {
-          //      flyingBalls.remove(this);
+                localTank.printResult(actingTank == localTank);
+                connectable.stopCommunication();
             }
         }
     }

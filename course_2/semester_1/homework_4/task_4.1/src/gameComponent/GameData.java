@@ -3,9 +3,9 @@ package gameComponent;
 import javafx.scene.paint.Color;
 
 /**
- * start data
+ * constant data for game
  */
-public class InitialGameData {
+public class GameData {
     public static final double width = 600;
     public static final double height = 400;
 
@@ -23,4 +23,7 @@ public class InitialGameData {
     public static final double fontSize = 30;
     public static final double textX = 270;
     public static final double textY = 100;
+
+    public static final String winnerMessage = "You have wan, my congratulations (:";
+    public static final String loserMessage = "You have not win in this time ):";
 }

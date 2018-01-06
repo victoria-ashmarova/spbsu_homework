@@ -10,5 +10,4 @@ public enum Action {
     ROTATE_LEFT,
     SHOOT,
     CHANGE_BALL,
-    STOP_GAME;
 }

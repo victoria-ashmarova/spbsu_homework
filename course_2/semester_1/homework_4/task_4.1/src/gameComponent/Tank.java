@@ -161,11 +161,13 @@ public class Tank {
         return true;
     }
 
+    /** changes current size of ball*/
     public void changeBall() {
         currentDiamOfBall = (currentDiamOfBall == littleBallsDiam) ? bigBallDiam : littleBallsDiam;
         speed = (speed == littleBallsSpeed) ? bigBallsSpeed : littleBallsSpeed;
     }
 
+    /** draws funnel made after hitting other tank by ball of this tank*/
     public void drawFunnel(double x, double y, double diamOfBall) {
         double funnelDiam = diamOfBall * funnelCoefficient;
         graphicsContext.setFill(color);
@@ -180,12 +182,13 @@ public class Tank {
         return this.currentDiamOfBall;
     }
 
+    /** prints information if this tank is winner or not*/
     public void printResult(boolean isWinner) {
-        String toPrint = (isWinner) ? "You are winner (:" : "You are loser ):";
+        String toPrint = (isWinner) ? GameData.winnerMessage : GameData.loserMessage;
         graphicsContext.setFill(color);
         graphicsContext.setTextAlign(TextAlignment.CENTER);
-        graphicsContext.setFont(Font.font(InitialGameData.fontSize));
+        graphicsContext.setFont(Font.font(GameData.fontSize));
 
-        graphicsContext.fillText(toPrint, InitialGameData.textX, InitialGameData.textY);
+        graphicsContext.fillText(toPrint, GameData.textX, GameData.textY);
     }
 }

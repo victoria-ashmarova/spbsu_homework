@@ -1,6 +1,5 @@
 package networkComponent;
 
-import gameComponent.Action;
 import gameComponent.Game;
 
 import java.net.*;
@@ -10,18 +9,17 @@ import java.util.Scanner;
 /**
  * For sending and getting messages about other player
  */
-public class ClientComponent extends CommunicableComponent{
-    private int serverPort;
+public class ClientComponent extends ConnectableComponent {
+    private int serverPort = 6666;
     private InetAddress ipAddress;
 
-    public ClientComponent(Game game) {
+    public ClientComponent(Game game) throws DisableConnectionException{
         this.game = game;
-        game.setCommunicable(this);
+        game.setConnectable(this);
 
         try {
             Scanner sc = new Scanner(System.in);
             String name = getIp(sc);
-            serverPort = getServerPort(sc);
             ipAddress = InetAddress.getByName(name);
             socket = new Socket(ipAddress, serverPort);
 
@@ -29,15 +27,9 @@ public class ClientComponent extends CommunicableComponent{
 
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new DisableConnectionException("Couldn't connect with server-player");
         }
-    }
-
-    private int getServerPort(Scanner sc) {
-        System.out.print("Enter the number of server port - integer number in bounds for 1025 to 65355>");
-        int toReturn = sc.nextInt();
-        return toReturn;
     }
 
     private String getIp(Scanner sc) {
