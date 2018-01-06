@@ -19,16 +19,16 @@ public class ServerComponent extends CommunicableComponent {
 
         try {
             ss = new ServerSocket(port);
-            //
-            System.out.println("Waiting for a client...");
+
+            String address = InetAddress.getLocalHost().getCanonicalHostName();
+            System.out.println("You are server-player with IP address " + address);
+            System.out.println("Waiting for a client-player...");
             socket = ss.accept();
-            //
-            System.out.println("Got a client.");
+
+            System.out.println("Got a client-player.");
 
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
-            //
-            System.out.print("streams are ready");
         } catch(IOException e) {
             e.printStackTrace();
         }

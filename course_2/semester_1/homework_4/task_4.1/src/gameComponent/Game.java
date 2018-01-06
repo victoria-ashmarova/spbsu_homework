@@ -21,7 +21,7 @@ public class Game {
     private volatile boolean stopGame = false; //остановка игры при попадаении ядром в танк
 
     private final double G = 9.8;
-    private List<Thread> flyingBalls;
+//    private List<Thread> flyingBalls;
 
     public Game(Relief relief, Tank thisTank, Tank thatTank) {
         this.relief = relief;
@@ -30,7 +30,7 @@ public class Game {
         redraw();
 
         this.actingTank = thisTank;
-        flyingBalls = new LinkedList<>();
+   //     flyingBalls = new LinkedList<>();
     }
 
     public void setCommunicable(Communicable communicable) {
@@ -45,7 +45,7 @@ public class Game {
 
     public void closeCommunication() {
         stopGame = true;
-        flyingBalls.clear();
+     //   flyingBalls.clear();
         communicable.close();
     }
 
@@ -90,16 +90,14 @@ public class Game {
      * implements moving of ball from thisTank
      */
     private void flyingOfBall() {
-        if (!stopGame) {
-            double x = actingTank.getGunsX();
-            double y = actingTank.getGunsY();
-            double angle = -actingTank.getGunsAngle();
-            double speed = actingTank.getSpeed();
+        double x = actingTank.getGunsX();
+        double y = actingTank.getGunsY();
+        double angle = -actingTank.getGunsAngle();
+        double speed = actingTank.getSpeed();
 
-            Thread shooting = new Shooting(x, y, angle, speed);
-            flyingBalls.add(shooting);
-            shooting.start();
-        }
+        Thread shooting = new Shooting(x, y, angle, speed);
+     //       flyingBalls.add(shooting);
+        shooting.start();
     }
 
     /**
@@ -137,7 +135,7 @@ public class Game {
                 break;
             }
             case SHIFT: {
-                thisTank.changeDiamOfBall();
+                thisTank.changeBall();
                 sendRequest(Action.CHANGE_BALL);
             }
         }
@@ -167,7 +165,8 @@ public class Game {
                 break;
             }
             case CHANGE_BALL: {
-                thatTank.changeDiamOfBall();
+                thatTank.changeBall();
+                break;
             }
             case STOP_GAME: {
                 this.stopGame = true;
@@ -192,7 +191,7 @@ public class Game {
             this.speed = speed;
         }
 
-        private boolean hitting(double diam) { //todo че кого с синхронизацией?
+        private boolean hitting(double diam) {
             Tank targetTank = (actingTank == thisTank) ? thatTank : thisTank;
 
             double thatX = targetTank.getCenterX();
@@ -227,16 +226,13 @@ public class Game {
             }
 
             if (hitting(diam)) {
-                try {
-                    stopGame = true;
-                    actingTank.drawFunnel(x, y, diam);
-                    communicable.sendRequest(Action.STOP_GAME);
-                    communicable.stopCommunication();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                stopGame = true;
+                actingTank.drawFunnel(x, y, diam);
+                thisTank.printResult(actingTank == thisTank); //что же будет?
+                sendRequest(Action.STOP_GAME);
+                communicable.stopCommunication();
             } else {
-                flyingBalls.remove(this);
+          //      flyingBalls.remove(this);
             }
         }
     }

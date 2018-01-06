@@ -19,4 +19,8 @@ public class InitialGameData {
 
     public static final  Color firstColor = Color.YELLOW;
     public static final Color secondColor = Color.RED;
+
+    public static final double fontSize = 30;
+    public static final double textX = 270;
+    public static final double textY = 100;
 }

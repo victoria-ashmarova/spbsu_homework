@@ -36,7 +36,7 @@ abstract public class CommunicableComponent implements Communicable{
                 game.handleRequest(toHandle);
 
                 if (socket.isClosed()) {
-                    stopCondition = true; //плюс добавочка реализации условия остановки
+                    stopCondition = true;
                 }
             }
         } catch (IOException e) {

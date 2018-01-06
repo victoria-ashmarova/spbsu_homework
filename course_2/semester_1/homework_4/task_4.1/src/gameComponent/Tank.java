@@ -3,6 +3,8 @@ package gameComponent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 /**
  * Keeps information about tank
@@ -23,10 +25,14 @@ public class Tank {
     private double centerY;
     private double gunsAngle = 0;
 
-    private final double speed = 30;
+    private final double littleBallsSpeed = 45;
+    private final double bigBallsSpeed = 30;
+    private double speed;
+
     private final double funnelCoefficient = 5;
+
     private final double littleBallsDiam = 6;
-    private final double bigBallDiam = 12;
+    private final double bigBallDiam = 9;
     private double currentDiamOfBall;
 
     //добавочка пошла
@@ -40,6 +46,7 @@ public class Tank {
         this.color = color;
 
         this.currentDiamOfBall = littleBallsDiam;
+        this.speed = littleBallsSpeed;
     }
 
     /**
@@ -154,8 +161,9 @@ public class Tank {
         return true;
     }
 
-    public void changeDiamOfBall() {
+    public void changeBall() {
         currentDiamOfBall = (currentDiamOfBall == littleBallsDiam) ? bigBallDiam : littleBallsDiam;
+        speed = (speed == littleBallsSpeed) ? bigBallsSpeed : littleBallsSpeed;
     }
 
     public void drawFunnel(double x, double y, double diamOfBall) {
@@ -170,5 +178,14 @@ public class Tank {
 
     public double getCurrentDiamOfBall() {
         return this.currentDiamOfBall;
+    }
+
+    public void printResult(boolean isWinner) {
+        String toPrint = (isWinner) ? "You are winner (:" : "You are loser ):";
+        graphicsContext.setFill(color);
+        graphicsContext.setTextAlign(TextAlignment.CENTER);
+        graphicsContext.setFont(Font.font(InitialGameData.fontSize));
+
+        graphicsContext.fillText(toPrint, InitialGameData.textX, InitialGameData.textY);
     }
 }
