@@ -1,5 +1,7 @@
 package gameComponent;
 
+import javafx.scene.paint.Color;
+
 /**
  * start data
  */
@@ -9,4 +11,12 @@ public class InitialGameData {
 
     public static final double startFirstX = 150;
     public static final double startFirstY = 200;
+
+    public static final double startSecondX = 500;
+    public static final double startSecondY = 200;
+
+    public static final double bound = 300;
+
+    public static final  Color firstColor = Color.YELLOW;
+    public static final Color secondColor = Color.RED;
 }

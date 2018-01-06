@@ -3,98 +3,175 @@ package gameComponent;
 import javafx.scene.input.KeyEvent;
 import networkComponent.Communicable;
 
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Process of playing
  */
 public class Game {
     private final Relief relief;
-    private final Tank tank;
+    private final Tank thisTank;
     private Communicable communicable;
 
-    //todo второй танк
-    private Tank secondTank;
+    private Tank thatTank;
+    private Tank actingTank;
+
+    private volatile boolean stopGame = false; //остановка игры при попадаении ядром в танк
 
     private final double G = 9.8;
+    private List<Thread> flyingBalls;
 
-    public Game(Relief relief, Tank tank) {
+    public Game(Relief relief, Tank thisTank, Tank thatTank) {
         this.relief = relief;
-        this.tank = tank;
+        this.thisTank = thisTank;
+        this.thatTank = thatTank;
         redraw();
+
+        this.actingTank = thisTank;
+        flyingBalls = new LinkedList<>();
     }
 
     public void setCommunicable(Communicable communicable) {
         this.communicable = communicable;
     }
 
-    public void handleAction(Action action) {
-        //todo
+    //черту синхронизацию
+    public void initCommunication() {
+       Thread com = new Thread(communicable);
+       com.start();
+    }
+
+    public void closeCommunication() {
+        stopGame = true;
+        flyingBalls.clear();
+        communicable.close();
+    }
+
+    private void sendRequest(Action action) {
+        try {
+            communicable.sendRequest(action);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * draws background and tank
+     * draws background and thisTank
      */
     private void redraw() {
         this.relief.draw();
-        this.tank.draw();
+        this.thisTank.draw();
+        this.thatTank.draw();
     }
 
     /**
-     * moves tank according to background
-     * @param rightDirection is true, when tank must go with right direction
+     * moves thisTank according to background
+     * @param rightDirection is true, when thisTank must go with right direction
      */
     private void moveTank(boolean rightDirection) {
-        double angle = relief.inclinationAngle(tank.getCenterX(), rightDirection);
-        double distanceToVertex = relief.distanceToVertex(tank.getCenterX());
-        tank.moveTank(rightDirection, angle, distanceToVertex);
+        double angle = relief.inclinationAngle(actingTank.getCenterX(), rightDirection);
+        double distanceToVertex = relief.distanceToVertex(actingTank.getCenterX());
+        actingTank.moveTank(rightDirection, angle, distanceToVertex);
         redraw();
     }
 
     /**
-     * rotates gun of tank
-     * @param clockWiseDirection is true, when gun of tank must go with clockwise direction
+     * rotates gun of thisTank
+     * @param clockWiseDirection is true, when gun of thisTank must go with clockwise direction
      */
     private void gunRotate(boolean clockWiseDirection) {
-        tank.gunRotate(clockWiseDirection);
+        actingTank.gunRotate(clockWiseDirection);
         redraw();
     }
 
     /**
-     * implements moving of ball from tank
+     * implements moving of ball from thisTank
      */
     private void flyingOfBall() {
-        double x = tank.getGunsX();
-        double y = tank.getGunsY();
-        double angle = -tank.getGunsAngle();
-        double speed = tank.getSpeed();
+        if (!stopGame) {
+            double x = actingTank.getGunsX();
+            double y = actingTank.getGunsY();
+            double angle = -actingTank.getGunsAngle();
+            double speed = actingTank.getSpeed();
 
-        Thread shooting = new Shooting(x, y, angle, speed);
-        shooting.start();
+            Thread shooting = new Shooting(x, y, angle, speed);
+            flyingBalls.add(shooting);
+            shooting.start();
+        }
     }
 
     /**
      * handler for key events
      */
-    public void handleKeyPress(KeyEvent e) {  //todo добавить обработку для коммуникабельного
+    public void handleKeyPress(KeyEvent e) {
+        if (stopGame) {
+            return;
+        }
+        actingTank = thisTank;
         switch (e.getCode()) {
             case UP: {
                 gunRotate(true);
+                sendRequest(Action.ROTATE_RIGHT);
                 break;
             }
             case DOWN: {
                 gunRotate(false);
+                sendRequest(Action.ROTATE_LEFT);
                 break;
             }
             case RIGHT: {
                 moveTank(true);
+                sendRequest(Action.MOVE_RIGHT);
                 break;
             }
             case LEFT: {
                 moveTank(false);
+                sendRequest(Action.MOVE_LEFT);
                 break;
             }
             case ENTER: {
                 flyingOfBall();
+                sendRequest(Action.SHOOT);
                 break;
+            }
+            case SHIFT: {
+                thisTank.changeDiamOfBall();
+                sendRequest(Action.CHANGE_BALL);
+            }
+        }
+    }
+
+    public void handleRequest(Action action) {
+        actingTank = thatTank;
+        switch (action) {
+            case ROTATE_RIGHT: {
+                gunRotate(true);
+                break;
+            }
+            case ROTATE_LEFT: {
+                gunRotate(false);
+                break;
+            }
+            case MOVE_RIGHT: {
+                moveTank(true);
+                break;
+            }
+            case MOVE_LEFT: {
+                moveTank(false);
+                break;
+            }
+            case SHOOT: {
+                flyingOfBall();
+                break;
+            }
+            case CHANGE_BALL: {
+                thatTank.changeDiamOfBall();
+            }
+            case STOP_GAME: {
+                this.stopGame = true;
+                this.communicable.stopCommunication();
             }
         }
     }
@@ -115,14 +192,25 @@ public class Game {
             this.speed = speed;
         }
 
+        private boolean hitting(double diam) { //todo че кого с синхронизацией?
+            Tank targetTank = (actingTank == thisTank) ? thatTank : thisTank;
+
+            double thatX = targetTank.getCenterX();
+            double thatY = targetTank.getCenterY();
+            double distance = actingTank.getFunnelDiam(diam) / 2;
+
+            return (thatX - x) * (thatX - x) + (thatY - y) * (thatY - y) <= distance * distance;
+        }
+
         @Override
         public void run() {
             double stepX = speed * Math.cos(angle);
             double startSpeedY = speed * Math.sin(angle);
-            boolean stopCondition = false;
+            double diam = thisTank.getCurrentDiamOfBall();
+            boolean stopCondition = stopGame;
             int t = 0;
             while (!stopCondition) {
-                stopCondition = !tank.drawBall(x, y) || relief.isMountainPoint(x, y);
+                stopCondition = !actingTank.drawBall(x, y, diam) || relief.isMountainPoint(x, y) || stopGame;
                 t++;
                 x += stepX;
 
@@ -134,6 +222,21 @@ public class Game {
                 } catch (InterruptedException e) {}
 
                 redraw();
+
+                stopCondition = stopCondition || hitting(diam) || stopGame;
+            }
+
+            if (hitting(diam)) {
+                try {
+                    stopGame = true;
+                    actingTank.drawFunnel(x, y, diam);
+                    communicable.sendRequest(Action.STOP_GAME);
+                    communicable.stopCommunication();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                flyingBalls.remove(this);
             }
         }
     }

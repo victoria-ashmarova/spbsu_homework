@@ -15,6 +15,9 @@ import networkComponent.Communicable;
 abstract public class GameApplication extends Application {
     abstract protected Communicable createCommunicable(Game game);
 
+    abstract protected Tank createFirstTank(Canvas canvas);
+    abstract protected Tank createSecondTank(Canvas canvas);
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         Group root = new Group();
@@ -25,9 +28,8 @@ abstract public class GameApplication extends Application {
         root.getChildren().add(canvas);
         primaryStage.sizeToScene();
 
-        Game game = new Game(new Relief(canvas), new Tank(canvas, InitialGameData.startFirstX, InitialGameData.startFirstY));
+        Game game = new Game(new Relief(canvas), createFirstTank(canvas), createSecondTank(canvas));
         Communicable communicable = createCommunicable(game);
-        game.setCommunicable(communicable);
 
         primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
@@ -37,5 +39,7 @@ abstract public class GameApplication extends Application {
         });
 
         primaryStage.show();
+
+        game.initCommunication();
     }
 }

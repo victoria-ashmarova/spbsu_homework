@@ -9,40 +9,29 @@ import java.io.*;
 /**
  * For sending and getting messages about other player
  */
-public class ClientComponent implements Communicable{
-    private Game game;
-
+public class ClientComponent extends CommunicableComponent{
     private int serverPort = 6666;
-    private String address = "192.168.0.108";
+   // private String address = "192.168.0.108";
     private InetAddress ipAddress;
-    private Socket socket;
-    private DataInputStream in;
-    private DataOutputStream out;
+
+    private Action currentRequest;
 
     public ClientComponent(Game game) {
         this.game = game;
-    }
+        game.setCommunicable(this);
 
-    @Override
-    public void findCommunicable() {
         try {
-            ipAddress = InetAddress.getByName(address);
+            ipAddress = InetAddress.getByName(null); //а как адрес то определять?
             socket = new Socket(ipAddress, serverPort);
-            in = new DataInputStream(socket.getInputStream());
-            out = new DataOutputStream(socket.getOutputStream());
-            game.setCommunicable(this);
+
+            System.out.println("Server found");
+
+            this.in = new DataInputStream(socket.getInputStream());
+            this.out = new DataOutputStream(socket.getOutputStream());
+            //
+            System.out.print("streams are ready");
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void sendRequest(Action action) {
-
-    }
-
-    @Override
-    public Action handleRequest() {
-        return null;
     }
 }

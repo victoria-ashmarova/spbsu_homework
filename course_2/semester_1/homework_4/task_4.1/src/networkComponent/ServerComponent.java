@@ -2,42 +2,35 @@ package networkComponent;
 
 import gameComponent.*;
 
+import javax.xml.crypto.Data;
 import java.net.*;
 import java.io.*;
 
 /**
  * For sending and getting messages about other player
  */
-public class ServerComponent implements Communicable {
-    private Game game;
-
+public class ServerComponent extends CommunicableComponent {
     private int port = 6666;
     private ServerSocket ss;
-    private DataInputStream in;
-    private DataOutputStream out;
 
     public ServerComponent(Game game) {
         this.game = game;
-    }
+        game.setCommunicable(this);
 
-    @Override
-    public void findCommunicable() {
         try {
             ss = new ServerSocket(port);
-            Socket socket = ss.accept();
-            in = new DataInputStream(socket.getInputStream());
-            out = new DataOutputStream(socket.getOutputStream());
-            game.setCommunicable(this);
-        } catch(Exception e) { e.printStackTrace(); }
-    }
+            //
+            System.out.println("Waiting for a client...");
+            socket = ss.accept();
+            //
+            System.out.println("Got a client.");
 
-    @Override
-    public void sendRequest(Action action) {
-        //todo
-    }
-
-    @Override
-    public Action handleRequest() {
-        return null;
+            this.in = new DataInputStream(socket.getInputStream());
+            this.out = new DataOutputStream(socket.getOutputStream());
+            //
+            System.out.print("streams are ready");
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 }

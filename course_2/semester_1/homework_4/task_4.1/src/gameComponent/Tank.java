@@ -24,20 +24,29 @@ public class Tank {
     private double gunsAngle = 0;
 
     private final double speed = 30;
+    private final double funnelCoefficient = 5;
     private final double littleBallsDiam = 6;
+    private final double bigBallDiam = 12;
+    private double currentDiamOfBall;
 
-    public Tank(Canvas canvas, double startX, double startY) {
+    //добавочка пошла
+    private Color color;
+
+    public Tank(Canvas canvas, double startX, double startY, Color color) {
         this.canvas = canvas;
         this.graphicsContext = canvas.getGraphicsContext2D();
         this.centerX = startX;
         this.centerY = startY;
+        this.color = color;
+
+        this.currentDiamOfBall = littleBallsDiam;
     }
 
     /**
      * draw tank on canvas
      */
     public void draw() {
-        graphicsContext.setFill(Color.YELLOW);
+        graphicsContext.setFill(color);
         graphicsContext.fillRect(centerX - width, centerY - height, width * 2, height * 2);
         drawGun();
     }
@@ -109,6 +118,9 @@ public class Tank {
     public double getCenterX() {
         return this.centerX;
     }
+    public double getCenterY() {
+        return canvas.getHeight() - this.centerY;
+    }
 
     public double getGunsAngle() {
         return this.gunsAngle;
@@ -132,13 +144,31 @@ public class Tank {
      * @param y is y coordinate of center of ball
      * @return true if there is ability to draw ball
      */
-    public boolean drawBall(double x, double y) {
+    public boolean drawBall(double x, double y, double diamOfBall) {
         if (x < 0 || x > canvas.getWidth() || y < 0) {
             return false;
         }
 
-        graphicsContext.setFill(Color.PURPLE);
-        graphicsContext.fillOval(x, canvas.getHeight() - y, littleBallsDiam, littleBallsDiam);
+        graphicsContext.setFill(color);
+        graphicsContext.fillOval(x, canvas.getHeight() - y, diamOfBall, diamOfBall);
         return true;
+    }
+
+    public void changeDiamOfBall() {
+        currentDiamOfBall = (currentDiamOfBall == littleBallsDiam) ? bigBallDiam : littleBallsDiam;
+    }
+
+    public void drawFunnel(double x, double y, double diamOfBall) {
+        double funnelDiam = diamOfBall * funnelCoefficient;
+        graphicsContext.setFill(color);
+        graphicsContext.fillOval(x - funnelDiam, canvas.getHeight() - y - funnelDiam, funnelDiam * 2, funnelDiam * 2);
+    }
+
+    public double getFunnelDiam (double diamOfBall) {
+        return diamOfBall * funnelCoefficient;
+    }
+
+    public double getCurrentDiamOfBall() {
+        return this.currentDiamOfBall;
     }
 }
