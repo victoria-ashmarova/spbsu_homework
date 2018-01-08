@@ -14,6 +14,8 @@ import networkComponent.DisableConnectionException;
  * Creates game application
  */
 abstract public class GameApplication extends Application {
+    private Game game;
+
     /** creates component for connection: server or client*/
     abstract protected Connectable createConnectable(Game game) throws DisableConnectionException;
 
@@ -33,7 +35,7 @@ abstract public class GameApplication extends Application {
         root.getChildren().add(canvas);
         primaryStage.sizeToScene();
 
-        Game game = new Game(new Relief(canvas), createFirstTank(canvas), createSecondTank(canvas));
+        game = new Game(new Relief(canvas), createFirstTank(canvas), createSecondTank(canvas));
         try {
             Connectable connectable = createConnectable(game);
         } catch (DisableConnectionException e) {
@@ -56,5 +58,14 @@ abstract public class GameApplication extends Application {
         primaryStage.show();
 
         game.initConnection();
+    }
+
+    @Override
+    public void stop() {
+        try {
+            this.game.closeCommunication();
+        } catch (DisableConnectionException e) {
+            e.message();
+        }
     }
 }
