@@ -209,7 +209,7 @@ public class Game {
 
             double thatX = targetTank.getCenterX();
             double thatY = targetTank.getCenterY();
-            double distance = actingTank.getFunnelDiam(diam) / 2;
+            double distance = actingTank.getFunnelDiam(diam);
 
             return (thatX - x) * (thatX - x) + (thatY - y) * (thatY - y) <= distance * distance;
         }
@@ -219,14 +219,16 @@ public class Game {
             double stepX = speed * Math.cos(angle);
             double startSpeedY = speed * Math.sin(angle);
             double diam = actingTank.getCurrentDiamOfBall();
-            boolean stopCondition = stopGame;
+            boolean stopCondition = stopGame || relief.isMountainPoint(x, y);
             int t = 0;
-            while (!stopCondition) {
-                stopCondition = !actingTank.drawBall(x, y, diam) || relief.isMountainPoint(x, y) || stopGame;
+            do {
+                stopCondition = stopCondition || !actingTank.drawBall(x, y, diam) || stopGame;
                 t++;
+                double lastX = x;
                 x += stepX;
 
                 double stepY = startSpeedY - G * t / 2;
+                double lastY = y;
                 y += stepY;
 
                 try {
@@ -235,8 +237,9 @@ public class Game {
 
                 redraw();
 
-                stopCondition = stopCondition || hitting(diam) || stopGame;
-            }
+                boolean isOnMountain = relief.isMountainPoint(x, y) || (t > 1 && relief.touchesMountain(lastX, lastY, stepY/stepX));
+                stopCondition = stopCondition || hitting(diam) || isOnMountain || stopGame;
+            }   while (!stopCondition);
 
             if (hitting(diam)) {
                 stopGame = true;

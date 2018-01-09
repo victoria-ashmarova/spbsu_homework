@@ -21,9 +21,9 @@ public class GameData {
     public static final Color secondColor = Color.RED;
 
     public static final double fontSize = 30;
-    public static final double textX = 270;
+    public static final double textX = 300;
     public static final double textY = 100;
 
-    public static final String winnerMessage = "You have wan, my congratulations (:";
-    public static final String loserMessage = "You have not win in this time ):";
+    public static final String winnerMessage = "You have won (:";
+    public static final String loserMessage = "You have not won ):";
 }

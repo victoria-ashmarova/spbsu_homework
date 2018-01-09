@@ -14,6 +14,7 @@ public class Relief {
     private GraphicsContext graphicsContext;
     private ArrayList<Mountain> mountains;
     private final double outsole;
+    private final double peakNeighborhood = 20;
 
     public Relief(Canvas canvas) {
         this.canvas = canvas;
@@ -27,7 +28,7 @@ public class Relief {
      */
     public void draw() {
         graphicsContext.setFill(Color.BLUE);
-        graphicsContext.fillRect(0, 0 , canvas.getWidth(), canvas.getHeight()); //костыльно
+        graphicsContext.fillRect(0, 0 , canvas.getWidth(), canvas.getHeight());
 
         graphicsContext.setFill(Color.GREEN);
         for (int i = 0; i < mountains.size(); i++) {
@@ -131,10 +132,35 @@ public class Relief {
 
         Mountain mountain = mountains.get(number);
         double angle = inclinationAngle(x, true);
-        double vertex = (x < mountain.getPeak()) ? mountain.getLeftEdge() : mountain.getRightEdge();
 
+        double vertex = (x < mountain.getPeak()) ? mountain.getLeftEdge() : mountain.getRightEdge();
         double horizon = Math.abs((x - vertex) * Math.tan(angle));
 
         return y <= horizon;
+    }
+
+    /** checks ability of flying point to touche mountain*/
+    public boolean touchesMountain(double x, double y, double tan) {
+        int number = numberOfMountain(x);
+        if (number == -1){
+            return false;
+        }
+        Mountain mountain = mountains.get(number);
+        double mountainAngle = inclinationAngle(x, true);
+        double angle = Math.atan(tan);
+        double peakHeight = mountain.getPeakHeight();
+        double peak = mountain.getPeak();
+        if (Math.abs(peak - x) > peakNeighborhood || Math.abs(peakHeight - y) > peakNeighborhood) {
+            return false;
+        }
+
+        double sign = Math.signum(mountainAngle) * Math.signum(angle);
+        if (sign == 1) {
+            return true;
+        }
+
+        angle = Math.abs(angle);
+        mountainAngle = Math.abs(mountainAngle);
+        return mountainAngle > angle;
     }
 }
